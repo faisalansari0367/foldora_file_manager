@@ -22,8 +22,7 @@ class CircleChart extends StatefulWidget {
   _CircleChartState createState() => _CircleChartState();
 }
 
-class _CircleChartState extends State<CircleChart>
-    with TickerProviderStateMixin {
+class _CircleChartState extends State<CircleChart> with TickerProviderStateMixin {
   AnimationController _controller;
   // Animation animation;
   var percentage = 0.0;
@@ -40,7 +39,6 @@ class _CircleChartState extends State<CircleChart>
     animationValue.addListener(() {
       setState(() {
         percentage = animationValue.value;
-        // print(percentage);
       });
     });
   }
@@ -79,11 +77,11 @@ class _CircleChartState extends State<CircleChart>
 
   @override
   Widget build(BuildContext context) {
-    print('custom paint widget rebuilding');
+    final size = Responsive.imageSize(5);
     return CustomPaint(
       willChange: true,
       key: UniqueKey(),
-      size: Size(Responsive.imageSize(5), Responsive.imageSize(5)),
+      size: Size(size, size),
       painter: MyPainter(
         strokeWidth: widget.strokeWidth,
         color: widget.color,
@@ -92,17 +90,6 @@ class _CircleChartState extends State<CircleChart>
       ),
     );
   }
-  // child: CustomPaint(
-  //   willChange: true,
-  //   key: UniqueKey(),
-  //   size: Size(Responsive.imageSize(5), Responsive.imageSize(5)),
-  //   painter: MyPainter(
-  //     strokeWidth: widget.strokeWidth,
-  //     color: widget.color,
-  //     radius: Responsive.imageSize(widget.radius),
-  //     percentage: percentage,
-  //   ),
-  // ),
 }
 
 class MyPainter extends CustomPainter {

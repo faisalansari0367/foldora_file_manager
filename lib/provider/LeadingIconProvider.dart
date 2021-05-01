@@ -108,10 +108,9 @@ class IconProvider extends ChangeNotifier {
   Future<Widget> _toShowApkIcon(path) async {
     var result = Widgets.folderIcons(Widgets.fileIcon);
 
-    final List appsData = await DeviceApps.getAppByApkFile([path]);
+    final appsData = await DeviceApps.getAppByApkFile([path]);
     if (appsData.isEmpty) return result;
-    final List<App> apps =
-        await FileUtils.worker.doWork(App.fromList, appsData);
+    final List<App> apps = await FileUtils.worker.doWork(App.fromList, appsData);
     await SqfLite.isReady;
     SqfLite.localApps.insert(
       SqfLite.localAppsTable,

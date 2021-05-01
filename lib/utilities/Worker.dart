@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:isolate';
 
 class Worker {
@@ -47,10 +48,7 @@ class Worker {
           replyPort.send(result);
         }
       } catch (e) {
-        // if (e is StackTrace) print(e.toString());
-        // if (e is StackTrace) replyPort.send(e.toString());
-        replyPort.send(e);
-        // replyPort.
+        log("ERROR FROM ISOLATE: $e");
       }
     }
   }

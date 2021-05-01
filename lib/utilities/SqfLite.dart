@@ -71,17 +71,18 @@ class SqfLite {
   static Future<void> createLocalAppsTable(Database database) async {
     final List<String> allApps = await FileUtils.getAllLocalApps();
     print('AllApps length: ${allApps.length}');
-    final List appsData = await DeviceApps.getAppByApkFile(allApps);
+    final appsData = await DeviceApps.getAppByApkFile(allApps);
     final List<App> apps =
         await FileUtils.worker.doWork(App.fromList, appsData);
 
     try {
       final Batch batch = database.batch();
       for (var item in apps) {
-        final List<Map<String, dynamic>> query = await database.query(
-            localAppsTable,
-            where: '$apkFilePath = ?',
-            whereArgs: [item.apkFilePath]);
+        final query = await database.query(
+          localAppsTable,
+          where: '$apkFilePath = ?',
+          whereArgs: [item.apkFilePath],
+        );
         if (query.isEmpty) {
           database.insert(
             localAppsTable,
