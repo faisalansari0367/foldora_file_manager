@@ -44,21 +44,7 @@ class IconProvider extends ChangeNotifier {
     print("system apps count ${systemApps.length}");
     print("local apps count ${localApps.length}");
     notifyListeners();
-
-    // const databaseName = SqfLite.systemAppsDatabase;
-    // if (await databaseExists(databaseName)) {
-    //   final Database _db = await openDatabase(databaseName);
-    //   db = _db;
-    // } else {
-    //   var stopwatch = Stopwatch()..start();
-    //   var db = await SqfLite.createDatabase(table: SqfLite.systemAppsTable);
-    //   await SqfLite.createSystemAppsTable(db);
-    //   await SqfLite.createLocalAppsTable(db);
-    //   print(stopwatch.elapsed);
-    //   _getINstalledApplications();
-    // }
-
-    // notifyListeners();
+    
   }
 
   SharedPreferences _prefs;

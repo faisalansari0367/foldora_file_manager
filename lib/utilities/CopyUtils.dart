@@ -25,10 +25,9 @@ class CopyUtils {
     var timer = Stopwatch()..start();
     await file.copy(p.join(dest, p.basename(file.path)));
     print('copy done ${timer.elapsed.inSeconds}');
-
   }
 
-  static Stream<Map<String, dynamic>> copySelectedItems(Map map ) async* {
+  static Stream<Map<String, dynamic>> copySelectedItems(Map map) async* {
     final List<FileSystemEntity> items = map['items'];
     final String path = map['currentPath'];
     _totalItemsSize = await _getTotalSize(items);
@@ -36,10 +35,7 @@ class CopyUtils {
       if (item is File) {
         yield* _copyFileSystemEntity(item, path);
       } else if (item is Directory) {
-        yield* _toCopyDirectories(
-          item,
-          MediaUtils.currentPath,
-        );
+        yield* _toCopyDirectories(item, path);
       }
     }
     clearFields();

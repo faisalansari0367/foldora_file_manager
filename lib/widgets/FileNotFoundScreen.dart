@@ -24,6 +24,7 @@ class FileNotFoundScreen extends StatelessWidget {
         height: 100 * Responsive.heightMultiplier,
         child: Stack(
           // fit: StackFit.expand,
+          
           children: [
             Image.asset(
               "assets/5_Something Wrong.png",

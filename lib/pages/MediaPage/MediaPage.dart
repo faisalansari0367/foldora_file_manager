@@ -142,28 +142,14 @@ class _MediaPageState extends State<MediaPage>
       ],
     );
 
-    return Scaffold(
-      // backgroundColor: MyColors.darkGrey,
-      // body: SafeArea(child: csv),
-      body: SafeArea(child: csv),
-      bottomNavigationBar: OperationsUtils.bottomNavigation(),
-      floatingActionButton: FAB(),
+    return AnnotatedRegion(
+      value: SystemUiOverlayStyle(statusBarColor: MyColors.darkGrey),
+      child: Scaffold(
+        
+        body: SafeArea(child: csv),
+        bottomNavigationBar: OperationsUtils.bottomNavigation(),
+        floatingActionButton: FAB(),
+      ),
     );
   }
 }
-
-// final nsv = NestedScrollView(
-//   physics: BouncingScrollPhysics(),
-//   headerSliverBuilder: (context, innerBoxIsScrolled) {
-//     print(innerBoxIsScrolled);
-//     return [
-//       SliverOverlapAbsorber(
-//         handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-//         sliver: MySliverAppBar(),
-//       )
-//     ];
-//   },
-//   floatHeaderSlivers: true,
-//   controller: _scrollController,
-//   body: willPopScope,
-// );

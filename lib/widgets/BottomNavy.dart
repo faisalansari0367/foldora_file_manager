@@ -1,6 +1,7 @@
 import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
+import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -43,7 +44,7 @@ class _BottomNavyState extends State<BottomNavy> {
 
     return Container(
       decoration: BoxDecoration(
-        color: MediaUtils.backgroundColor,
+        color: Colors.white,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,7 +75,7 @@ class _BottomNavyState extends State<BottomNavy> {
             onPressed: () => Share.shareFiles(provider.sharePaths()),
           ),
           IconButton(
-            icon: Icon(Icons.more_vert, color: Colors.indigo),
+            icon: Icon(Icons.more_vert, color: Colors.teal),
             onPressed: _onPressed,
           ),
           sizedBox

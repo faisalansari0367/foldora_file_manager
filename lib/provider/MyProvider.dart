@@ -24,7 +24,7 @@ class MyProvider extends ChangeNotifier {
   }
 
   void init() async {
-    await getPermission();
+    // await getPermission();
     await diskSpace();
     initSharedPreferences();
     // fileSystemEntitywatcher();

@@ -38,6 +38,13 @@ class Responsive {
   }
 
   static imageSize(double value) {
-    return value * Responsive._blockSizeHorizontal;
+    return value * Responsive.imageSizeMultiplier;
   }
+  static width(double value) {
+    return value * Responsive.widthMultiplier;
+  }
+  static height(double value) {
+    return value * Responsive.heightMultiplier;
+  }
+
 }

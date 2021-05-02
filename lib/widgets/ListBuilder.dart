@@ -1,16 +1,12 @@
 import 'dart:io';
 
 import 'package:files/provider/MyProvider.dart';
-// import 'package:files/provider/OperationsProvider.dart';
-
 import 'package:files/utilities/MediaListItemUtils.dart';
-// import 'package:files/utilities/Utils.dart';
 import 'package:files/widgets/MediaListItem.dart';
 import 'package:flutter/material.dart';
-// import 'package:open_file/open_file.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
-
 import 'FileNotFoundScreen.dart';
 import 'LeadingIcon.dart';
 
@@ -31,19 +27,15 @@ class DirectoryLister extends StatelessWidget {
           if (p.equals(path, provider.getDirPath)) {
             return Container();
           } else {
-            return FileNotFoundScreen(message: message);
+            return MediaUtils.fileNotFound(message);
           }
         } else if (snapshot.hasData && snapshot.data.isNotEmpty) {
           return Container(
-            child: DirectoryListItem(
-              data: snapshot.data,
-            ),
+            child: DirectoryListItem(data: snapshot.data),
             color: Colors.transparent,
           );
         } else if (snapshot.hasError) {
-          return FileNotFoundScreen(
-            message: snapshot.error.toString(),
-          );
+          return MediaUtils.fileNotFound(snapshot.error.toString());
         } else {
           return Center(child: CircularProgressIndicator());
         }
@@ -94,19 +86,24 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
         itemCount: widget.data.length,
         itemBuilder: (context, index) {
           final FileSystemEntity data = widget.data[index];
-          return MediaListItem(
+          final mediaListItem = MediaListItem(
             index: index,
             data: data,
-            // ontap: () => MediaUtils.ontap(context, data),
             ontap: () => provider.ontap(data),
             title: p.basename(data.path),
             currentPath: data.path,
             description: MediaUtils.description(data),
-            leading: LeadingIcon(
-              data: data,
-              iconAccent: Color(0xFF2c2c3c),
-              iconColor: Colors.white,
-              iconName: Icons.folder_open,
+            leading: LeadingIcon(data: data),
+          );
+
+          return AnimationConfiguration.staggeredList(
+            position: index,
+            duration: const Duration(milliseconds: 375),
+            child: SlideAnimation(
+              verticalOffset: 20.0,
+              child: FadeInAnimation(
+                child: mediaListItem,
+              ),
             ),
           );
         },

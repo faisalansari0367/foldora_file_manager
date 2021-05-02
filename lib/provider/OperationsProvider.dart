@@ -90,7 +90,8 @@ class Operations extends ChangeNotifier {
     operationIsRunning = true;
     Map args = {'items': selectedMedia, 'currentPath': currentPath};
     final Stream<dynamic> stream =
-        await FileUtils.worker.doOperation(CopyUtils.copySelectedItems, args);
+        // await FileUtils.worker.doOperation(CopyUtils.copySelectedItems, args);
+        CopyUtils.copySelectedItems(args);
 
     stream.listen((event) {
       if (event is String) {

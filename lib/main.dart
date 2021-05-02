@@ -16,7 +16,14 @@ void main() {
 
 // This widget is the root of your application.
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays(
@@ -33,7 +40,8 @@ class MyApp extends StatelessWidget {
         // allowImplicitScrolling: true,
         children: [HomePage(), HomePage()],
       );
-      return OrientationBuilder(builder: (context, orientation) {
+      return OrientationBuilder(
+        builder: (context, orientation) {
         Responsive().init(constraints, orientation);
         return MultiProvider(
           providers: [

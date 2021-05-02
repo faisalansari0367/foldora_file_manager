@@ -55,8 +55,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "99d992106854cdeb8981c16f065407b6ae3e1bb9"
-      url: "https://github.com/faisalansari0367/flutter_plugin_device_apps.git"
+      resolved-ref: "1f1e01293de46dd7b78f8b59daeaa00bf1083979"
+      url: "https://github.com/faisalansari0367/flutter_plugin_device_apps-master.git"
     source: git
     version: "1.2.0"
   disk_space:
@@ -92,6 +92,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_staggered_animations:
+    dependency: "direct main"
+    description:
+      name: flutter_staggered_animations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -228,6 +235,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  photo_view:
+    dependency: "direct main"
+    description:
+      name: photo_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.11.1"
   platform:
     dependency: transitive
     description:
@@ -423,5 +437,5 @@ packages:
     source: hosted
     version: "0.1.0"
 sdks:
-  dart: ">=2.12.0-0.0 <3.0.0"
+  dart: ">=2.12.0 <3.0.0"
   flutter: ">=1.22.2"

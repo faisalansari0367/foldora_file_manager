@@ -2,9 +2,12 @@ import 'dart:io';
 import 'package:files/pages/Photos/FullScreenImage.dart';
 import 'package:files/provider/StoragePathProvider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
+import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/FileNotFoundScreen.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
@@ -20,36 +23,58 @@ class Photos extends StatelessWidget {
     );
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: MyAppBar(backgroundColor: Colors.grey[90]),
+      appBar: MyAppBar(backgroundColor: MyColors.darkGrey),
       body: Container(
         margin: const EdgeInsets.only(left: 12, right: 12, top: 12),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: widget,
-        ),
+        child: widget,
       ),
     );
   }
 }
 
-class GridView extends StatelessWidget {
+class GridView extends StatefulWidget {
   final photos;
   const GridView({this.photos});
+
+  @override
+  _GridViewState createState() => _GridViewState();
+}
+
+class _GridViewState extends State<GridView> {
+  int _crossAxisCount = 2;
+
   @override
   Widget build(BuildContext context) {
-    // final provider =
-
-    return StaggeredGridView.countBuilder(
-      crossAxisCount: 2,
-      crossAxisSpacing: 12,
-      mainAxisSpacing: 12,
-      physics: BouncingScrollPhysics(),
-      itemCount: photos.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Photo(file: photos[index], index: index);
+    return GestureDetector(
+      onScaleUpdate: (ScaleUpdateDetails newScale) {
+        // print();
+        final scale = newScale.scale.toInt();
+        if (scale > 0) _crossAxisCount = newScale.scale.toInt() * 2;
+        setState(() {});
       },
-      staggeredTileBuilder: (int index) =>
-          StaggeredTile.count(1, index.isEven ? 1.2 : 1.8),
+      child: StaggeredGridView.countBuilder(
+        crossAxisCount: _crossAxisCount,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        physics: BouncingScrollPhysics(),
+        itemCount: widget.photos.length,
+        itemBuilder: (BuildContext context, int index) {
+          final child = Photo(file: widget.photos[index], index: index);
+          // return child;
+          return AnimationConfiguration.staggeredGrid(
+            columnCount: _crossAxisCount,
+            position: index,
+            delay: Duration(milliseconds: 10),
+            child: SlideAnimation(
+              child: FadeInAnimation(
+                child: child,
+              ),
+            ),
+          );
+        },
+        staggeredTileBuilder: (int index) =>
+            StaggeredTile.count(1, index.isEven ? 1.2 : 1.8),
+      ),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
 import './LinearPercentBar.dart';
 import '../../sizeConfig.dart';
