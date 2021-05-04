@@ -22,10 +22,6 @@ class FullScreenImage extends StatelessWidget {
           child: Selector<StoragePathProvider, int>(
               selector: (_, value) => value.photosIndex,
               builder: (context, value, child) {
-                // final image = PhotoView(
-                //   imageProvider: AssetImage(provider.imagesPath[value].path),
-
-                // );
                 return GestureDetector(
                   onScaleStart: (ScaleStartDetails scaleStart) => print('scaling starts started $scaleStart'),
                   onScaleEnd: (ScaleEndDetails scaleEnd) => print('scaling ends started $scaleEnd'),

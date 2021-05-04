@@ -18,9 +18,9 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
     super.dispose();
   }
 
-  double _photosPercent = 0.0;
-  double _mediaPercent = 0.0;
-  double _documentsPercent = 0.0;
+  double _photosPercent = 80.0;
+  double _mediaPercent = 60.0;
+  double _documentsPercent = 40.0;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
                 selector: (context, value) => value.photosSize,
                 builder: (_, value, __) {
                   final totalSize = storage.calculatePercent(value, 3);
-                  _photosPercent = double.parse(totalSize);
+                  // _photosPercent = double.parse(totalSize);
                   return CircleChart(
                     // duration: Duration(seconds: 10),
                     color: Colors.indigo[300],
@@ -59,7 +59,7 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
                 // shouldRebuild: (a, b) => true,
                 builder: (_, value, __) {
                   final complete = storage.calculatePercent(value, 3);
-                  _mediaPercent = double.parse(complete);
+                  // _mediaPercent = double.parse(complete);
                   print(_mediaPercent);
 
                   return CircleChart(
@@ -75,11 +75,11 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
                 selector: (context, value) => value.documentsSize,
                 builder: (context, value, child) {
                   final documents = storage.calculatePercent(value, 3);
-                  _documentsPercent = double.parse(documents);
+                  // _documentsPercent = double.parse(documents);
                   // print(_documentsPercent);
                   return CircleChart(
                     strokeWidth: 4,
-                    color: Colors.indigo[300],
+                    color: Colors.amber[300],
                     radius: Responsive.imageSize(1.7),
                     percentage: _documentsPercent,
                   );
