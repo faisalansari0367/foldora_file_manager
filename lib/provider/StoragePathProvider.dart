@@ -114,10 +114,10 @@ class StoragePathProvider extends ChangeNotifier {
   }
 
   Future<void> onRefresh() async {
-    // photos();
-    // videos();
-    // audios();
-    // documents();
+    photos();
+    videos();
+    audios();
+    documents();
     await Future.delayed(Duration(seconds: 1));
   }
 }
