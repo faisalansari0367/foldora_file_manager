@@ -21,6 +21,7 @@ dependencies:
   flutter:
     sdk: flutter
   device_apps:
+    # git: https://github.com/faisalansari0367/flutter_plugin_device_apps-master.git
     git: https://github.com/faisalansari0367/flutter_plugin_device_apps-master.git
   animations: ^1.1.2
   disk_space: ^0.0.3

@@ -1,7 +1,5 @@
 import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/OperationsProvider.dart';
-import 'package:files/utilities/MediaListItemUtils.dart';
-import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';

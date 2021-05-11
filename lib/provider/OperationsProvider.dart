@@ -2,10 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:files/utilities/CopyUtils.dart';
-import 'package:files/utilities/MediaListItemUtils.dart';
-import 'package:files/utilities/Utils.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/rendering.dart';
 import 'package:path/path.dart' as p;
 import '../sizeConfig.dart';
 import '../utilities/OperationsUtils.dart';

@@ -1,6 +1,5 @@
 import 'package:files/data_models/VideoModel.dart';
 import 'package:files/utilities/Utils.dart';
-import 'package:files/widgets/Files.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';

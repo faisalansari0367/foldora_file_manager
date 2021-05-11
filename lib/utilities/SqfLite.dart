@@ -73,7 +73,8 @@ class SqfLite {
     print('AllApps length: ${allApps.length}');
     final appsData = await DeviceApps.getAppByApkFile(allApps);
     final List<App> apps =
-        await FileUtils.worker.doWork(App.fromList, appsData);
+        // await FileUtils.worker.doWork(App.fromList, appsData);
+        App.fromList(appsData);
 
     try {
       final Batch batch = database.batch();

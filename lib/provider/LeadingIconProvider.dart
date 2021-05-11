@@ -44,7 +44,6 @@ class IconProvider extends ChangeNotifier {
     print("system apps count ${systemApps.length}");
     print("local apps count ${localApps.length}");
     notifyListeners();
-    
   }
 
   SharedPreferences _prefs;
@@ -72,31 +71,33 @@ class IconProvider extends ChangeNotifier {
   }
 
   static final IconData folderIcon = Icons.folder_open;
-  Future<Widget> _toShowIconOnFolder(path) async {
-    var stopwatch = Stopwatch()..start();
-    await SqfLite.isReady;
-    var widget = Widgets.folderIcons(folderIcon);
-    final name = p.basename(path);
-    var query = await SqfLite.systemApps.query(
-      SqfLite.systemAppsTable,
-      // where: "${SqfLite.packageName} = '$name' OR ${SqfLite.appName} = '$name'",
-      where: "${SqfLite.packageName} = ? OR ${SqfLite.appName} = ?",
-      whereArgs: [name, name],
-    );
-    if (query.isNotEmpty) {
-      var list = SqfLite.fromMap(query);
-      widget = Widgets.folderIcons(folderIcon, bytes: list[0].icon);
-    }
-    print(stopwatch.elapsed);
-    return widget;
-  }
+  // Future<Widget> _toShowIconOnFolder(path) async {
+  //   var stopwatch = Stopwatch()..start();
+  //   await SqfLite.isReady;
+  //   var widget = Widgets.folderIcons(folderIcon);
+  //   final name = p.basename(path);
+  //   var query = await SqfLite.systemApps.query(
+  //     SqfLite.systemAppsTable,
+  //     // where: "${SqfLite.packageName} = '$name' OR ${SqfLite.appName} = '$name'",
+  //     where: "${SqfLite.packageName} = ? OR ${SqfLite.appName} = ?",
+  //     whereArgs: [name, name],
+  //   );
+  //   if (query.isNotEmpty) {
+  //     var list = SqfLite.fromMap(query);
+  //     widget = Widgets.folderIcons(folderIcon, bytes: list[0].icon);
+  //   }
+  //   print(stopwatch.elapsed);
+  //   return widget;
+  // }
 
   Future<Widget> _toShowApkIcon(path) async {
     var result = Widgets.folderIcons(Widgets.fileIcon);
 
     final appsData = await DeviceApps.getAppByApkFile([path]);
     if (appsData.isEmpty) return result;
-    final List<App> apps = await FileUtils.worker.doWork(App.fromList, appsData);
+    final List<App> apps =
+        await FileUtils.worker.doWork(App.fromList, appsData);
+    // App.fromList(appsData);
     await SqfLite.isReady;
     SqfLite.localApps.insert(
       SqfLite.localAppsTable,

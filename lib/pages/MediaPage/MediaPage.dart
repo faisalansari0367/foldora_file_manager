@@ -10,10 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../../sizeConfig.dart';
 import './MediaStorageInfo.dart';
 import '../../provider/MyProvider.dart';
 import '../../provider/OperationsProvider.dart';
-import '../../sizeConfig.dart';
 import '../../widgets/MyDropDown.dart';
 import '../../widgets/Search.dart';
 import 'MediaFiles.dart';
@@ -115,27 +115,29 @@ class _MediaPageState extends State<MediaPage>
       scrollDirection: Axis.vertical,
       slivers: [
         SliverAppBar(
+          floating: true,
           pinned: true,
           backgroundColor: MyColors.darkGrey,
           leading: AppbarUtils.icon(context, Icon(Icons.arrow_back), pop),
           actions: actions,
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(6 * Responsive.heightMultiplier),
-            child: Selector<Operations, bool>(
-              selector: (context, value) => value.navRail,
-              builder: (context, value, child) {
-                value ? _controller.forward() : _controller.reverse();
-                return FadeTransition(
-                  opacity: opacity,
-                  child: SlideTransition(
-                    position: animation,
-                    child: MyBottomAppBar(
-                      backgroundColor: Colors.transparent,
-                    ),
-                  ),
-                );
-              },
-            ),
+            // child: Selector<Operations, bool>(
+            //   selector: (context, value) => value.navRail,
+            //   builder: (context, value, child) {
+            //     value ? _controller.forward() : _controller.reverse();
+            //     return FadeTransition(
+            //       opacity: opacity,
+            //       child: SlideTransition(
+            //         position: animation,
+            //         child: MyBottomAppBar(
+            //           backgroundColor: Colors.transparent,
+            //         ),
+            //       ),
+            //     );
+            //   },
+            // ),
+            child: MyBottomAppBar(backgroundColor: Colors.transparent),
           ),
         ),
         SliverToBoxAdapter(child: willPopScope),
@@ -145,7 +147,6 @@ class _MediaPageState extends State<MediaPage>
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(statusBarColor: MyColors.darkGrey),
       child: Scaffold(
-        
         body: SafeArea(child: csv),
         bottomNavigationBar: OperationsUtils.bottomNavigation(),
         floatingActionButton: FAB(),

@@ -83,7 +83,12 @@ class CustomAppbar extends SliverPersistentHeaderDelegate {
     //   // child: column,
     // );
 
-    return Container(child: column, height: 12 * Responsive.heightMultiplier);
+    final layoutBuilder = LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Container(child: column, height: constraints.minHeight);
+      },
+    );
+    return layoutBuilder;
   }
 
   @override

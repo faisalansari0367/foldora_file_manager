@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
-import 'FileNotFoundScreen.dart';
 import 'LeadingIcon.dart';
 
 class DirectoryLister extends StatelessWidget {

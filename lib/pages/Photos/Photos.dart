@@ -6,7 +6,6 @@ import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/FileNotFoundScreen.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';

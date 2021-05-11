@@ -1,10 +1,8 @@
 import 'dart:io';
 
-import 'package:files/provider/MyProvider.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:provider/provider.dart';
 
 import '../sizeConfig.dart';
 import 'MyDropDown.dart';
