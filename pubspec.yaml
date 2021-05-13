@@ -41,6 +41,7 @@ dependencies:
   storage_details: ^0.0.3
   storage_path: ^0.2.0
   video_thumbnail: ^0.2.5+1
+  flutter_svg: ^0.22.0
 dev_dependencies:
   # flutter_launcher_icons: "^0.8.0"
   flutter_test:

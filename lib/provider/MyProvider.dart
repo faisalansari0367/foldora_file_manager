@@ -24,7 +24,7 @@ class MyProvider extends ChangeNotifier {
   }
 
   void init() async {
-    await getPermission();
+    // await getPermission();
     await diskSpace();
     initSharedPreferences();
     // fileSystemEntitywatcher();
@@ -68,10 +68,12 @@ class MyProvider extends ChangeNotifier {
     return await Directory(data[0].path).list().toList();
   }
 
-  Future<void> getPermission() async {
-    if (!await Permission.storage.request().isGranted) {
-      await Permission.storage.request();
+  Future<PermissionStatus> getPermission() async {
+    final storage = Permission.storage;
+    if (!await storage.request().isGranted) {
+      await storage.request();
     }
+    return await storage.status;
   }
 
   Future<void> createFileSystemEntity(String path, String name) async {
