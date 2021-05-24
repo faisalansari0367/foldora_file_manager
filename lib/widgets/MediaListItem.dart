@@ -7,7 +7,9 @@ import 'package:provider/provider.dart';
 import '../sizeConfig.dart';
 
 class MediaListItem extends StatefulWidget {
+  final Color selectedColor;
   final String title;
+  final Color textColor;
   final Widget description;
   final String currentPath;
   final Function ontap;
@@ -16,7 +18,7 @@ class MediaListItem extends StatefulWidget {
   final int index;
   final FileSystemEntity data;
 
-  const MediaListItem({
+  MediaListItem({
     this.index,
     this.title,
     this.description,
@@ -25,6 +27,8 @@ class MediaListItem extends StatefulWidget {
     this.onLongPress,
     this.leading,
     this.data,
+    this.selectedColor,
+    this.textColor,
   });
 
   @override
@@ -34,11 +38,9 @@ class MediaListItem extends StatefulWidget {
 class _MediaListItemState extends State<MediaListItem> {
   Widget build(BuildContext context) {
     final Widget padding = Padding(
-      padding: EdgeInsets.only(
-        right: 4 * Responsive.widthMultiplier,
-        bottom: 0.6 * Responsive.heightMultiplier,
-        top: 0.6 * Responsive.heightMultiplier,
-        left: 4 * Responsive.widthMultiplier,
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.width(4),
+        vertical: Responsive.height(0.6),
       ),
       child: Row(
         children: <Widget>[
@@ -46,6 +48,7 @@ class _MediaListItemState extends State<MediaListItem> {
           _Item(
             description: widget.description,
             title: widget.title,
+            titleColor: widget.textColor,
           ),
         ],
       ),
@@ -57,13 +60,10 @@ class _MediaListItemState extends State<MediaListItem> {
       child: Consumer<Operations>(
         builder: (context, provider, child) {
           final selectedMedia = provider.selectedMedia;
+          final isSelected = selectedMedia.contains(widget.data);
+          final color = isSelected ? widget.selectedColor : Colors.transparent;
           return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(0),
-              color: selectedMedia.contains(widget.data)
-                  ? Colors.grey[300]
-                  : Colors.transparent,
-            ),
+            color: color,
             child: child,
           );
         },
@@ -75,16 +75,14 @@ class _MediaListItemState extends State<MediaListItem> {
 
 class _Item extends StatelessWidget {
   final Widget description;
-  final title;
-  const _Item({
-    this.description,
-    this.title,
-  });
+  final String title;
+  final Color titleColor;
+  const _Item({this.description, this.title, this.titleColor});
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.only(left: 4.0 * Responsive.widthMultiplier),
+        padding: EdgeInsets.only(left: Responsive.width(4.0)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -92,13 +90,11 @@ class _Item extends StatelessWidget {
               title,
               style: TextStyle(
                 fontSize: 1.9 * Responsive.textMultiplier,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[800],
+                fontWeight: FontWeight.w500,
+                color: titleColor ?? Colors.grey[800],
               ),
             ),
-            SizedBox(
-              height: 0.5 * Responsive.heightMultiplier,
-            ),
+            SizedBox(height: Responsive.height(0.5)),
             description,
           ],
         ),

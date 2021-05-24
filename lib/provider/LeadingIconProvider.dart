@@ -14,6 +14,12 @@ import 'package:sqflite/sqflite.dart';
 import 'LeadingIconWidgets.dart';
 
 class IconProvider extends ChangeNotifier {
+  SharedPreferences _prefs;
+  SharedPreferences get prefs => _prefs;
+  Database db;
+  List<Apps> systemApps = [];
+  List<Apps> localApps = [];
+
   IconProvider() {
     _init();
   }
@@ -22,11 +28,6 @@ class IconProvider extends ChangeNotifier {
     _initPrefs();
     _getINstalledApplications();
   }
-
-  Database db;
-
-  List<Apps> systemApps = [];
-  List<Apps> localApps = [];
 
   Future<void> _getINstalledApplications() async {
     SqfLite();
@@ -46,10 +47,7 @@ class IconProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  SharedPreferences _prefs;
-  SharedPreferences get prefs => _prefs;
-
-  void _initPrefs() async {
+  Future<void> _initPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _prefs = prefs;
     notifyListeners();
@@ -71,24 +69,6 @@ class IconProvider extends ChangeNotifier {
   }
 
   static final IconData folderIcon = Icons.folder_open;
-  // Future<Widget> _toShowIconOnFolder(path) async {
-  //   var stopwatch = Stopwatch()..start();
-  //   await SqfLite.isReady;
-  //   var widget = Widgets.folderIcons(folderIcon);
-  //   final name = p.basename(path);
-  //   var query = await SqfLite.systemApps.query(
-  //     SqfLite.systemAppsTable,
-  //     // where: "${SqfLite.packageName} = '$name' OR ${SqfLite.appName} = '$name'",
-  //     where: "${SqfLite.packageName} = ? OR ${SqfLite.appName} = ?",
-  //     whereArgs: [name, name],
-  //   );
-  //   if (query.isNotEmpty) {
-  //     var list = SqfLite.fromMap(query);
-  //     widget = Widgets.folderIcons(folderIcon, bytes: list[0].icon);
-  //   }
-  //   print(stopwatch.elapsed);
-  //   return widget;
-  // }
 
   Future<Widget> _toShowApkIcon(path) async {
     var result = Widgets.folderIcons(Widgets.fileIcon);
@@ -117,61 +97,60 @@ class IconProvider extends ChangeNotifier {
     }
   }
 
-  Widget _showIcon(path) {
-    var result = Widgets.folderIcons(folderIcon);
+  Widget _showIcon(String path, {Color bgColor, Color iconColor}) {
+    var result = Widgets.folderIcons(
+      folderIcon,
+      bgColor: bgColor,
+      iconColor: iconColor,
+    );
     final name = p.basename(path);
     for (var item in systemApps) {
       if (item.name == name || item.packageName == name) {
-        result = Widgets.folderIcons(folderIcon, bytes: item.icon);
+        result = Widgets.folderIcons(folderIcon,
+            bytes: item.icon, bgColor: bgColor, iconColor: iconColor);
       }
     }
     return result;
   }
 
-  switchCaseForIcons(data) {
-    if (data is Directory) {
-      return _showIcon(data.path);
-      // return forQueryingDatabase(
-      //   future: _toShowIconOnFolder(data.path),
-      //   initialData: Widgets.folderIcons(folderIcon),
-      // );
-    } else if (data is File) {
-      switch (p.extension(data.path).toLowerCase()) {
-        case '.mp3':
-        case '.m4a':
-        case '.ac3':
-        case '.aac':
-        case '.3ga':
-        case '.wav':
-        case '.wma':
-          return Widgets.folderIcons(Icons.library_music);
-          break;
-        case '.mp4':
-        case '.mkv':
-        case '.3gp':
-        case '.wmv':
-        case '.avi':
-        case '.flv':
-        case '.avchd':
-        case '.webm':
-          return video(data);
-          break;
-        case '.zip':
-          return Widgets.folderIcons(Icons.archive,
-              bgColor: Colors.indigo[200]);
-          break;
-        case '.jpg':
-        case '.png':
-        case '.gif':
-          return Widgets.forImage(File(data.path), cacheWidth: 150);
-          break;
-        case '.apk':
-          return caseApk(data);
-          break;
-        default:
-          return Widgets.folderIcons(Widgets.fileIcon);
-          break;
-      }
+  Widget switchCaseForIcons(FileSystemEntity data,
+      {Color iconBgColor, Color iconColor}) {
+    if (data is Directory)
+      return _showIcon(data.path, bgColor: iconBgColor, iconColor: iconColor);
+    switch (p.extension(data.path).toLowerCase()) {
+      case '.mp3':
+      case '.m4a':
+      case '.ac3':
+      case '.aac':
+      case '.3ga':
+      case '.wav':
+      case '.wma':
+        return Widgets.folderIcons(Icons.library_music);
+        break;
+      case '.mp4':
+      case '.mkv':
+      case '.3gp':
+      case '.wmv':
+      case '.avi':
+      case '.flv':
+      case '.avchd':
+      case '.webm':
+        return video(data);
+        break;
+      case '.zip':
+        return Widgets.folderIcons(Icons.archive, bgColor: Colors.indigo[200]);
+        break;
+      case '.jpg':
+      case '.png':
+      case '.gif':
+        return Widgets.forImage(File(data.path), cacheWidth: 150);
+        break;
+      case '.apk':
+        return caseApk(data);
+        break;
+      default:
+        return Widgets.folderIcons(Widgets.fileIcon);
+        break;
     }
   }
 

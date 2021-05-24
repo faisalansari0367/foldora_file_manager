@@ -222,9 +222,9 @@ class VideosPage extends StatelessWidget {
             title: video.displayName,
             leading: LeadingIcon(
               data: video.file,
-              iconAccent: Color(0xFF2c2c3c),
+              iconBgColor: Color(0xFF2c2c3c),
               iconColor: Colors.white,
-              iconName: Icons.folder_open,
+              // iconName: Icons.folder_open,
             ),
           );
         },

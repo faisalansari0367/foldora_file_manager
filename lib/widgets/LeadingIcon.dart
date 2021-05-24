@@ -6,14 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LeadingIcon extends StatelessWidget {
-  final Color iconAccent; // background color of icon
-  final IconData iconName; // this is the actual icon like Icon.folder
+  final Color iconBgColor; // background color of icon
   final Color iconColor; // this is the iconColor
   final FileSystemEntity data;
 
   const LeadingIcon({
-    this.iconAccent,
-    this.iconName,
+    this.iconBgColor,
     this.iconColor,
     this.data,
   });
@@ -25,7 +23,8 @@ class LeadingIcon extends StatelessWidget {
         onTap: () => provider.onTapOfLeading(data),
         child: Consumer<IconProvider>(
           builder: (_, iconProvider, __) {
-            return iconProvider.switchCaseForIcons(data);
+            return iconProvider.switchCaseForIcons(data,
+                iconBgColor: iconBgColor, iconColor: iconColor);
           },
         ),
       ),

@@ -30,8 +30,8 @@ class DirectoryLister extends StatelessWidget {
           }
         } else if (snapshot.hasData && snapshot.data.isNotEmpty) {
           return Container(
-            child: DirectoryListItem(data: snapshot.data),
             color: Colors.transparent,
+            child: DirectoryListItem(data: snapshot.data),
           );
         } else if (snapshot.hasError) {
           return MediaUtils.fileNotFound(snapshot.error.toString());
@@ -45,9 +45,11 @@ class DirectoryLister extends StatelessWidget {
 
 class DirectoryListItem extends StatefulWidget {
   final String path;
-  final data;
+  final Color selected;
+  final List<FileSystemEntity> data;
 
-  DirectoryListItem({Key key, this.data, this.path}) : super(key: key);
+  DirectoryListItem({Key key, this.data, this.path, this.selected})
+      : super(key: key);
 
   @override
   _DirectoryListItemState createState() => _DirectoryListItemState();
@@ -66,8 +68,6 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
-
-    print('directoryListBuilder disposed');
   }
 
   @override
@@ -84,7 +84,7 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
         controller: _scrollController,
         itemCount: widget.data.length,
         itemBuilder: (context, index) {
-          final FileSystemEntity data = widget.data[index];
+          final data = widget.data[index];
           final mediaListItem = MediaListItem(
             index: index,
             data: data,
@@ -93,6 +93,7 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
             currentPath: data.path,
             description: MediaUtils.description(data),
             leading: LeadingIcon(data: data),
+            selectedColor: Colors.grey[200],
           );
 
           return AnimationConfiguration.staggeredList(

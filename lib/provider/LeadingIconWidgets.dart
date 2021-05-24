@@ -36,8 +36,13 @@ class Widgets {
     );
   }
 
-  static folderIcons(IconData folderIcon,
-      {iconColor, bgColor, Uint8List bytes}) {
+  static folderIcons(
+    IconData folderIcon, {
+    Color iconColor,
+    Color bgColor,
+    Uint8List bytes,
+  }) {
+    final position = 5.5 * Responsive.imageSizeMultiplier;
     final heightWidth = 11 * Responsive.imageSizeMultiplier;
     final Widget dirIcon = Container(
       decoration: BoxDecoration(
@@ -55,7 +60,6 @@ class Widgets {
       ),
     );
 
-    final position = 5.5 * Responsive.imageSizeMultiplier;
     final Widget dirPositionedIcon = bytes == null
         ? Container(width: 0.0, height: 0.0)
         : Positioned(
@@ -69,10 +73,7 @@ class Widgets {
           );
 
     final Widget stack = Stack(
-      children: [
-        dirIcon,
-        dirPositionedIcon,
-      ],
+      children: [dirIcon, dirPositionedIcon],
     );
 
     return stack;

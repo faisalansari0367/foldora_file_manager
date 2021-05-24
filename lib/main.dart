@@ -10,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -36,17 +35,8 @@ class _MyAppState extends State<MyApp> {
     // SystemUiOverlayStyle(statusBarColor: Color(0xff2c2c3c)));
   }
 
-  // bool isSeenAlready = false;
   Future<bool> isFirstTimeAppOpen() async {
-    // isSeenAlready = await Permission.storage.isGranted;
     return await Permission.storage.isGranted;
-  }
-
-  @override
-  void initState() {
-    // isFirstTimeAppOpen();
-    // WidgetsFlutterBinding.ensureInitialized();
-    super.initState();
   }
 
   @override
@@ -106,6 +96,13 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    pageController.dispose();
+    pageController = null;
+    super.dispose();
+  }
+
   static const Duration duration = Duration(milliseconds: 100);
   final iconPath = 'assets/undraw_app_data_re_vg5c.svg';
   final iconPath2 = 'assets/undraw_file_manager_j85s.svg';
@@ -123,9 +120,11 @@ class _SplashScreenState extends State<SplashScreen> {
     var status = await provider.getPermission();
     if (status.isGranted) {
       Future.delayed(duration, () {
-        pageController.animateToPage(1,
-            duration: Duration(milliseconds: 350), curve: Curves.decelerate);
-        // setState(() {});
+        pageController.animateToPage(
+          1,
+          duration: Duration(milliseconds: 350),
+          curve: Curves.decelerate,
+        );
       });
     }
   }

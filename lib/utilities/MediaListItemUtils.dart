@@ -41,7 +41,7 @@ class MediaUtils {
 
   static Widget fileNotFound(String message) {
     return AnimationConfiguration.synchronized(
-          child: SlideAnimation(
+      child: SlideAnimation(
         child: FadeInAnimation(
           curve: Curves.easeInOutExpo,
           child: FileNotFoundScreen(message: message),
@@ -50,9 +50,9 @@ class MediaUtils {
     );
   }
 
-  static Widget description(FileSystemEntity data) {
+  static Widget description(FileSystemEntity data, {Color textColor}) {
     return FutureBuilder(
-      future: FileUtils.checkFileType(data),
+      future: FileUtils.worker.doWork(FileUtils.checkFileType, data),
       builder: (context, snapshot) {
         var text = '';
         if (snapshot.hasData && snapshot.data.isNotEmpty) {
@@ -63,7 +63,7 @@ class MediaUtils {
           style: TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 1.4 * Responsive.textMultiplier,
-            color: Colors.grey[700],
+            color: textColor ?? Colors.grey[700],
           ),
         );
       },
