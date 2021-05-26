@@ -35,9 +35,7 @@ class _MyAppState extends State<MyApp> {
     // SystemUiOverlayStyle(statusBarColor: Color(0xff2c2c3c)));
   }
 
-  Future<bool> isFirstTimeAppOpen() async {
-    return await Permission.storage.isGranted;
-  }
+  Future<bool> isFirstTimeAppOpen() async => await Permission.storage.isGranted;
 
   @override
   Widget build(BuildContext context) {
@@ -54,31 +52,34 @@ class _MyAppState extends State<MyApp> {
       },
     );
 
-    return LayoutBuilder(builder: (context, constraints) {
-      return OrientationBuilder(builder: (context, orientation) {
-        Responsive().init(constraints, orientation);
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider<MyProvider>(
-                create: (context) => MyProvider()),
-            ChangeNotifierProvider<StoragePathProvider>(
-                create: (context) => StoragePathProvider()),
-            ChangeNotifierProvider<IconProvider>(
-                create: (context) => IconProvider()),
-            ChangeNotifierProvider<Operations>(
-                create: (context) => Operations()),
-          ],
-          child: MaterialApp(
-            theme: MyColors.themeData,
-            showPerformanceOverlay: false,
-            debugShowCheckedModeBanner: false,
-            title: 'Files App',
-            // home: isSeenAlready ? pageView : SplashScreen(),
-            home: futureBuilder,
-          ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return OrientationBuilder(
+          builder: (context, orientation) {
+            Responsive().init(constraints, orientation);
+            return MultiProvider(
+              providers: [
+                ChangeNotifierProvider<MyProvider>(
+                    create: (context) => MyProvider()),
+                ChangeNotifierProvider<StoragePathProvider>(
+                    create: (context) => StoragePathProvider()),
+                ChangeNotifierProvider<IconProvider>(
+                    create: (context) => IconProvider()),
+                ChangeNotifierProvider<Operations>(
+                    create: (context) => Operations()),
+              ],
+              child: MaterialApp(
+                theme: MyColors.themeData,
+                showPerformanceOverlay: false,
+                debugShowCheckedModeBanner: false,
+                title: 'Files App',
+                home: futureBuilder,
+              ),
+            );
+          },
         );
-      });
-    });
+      },
+    );
   }
 }
 
@@ -110,7 +111,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void redirectToHome() {
     final pageView = PageView(children: [HomePage(), HomePage()]);
     final route = MaterialPageRoute(builder: (context) => pageView);
-    Navigator.push(context, route);
+    Navigator.pushReplacement(context, route);
   }
 
   int _initialPage = 0;
@@ -133,7 +134,6 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     Widget screen(String path, String text, Function onpressed) => Container(
           height: MediaQuery.of(context).size.height,
-          // color: Colors.grey,
           child: Column(
             children: [
               SvgPicture.asset(

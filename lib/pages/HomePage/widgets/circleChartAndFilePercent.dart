@@ -13,7 +13,6 @@ class CircleChartAndFilePercent extends StatefulWidget {
 }
 
 class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
-
   double _photosPercent = 0.0;
   double _mediaPercent = 0.0;
   double _documentsPercent = 0.0;
@@ -42,7 +41,6 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
                   final totalSize = storage.calculatePercent(value, 3);
                   _photosPercent = double.parse(totalSize);
                   return CircleChart(
-                    // duration: Duration(seconds: 10),
                     color: Colors.indigo[300],
                     strokeWidth: 6,
                     radius: Responsive.imageSize(3.5),
@@ -52,11 +50,12 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
               ),
               Selector<StoragePathProvider, int>(
                 selector: (context, value) => value.mediaSize,
-                // shouldRebuild: (a, b) => true,
+                // shouldRebuild: (a, b) => a != b,
                 builder: (_, value, __) {
                   final complete = storage.calculatePercent(value, 3);
                   _mediaPercent = double.parse(complete);
-                  print(_mediaPercent);
+                  print('mediaSize: $_mediaPercent');
+                  // print(_mediaPercent);
 
                   return CircleChart(
                     // duration: Duration(seconds: 5),

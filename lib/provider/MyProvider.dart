@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
-import 'package:disk_space/disk_space.dart';
 import 'package:files/utilities/DataModel.dart';
 import 'package:files/utilities/Utils.dart';
-// import 'package:files/utilities/storage_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
@@ -19,12 +16,11 @@ import '../sizeConfig.dart';
 
 class MyProvider extends ChangeNotifier {
   MyProvider() {
-    FileUtils();
     init();
+    FileUtils();
   }
 
   void init() async {
-    // await getPermission();
     await diskSpace();
     initSharedPreferences();
     // fileSystemEntitywatcher();
@@ -34,16 +30,14 @@ class MyProvider extends ChangeNotifier {
 
   String _dirPath = '/storage/emulated/0';
 
-  double _totalDiskSpace = 0;
-  double _freeDiskSpace = 0;
+  // double _totalDiskSpace = 0;
+  // double _freeDiskSpace = 0;
   bool _showHidden = false;
 
   SharedPreferences _prefs;
   SharedPreferences get prefs => _prefs;
 
   List<Data> data = [];
-  double get getTotalDiskSpace => _totalDiskSpace * pow(1024, 2);
-  double get getFreeDiskSpace => _freeDiskSpace * pow(1024, 2);
   String get getDirPath => _dirPath;
   bool get showHidden => _showHidden;
 
@@ -65,7 +59,7 @@ class MyProvider extends ChangeNotifier {
   }
 
   Future<List<FileSystemEntity>> files() async {
-    return await Directory(data[0].path).list().toList();
+    return await Directory(data[currentPage].path).list().toList();
   }
 
   Future<PermissionStatus> getPermission() async {
@@ -97,8 +91,6 @@ class MyProvider extends ChangeNotifier {
   }
 
   Future<void> diskSpace() async {
-    _totalDiskSpace = await DiskSpace.getTotalDiskSpace;
-    _freeDiskSpace = await DiskSpace.getFreeDiskSpace;
     spaceInfo = await StorageDetails.getspace;
     data = Data.storageToData(spaceInfo);
     notifyListeners();
@@ -106,9 +98,10 @@ class MyProvider extends ChangeNotifier {
 
   /// Only use this function for CircleChartAndFilePercent..
   String calculatePercent(int bytes, int decimals) {
-    double percent = bytes / ((getTotalDiskSpace - getFreeDiskSpace)) * 100;
-    final String result =
-        percent.isNaN ? "0.0" : percent.toStringAsFixed(decimals);
+    if (data.length == 0) return '0.0';
+    final _data = data[currentPage];
+    double percent = bytes / ((_data.total - _data.free)) * 100;
+    final result = percent.isNaN ? "0.0" : percent.toStringAsFixed(decimals);
     return result;
   }
 
@@ -172,7 +165,7 @@ class MyProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void navigationAddOrRemove(List<String> list, path) {
+  void navigationAddOrRemove(List<String> list, String path) {
     final parentDir = Directory(path).parent.path;
     if (!list.contains(path)) {
       if (list.last == parentDir) {

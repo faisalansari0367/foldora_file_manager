@@ -22,20 +22,16 @@ class CircleChart extends StatefulWidget {
   _CircleChartState createState() => _CircleChartState();
 }
 
-class _CircleChartState extends State<CircleChart> with TickerProviderStateMixin {
+class _CircleChartState extends State<CircleChart>
+    with TickerProviderStateMixin {
   AnimationController _controller;
-  // Animation animation;
+  static const duration = const Duration(milliseconds: 1000);
   var percentage = 0.0;
-
-  // Tween<double> _tween;
   void createAnimation(AnimationController controller) {
-    final animationValue = Tween<double>(
-      begin: 0,
-      end: widget.percentage,
-    ).animate(CurvedAnimation(
-      parent: controller,
-      curve: Curves.easeInOutBack,
-    ));
+    final curved =
+        CurvedAnimation(parent: controller, curve: Curves.easeInOutBack);
+    final tween = Tween<double>(begin: 0, end: widget.percentage);
+    final animationValue = tween.animate(curved);
     animationValue.addListener(() {
       setState(() {
         percentage = animationValue.value;
@@ -47,13 +43,9 @@ class _CircleChartState extends State<CircleChart> with TickerProviderStateMixin
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: widget.duration ?? Duration(milliseconds: 1000),
+      duration: widget.duration ?? duration,
     );
-    // animation =
-    //     Tween<double>(begin: 0, end: widget.percentage).animate(CurvedAnimation(
-    //   parent: _controller,
-    //   curve: Curves.easeInOutBack,
-    // ));
+
     createAnimation(_controller);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller.forward(); // Start the animation when widget is displayed
@@ -71,7 +63,9 @@ class _CircleChartState extends State<CircleChart> with TickerProviderStateMixin
 
   @override
   void dispose() {
+    _controller.removeListener(() {});
     _controller.dispose();
+    _controller = null;
     super.dispose();
   }
 

@@ -46,7 +46,6 @@ class _GridViewState extends State<GridView> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onScaleUpdate: (ScaleUpdateDetails newScale) {
-        // print();
         final scale = newScale.scale.toInt();
         if (scale > 0) _crossAxisCount = newScale.scale.toInt() * 2;
         setState(() {});
@@ -63,7 +62,7 @@ class _GridViewState extends State<GridView> {
           return AnimationConfiguration.staggeredGrid(
             columnCount: _crossAxisCount,
             position: index,
-            delay: Duration(milliseconds: 10),
+            // delay: Duration(milliseconds: 10),
             child: SlideAnimation(
               child: FadeInAnimation(
                 child: child,

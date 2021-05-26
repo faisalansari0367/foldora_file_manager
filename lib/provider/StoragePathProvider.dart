@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:files/data_models/AudioModel.dart';
 import 'package:files/data_models/VideoModel.dart';
 import 'package:files/utilities/Utils.dart';
 import 'package:flutter/material.dart';
@@ -6,17 +9,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:storage_path/storage_path.dart';
 
 class StoragePathProvider extends ChangeNotifier {
-  StoragePathProvider() {
-    getPermission();
-    // onRefresh();
-  }
-
-  Future<void> getPermission() async {
-    if (await Permission.storage.isGranted) {
-      onRefresh();
-    }
-  }
-
   int _documentsSize = 0;
   int _audiosSize = 0;
   int _videosSize = 0;
@@ -44,6 +36,11 @@ class StoragePathProvider extends ChangeNotifier {
   List get audiosPath => _audiosPath;
   List get documentsPath => _documentsPath;
 
+  StoragePathProvider() {
+    init();
+  }
+
+  ///  these functions are used by photos they are not getting used here
   void updateIndex(index) {
     photosIndex = index;
     notifyListeners();
@@ -61,14 +58,16 @@ class StoragePathProvider extends ChangeNotifier {
     }
   }
 
+  /// end
+
   Future<void> photos() async {
     final imagesPath = await StoragePath.imagesPath;
-    print(imagesPath);
     final images =
         await FileUtils.worker.doWork(FileUtils.imagesPath, imagesPath);
     // await FileUtils.imagesPath(imagesPath);
     _photos = images['data'];
     _photosSize = images['size'];
+    log('images length :${_photos.length}');
     notifyListeners();
   }
 
@@ -79,44 +78,46 @@ class StoragePathProvider extends ChangeNotifier {
     // final docs = await FileUtils.storagePathDocuments(documents);
     _documentsPath = docs['data'];
     _documentsSize = docs['size'];
+    log('_documentsPath length :${_documentsPath.length}');
     notifyListeners();
   }
 
   Future<void> videos() async {
     await Permission.storage.status;
     final videosPath = await StoragePath.videoPath;
-    print(videosPath);
     final videos =
         await FileUtils.worker.doWork(FileUtils.storagePathVideos, videosPath);
     // await FileUtils.storagePathVideos(videosPath);
     _videosPath = videos['videoModel'];
+
     _videosSize = videos['size'];
     _videos = videos['videos'];
+    log('_videosPath length :${_videosPath.length}');
     notifyListeners();
-    // for (var item in _videosPath) {
-    //   for (var i in item.files) {
-    //     await FileUtils.createThumbnail(i.file.path);
-    //   }
-    // }
-    // notifyListeners();
   }
 
   Future<void> audios() async {
     final audiosPath = await StoragePath.audioPath;
-    print(audiosPath);
     final audios =
         await FileUtils.worker.doWork(FileUtils.storagePathAudios, audiosPath);
     // await FileUtils.storagePathAudios(audiosPath);
-    _audiosPath = audios['data'];
+    _audiosPath = audios['data'] as List<AudioModel>;
     _audiosSize = audios['size'];
+    log('_audiosPath length :${_audiosPath[0].audios.length}');
+
     notifyListeners();
   }
 
-  Future<void> onRefresh() async {
+  Future<void> init() async {
     photos();
     videos();
     audios();
     documents();
+    await Future.delayed(Duration(seconds: 1));
+  }
+
+  Future<void> onRefresh() async {
+    await init();
     await Future.delayed(Duration(seconds: 1));
   }
 }

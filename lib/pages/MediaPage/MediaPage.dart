@@ -122,25 +122,11 @@ class _MediaPageState extends State<MediaPage>
           actions: actions,
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(6 * Responsive.heightMultiplier),
-            // child: Selector<Operations, bool>(
-            //   selector: (context, value) => value.navRail,
-            //   builder: (context, value, child) {
-            //     value ? _controller.forward() : _controller.reverse();
-            //     return FadeTransition(
-            //       opacity: opacity,
-            //       child: SlideTransition(
-            //         position: animation,
-            //         child: MyBottomAppBar(
-            //           backgroundColor: Colors.transparent,
-            //         ),
-            //       ),
-            //     );
-            //   },
-            // ),
             child: MyBottomAppBar(backgroundColor: Colors.transparent),
           ),
         ),
-        SliverToBoxAdapter(child: willPopScope),
+        SliverFillRemaining(child: willPopScope),
+        // SliverToBoxAdapter(child: willPopScope),
       ],
     );
 

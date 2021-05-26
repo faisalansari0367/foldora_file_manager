@@ -30,7 +30,6 @@ class AudioModel {
     final source = jsonDecode(json);
     return List.generate(source.length, (index) {
       final data = source[index];
-      print('data: $json');
       return AudioModel(
         audios: audioFiles(data['files']),
         folderName: data["folderName"],

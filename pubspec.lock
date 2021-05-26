@@ -80,13 +80,6 @@ packages:
       url: "https://github.com/faisalansari0367/flutter_plugin_device_apps-master.git"
     source: git
     version: "1.2.0"
-  disk_space:
-    dependency: "direct main"
-    description:
-      name: disk_space
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -298,13 +291,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.1.0"
-  photo_view:
-    dependency: "direct main"
-    description:
-      name: photo_view
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.11.1"
   platform:
     dependency: transitive
     description:
