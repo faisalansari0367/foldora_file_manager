@@ -23,7 +23,7 @@ class MyProvider extends ChangeNotifier {
   void init() async {
     await diskSpace();
     initSharedPreferences();
-    // fileSystemEntitywatcher();
+    fileSystemEntitywatcher();
   }
 
   List<Storage> spaceInfo = [];

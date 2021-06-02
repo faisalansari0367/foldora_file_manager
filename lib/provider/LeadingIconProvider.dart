@@ -70,8 +70,10 @@ class IconProvider extends ChangeNotifier {
 
   static final IconData folderIcon = Icons.folder_open;
 
-  Future<Widget> _toShowApkIcon(path) async {
-    var result = Widgets.folderIcons(Widgets.fileIcon);
+  Future<Widget> _toShowApkIcon(path,
+      {iconBgColor, iconColor, decoration}) async {
+    var result = Widgets.folderIcons(Widgets.fileIcon,
+        bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
 
     final appsData = await DeviceApps.getAppByApkFile([path]);
     if (appsData.isEmpty) return result;
@@ -87,36 +89,49 @@ class IconProvider extends ChangeNotifier {
     return Widgets.forImage(apps[0].appIcon);
   }
 
-  Future<Widget> _createVideoThumbnail(path) async {
+  Future<Widget> _createVideoThumbnail(path,
+      {iconBgColor, iconColor, decoration, radius}) async {
     final String filePath = await FileUtils.createThumbnail(path);
     if (filePath != null) {
       final File file = File(filePath);
-      return Widgets.forImage(file);
+      return Widgets.forImage(file, decoration: decoration, radius: radius);
     } else {
-      return Widgets.folderIcons(Icons.videocam);
+      return Widgets.folderIcons(Icons.videocam,
+          bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
     }
   }
 
-  Widget _showIcon(String path, {Color bgColor, Color iconColor}) {
+  Widget _showIcon(String path, {Color bgColor, Color iconColor, decoration}) {
     var result = Widgets.folderIcons(
       folderIcon,
       bgColor: bgColor,
       iconColor: iconColor,
+      decoration: decoration,
     );
     final name = p.basename(path);
     for (var item in systemApps) {
       if (item.name == name || item.packageName == name) {
-        result = Widgets.folderIcons(folderIcon,
-            bytes: item.icon, bgColor: bgColor, iconColor: iconColor);
+        result = Widgets.folderIcons(
+          folderIcon,
+          bytes: item.icon,
+          bgColor: bgColor,
+          iconColor: iconColor,
+          decoration: decoration,
+        );
+        break;
       }
     }
     return result;
   }
 
   Widget switchCaseForIcons(FileSystemEntity data,
-      {Color iconBgColor, Color iconColor}) {
+      {Color iconBgColor,
+      Color iconColor,
+      BoxDecoration decoration,
+      double imageRadius}) {
     if (data is Directory)
-      return _showIcon(data.path, bgColor: iconBgColor, iconColor: iconColor);
+      return _showIcon(data.path,
+          bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
     switch (p.extension(data.path).toLowerCase()) {
       case '.mp3':
       case '.m4a':
@@ -125,7 +140,8 @@ class IconProvider extends ChangeNotifier {
       case '.3ga':
       case '.wav':
       case '.wma':
-        return Widgets.folderIcons(Icons.library_music);
+        return Widgets.folderIcons(Icons.library_music,
+            bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
         break;
       case '.mp4':
       case '.mkv':
@@ -135,42 +151,63 @@ class IconProvider extends ChangeNotifier {
       case '.flv':
       case '.avchd':
       case '.webm':
-        return video(data);
+        return video(data,
+            iconBgColor: iconBgColor,
+            iconColor: iconColor,
+            decoration: decoration,
+            imageRadius: imageRadius);
         break;
       case '.zip':
-        return Widgets.folderIcons(Icons.archive, bgColor: Colors.indigo[200]);
+        return Widgets.folderIcons(
+          Icons.archive,
+          bgColor: Colors.indigo[200],
+          iconColor: iconColor,
+          decoration: decoration,
+        );
         break;
       case '.jpg':
       case '.png':
       case '.gif':
-        return Widgets.forImage(File(data.path), cacheWidth: 150);
+        return Widgets.forImage(File(data.path),
+            cacheWidth: 150, decoration: decoration, radius: imageRadius);
         break;
       case '.apk':
-        return caseApk(data);
+        return caseApk(data,
+            iconBgColor: iconBgColor,
+            iconColor: iconColor,
+            decoration: decoration,
+            radius: imageRadius);
         break;
       default:
-        return Widgets.folderIcons(Widgets.fileIcon);
+        return Widgets.folderIcons(Widgets.fileIcon,
+            bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
         break;
     }
   }
 
-  video(data) {
+  video(data, {iconBgColor, iconColor, decoration, imageRadius}) {
     final map = FileUtils.isVideoThumbnailExist(data.path);
     return map['isFileExist']
-        ? Widgets.forImage(map['thumb'])
+        ? Widgets.forImage(map['thumb'],
+            decoration: decoration, radius: imageRadius)
         : forQueryingDatabase(
-            future: _createVideoThumbnail(data.path),
-            initialData: Widgets.folderIcons(Icons.videocam),
+            future: _createVideoThumbnail(data.path,
+                decoration: decoration, radius: imageRadius),
+            initialData: Widgets.folderIcons(Icons.videocam,
+                bgColor: iconBgColor,
+                iconColor: iconColor,
+                decoration: decoration),
           );
   }
 
-  caseApk(data) {
+  Widget caseApk(data, {iconBgColor, iconColor, decoration, double radius}) {
     Widget widget;
-    var result = Widgets.folderIcons(Widgets.fileIcon);
+    var result = Widgets.folderIcons(Widgets.fileIcon,
+        bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
 
     for (var item in localApps) {
       if (item.filePath == data.path) {
-        widget = Widgets.forImage(item.icon);
+        widget = Widgets.forImage(item.icon, radius: 10);
       }
     }
     if (widget == null) {

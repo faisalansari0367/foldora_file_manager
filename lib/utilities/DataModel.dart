@@ -30,4 +30,10 @@ class Data {
       );
     });
   }
+
+  @override
+  bool operator ==(Object other) {
+    // currentPath == other.currentPath
+    return super == other;
+  }
 }

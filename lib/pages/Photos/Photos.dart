@@ -62,7 +62,6 @@ class _GridViewState extends State<GridView> {
           return AnimationConfiguration.staggeredGrid(
             columnCount: _crossAxisCount,
             position: index,
-            // delay: Duration(milliseconds: 10),
             child: SlideAnimation(
               child: FadeInAnimation(
                 child: child,

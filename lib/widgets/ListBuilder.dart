@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:files/provider/MyProvider.dart';
+import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/widgets/MediaListItem.dart';
 import 'package:flutter/material.dart';
@@ -74,6 +75,7 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
   Widget build(BuildContext context) {
     print("listBuilder");
     final provider = Provider.of<MyProvider>(context, listen: false);
+    final operations = Provider.of<Operations>(context, listen: false);
     return Container(
       color: Colors.white,
       child: ListView.builder(
@@ -88,17 +90,17 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
           final mediaListItem = MediaListItem(
             index: index,
             data: data,
-            ontap: () => provider.ontap(data),
+            ontap: () => operations.selectedMedia.isNotEmpty
+                ? operations.onTapOfLeading(data)
+                : provider.ontap(data),
             title: p.basename(data.path),
             currentPath: data.path,
             description: MediaUtils.description(data),
             leading: LeadingIcon(data: data),
             selectedColor: Colors.grey[200],
           );
-
-          return AnimationConfiguration.staggeredList(
-            position: index,
-            duration: const Duration(milliseconds: 375),
+          return AnimationConfiguration.synchronized(
+            duration: Duration(milliseconds: 375),
             child: SlideAnimation(
               verticalOffset: 20.0,
               child: FadeInAnimation(

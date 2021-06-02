@@ -58,10 +58,6 @@ Container _column(context, available) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        // Text(
-        //   available,
-        //   style: TextStyle(color: Colors.grey[400]),
-        // ),
         available,
         SizedBox(height: 0.5 * Responsive.heightMultiplier),
         Text(
@@ -76,13 +72,6 @@ Container _column(context, available) {
 Row _row(context, used) {
   return Row(
     children: [
-      // Text(
-      //   used.split(' ')[0],
-      //   style: TextStyle(
-      //     fontSize: 6 * Responsive.textMultiplier,
-      //     color: Colors.white,
-      //   ),
-      // ),
       used,
       Container(
         width: 0.2 * MediaQuery.of(context).size.width,

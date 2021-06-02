@@ -20,47 +20,113 @@ class BottomNavy extends StatefulWidget {
 
 class _BottomNavyState extends State<BottomNavy> {
   _showModalBottomSheet() {
-    final operations = Provider.of<Operations>(context, listen: false);
-    final provider = Provider.of<MyProvider>(context, listen: false);
+    // final provider = Provider.of<MyProvider>(context, listen: false);
     return showModalBottomSheet(
+        backgroundColor: Color(0xFF737373),
+        enableDrag: true,
+        // barrierColor: Colors.white,
+        elevation: 4,
+        // isDismissible: true,
+        // isScrollControlled: true,
         context: context,
         builder: (context) {
+          final operations = Provider.of<Operations>(context, listen: true);
           return Container(
-            // borderRadius: BorderRadius.circular(25),
             color: Color(0xFF737373),
-            // color: MyColors.darkGrey,
-
+            width: double.infinity,
             child: Container(
-              padding: EdgeInsets.only(top: 20, left: 10, right: 10),
+              // padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                // color: Theme.of(context).canvasColor,
                 color: MyColors.darkGrey,
+                // color: MyColors.whitish,
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(25),
                   topRight: const Radius.circular(25),
                 ),
               ),
-              child: ListView.builder(
-                itemCount: operations.selectedMedia.length,
-                itemBuilder: (context, index) {
-                  final data = operations.selectedMedia[index];
-                  return MediaListItem(
-                    index: index,
-                    data: data,
-                    ontap: () => provider.ontap(data),
-                    title: p.basename(data.path),
-                    currentPath: data.path,
-                    description: MediaUtils.description(data,
-                        textColor: Colors.grey[300]),
-                    leading: LeadingIcon(
-                      data: data,
-                      iconBgColor: Colors.grey[300],
-                      iconColor: MyColors.darkGrey,
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(height: 40),
+                  Row(
+                    children: [
+                      SizedBox(width: 20),
+                      Text(
+                        'Delete files',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: MyColors.whitish,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Spacer(),
+                      // Icon(
+                      //   Icons.more_horiz,
+                      //   color: MyColors.whitish,
+                      // ),
+                      SizedBox(width: 20),
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: operations.selectedMedia.length,
+                      itemBuilder: (context, index) {
+                        final data = operations.selectedMedia[index];
+                        return MediaListItem(
+                          index: index,
+                          data: data,
+                          // ontap: () => provider.ontap(data),
+                          trailing: IconButton(
+                            onPressed: () =>
+                                operations.selectedMedia.remove(data),
+                            icon: Icon(
+                              Icons.clear,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                          title: p.basename(data.path),
+                          currentPath: data.path,
+                          description: MediaUtils.description(data,
+                              textColor: Colors.grey[600]),
+                          leading: LeadingIcon(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                              color: Colors.white10,
+                            ),
+                            data: data,
+                            iconColor: Colors.white38,
+                          ),
+                          selectedColor: MyColors.darkGrey,
+                          textColor: Colors.grey[400],
+                        );
+                      },
                     ),
-                    selectedColor: MyColors.darkGrey,
-                    textColor: Colors.white,
-                  );
-                },
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      operations.deleteFileOrFolder();
+                      Navigator.of(context).pop();
+                      // Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      // padding: EdgeInsets.all(),
+                      elevation: 4,
+                      primary: MyColors.teal,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        side: BorderSide(color: MyColors.teal),
+                      ),
+                      minimumSize:
+                          Size(Responsive.width(85), Responsive.height(6)),
+                    ),
+                    child: Text('Delete'),
+                  ),
+                  SizedBox(height: Responsive.height(1)),
+                ],
               ),
             ),
           );
@@ -109,7 +175,7 @@ class _BottomNavyState extends State<BottomNavy> {
           IconButton(
             splashColor: Colors.red[300],
             icon: Icon(Icons.delete, color: Colors.red),
-            onPressed: () => provider.deleteFileOrFolder(),
+            onPressed: _showModalBottomSheet,
           ),
           IconButton(
             icon: Icon(Icons.create, color: Colors.amber),

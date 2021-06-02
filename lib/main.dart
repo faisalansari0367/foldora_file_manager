@@ -11,6 +11,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
+import 'sizeConfig.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -132,20 +134,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget screen(String path, String text, Function onpressed) => Container(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: [
-              SvgPicture.asset(
-                path,
-                fit: BoxFit.contain,
-              ),
-              ElevatedButton(
-                onPressed: onpressed,
-                child: Text(text),
-              )
-            ],
-          ),
+    Widget screen(String path, String text, Function onpressed) => Column(
+          children: [
+            SvgPicture.asset(
+              path,
+              height: Responsive.height(80),
+              // width: Responsive.width(80),
+              fit: BoxFit.contain,
+            ),
+            ElevatedButton(
+              onPressed: onpressed,
+              child: Text(text),
+            )
+          ],
         );
 
     return Scaffold(

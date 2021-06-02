@@ -16,29 +16,6 @@ import '../../../sizeConfig.dart';
 // enum StorageType { INTERNAL, REMOVABLE, OTG }
 
 class HorizontalTabs extends StatelessWidget {
-  // Widget _sdCardWidget() {
-  //   return Selector<MyProvider, List>(
-  //     selector: (_, provider) => provider.spaceInfo,
-  //     builder: (context, value, child) {
-  //       print(value.length);
-  //       if (value.length > 1) {
-  //         return Helper.tab(
-  //           context: context,
-  //           page: MediaPage(
-  //             path: value[1].path,
-  //             // storage: value[1],
-  //           ),
-  //           child: _SdCard(
-  //             path: value[1].path,
-  //           ),
-  //         );
-  //       } else {
-  //         return SizedBox(height: 0, width: 0);
-  //       }
-  //     },
-  //   );
-  // }
-
   final Widget sizedBox = SizedBox(width: 5 * Responsive.widthMultiplier);
 
   @override
@@ -48,11 +25,9 @@ class HorizontalTabs extends StatelessWidget {
     final list = provider?.data;
     final PageView pageView = PageView.builder(
       onPageChanged: (value) => provider.onPageChanged(value),
-      physics: BouncingScrollPhysics(),
-      key: UniqueKey(),
+      allowImplicitScrolling: true,
       itemCount: list.length,
       itemBuilder: (context, index) {
-        print(list[index]);
         return MediaPage(
           storage: list[index],
           spaceInfoIndex: index,
@@ -72,16 +47,15 @@ class HorizontalTabs extends StatelessWidget {
       sizedBox,
       MediaUtils.tab(child: _VideosTab(), page: VideosPage(), context: context),
       sizedBox,
-      // _sdCardWidget(),
-      // sizedBox,
     ];
 
     return Container(
       height: 40 * Responsive.heightMultiplier,
       child: ListView(
+        // reverse: true,
+        primary: true,
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
-        // controller: ScrollController(),
         children: children,
       ),
     );
@@ -147,37 +121,6 @@ class _MediaTab extends StatelessWidget {
     );
   }
 }
-
-// class _SdCard extends StatelessWidget {
-//   final String path;
-//   _SdCard({Key key, this.path}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final MyProvider provider = Provider.of<MyProvider>(context);
-//     return FutureBuilder(
-//       future: provider.dirContents(path),
-//       builder: (context, snapshot) {
-//         final value = snapshot?.data;
-//         final itemsCount = value?.length;
-//         return MediaStack(
-//           image: "assets/doc.png",
-//           color: Colors.indigo[100].withOpacity(0.1),
-//           media: "Sd card",
-//           items: "${itemsCount ?? 0} items",
-//           privacy: "Private Folder",
-//           shadow: Colors.indigo[200],
-//           lock: Icon(
-//             Icons.lock_outline,
-//             color: Colors.indigo[500],
-//           ),
-//           size: FileUtils.formatBytes((provider.spaceInfo[1].used), 1),
-//           // size: '0.0 GB',
-//         );
-//       },
-//     );
-//   }
-// }
 
 class _VideosTab extends StatelessWidget {
   @override

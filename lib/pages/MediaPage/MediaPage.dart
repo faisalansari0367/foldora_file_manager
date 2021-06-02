@@ -1,21 +1,18 @@
+import 'package:files/pages/MediaPage/sliver_appbar.dart';
 import 'package:files/provider/MyProvider.dart';
 import 'package:files/utilities/DataModel.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:files/utilities/OperationsUtils.dart';
 import 'package:files/widgets/FloatingActionButton.dart';
 import 'package:files/widgets/ListBuilder.dart';
-import 'package:files/widgets/MediaPageAppbar.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
-import '../../sizeConfig.dart';
 import './MediaStorageInfo.dart';
 import '../../provider/MyProvider.dart';
 import '../../provider/OperationsProvider.dart';
-import '../../widgets/MyDropDown.dart';
-import '../../widgets/Search.dart';
 import 'MediaFiles.dart';
 
 class MediaPage extends StatefulWidget {
@@ -50,17 +47,17 @@ class _MediaPageState extends State<MediaPage>
 
     _scrollController = ScrollController();
     _listViewController = ScrollController();
-    _scrollController.addListener(_scrollListener);
+    _listViewController.addListener(_scrollListener);
   }
 
   _scrollListener() {
     final provider = Provider.of<Operations>(context, listen: false);
-    var direction = _scrollController.position.userScrollDirection;
-    provider.scrolledPixels = _scrollController.position.pixels;
+    var direction = _listViewController.position.userScrollDirection;
+    provider.scrolledPixels = _listViewController.position.pixels;
     if (direction == ScrollDirection.forward) {
-      provider.scrollListener(12, true);
+      provider.scrollListener(6, true);
     } else if (direction == ScrollDirection.reverse) {
-      provider.scrollListener(6, false);
+      provider.scrollListener(0, false);
     }
   }
 
@@ -76,17 +73,33 @@ class _MediaPageState extends State<MediaPage>
   Widget build(BuildContext context) {
     final provider = Provider.of<MyProvider>(context, listen: false);
     final storage = widget.storage;
+
     List<Widget> children = <Widget>[
-      MediaStorageInfo(),
+      AnimationConfiguration.synchronized(
+        child: FadeInAnimation(
+          child: MediaStorageInfo(),
+        ),
+      ),
+      // MediaStorageInfo(),
       MediaFiles(),
       DirectoryLister(path: storage.path),
     ];
 
-    final listView = ListView(
+    // final mediaStorage = Sliver(
+    //   child: AnimationConfiguration.synchronized(
+    //     child: FadeInAnimation(
+    //       child: MediaStorageInfo(),
+    //     ),
+    //   ),
+    // );
+
+    final listView = ListView.builder(
       shrinkWrap: true,
       controller: _listViewController,
       physics: BouncingScrollPhysics(),
-      children: children,
+      // children: children,
+      itemCount: children.length,
+      itemBuilder: (context, index) => children[index],
     );
 
     final WillPopScope willPopScope = WillPopScope(
@@ -100,40 +113,20 @@ class _MediaPageState extends State<MediaPage>
       ),
     );
 
-    final pop = () => Navigator.pop(context);
-    final showSearchFunction = () async => await showSearch(
-          context: context,
-          delegate: Search(),
-        );
-    final actions = [
-      AppbarUtils.icon(context, Icon(Icons.search), showSearchFunction),
-      MyDropDown()
-    ];
-
     final csv = CustomScrollView(
       controller: _scrollController,
       scrollDirection: Axis.vertical,
       slivers: [
-        SliverAppBar(
-          floating: true,
-          pinned: true,
-          backgroundColor: MyColors.darkGrey,
-          leading: AppbarUtils.icon(context, Icon(Icons.arrow_back), pop),
-          actions: actions,
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(6 * Responsive.heightMultiplier),
-            child: MyBottomAppBar(backgroundColor: Colors.transparent),
-          ),
-        ),
+        MySliverAppBar(),
         SliverFillRemaining(child: willPopScope),
-        // SliverToBoxAdapter(child: willPopScope),
       ],
     );
 
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle(statusBarColor: MyColors.darkGrey),
+      value: AppbarUtils.systemUiOverylay(MyColors.darkGrey),
       child: Scaffold(
         body: SafeArea(child: csv),
+        backgroundColor: Colors.white,
         bottomNavigationBar: OperationsUtils.bottomNavigation(),
         floatingActionButton: FAB(),
       ),

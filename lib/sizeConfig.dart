@@ -37,14 +37,15 @@ class Responsive {
     widthMultiplier = _blockSizeHorizontal;
   }
 
-  static imageSize(double value) {
+  static double imageSize(double value) {
     return value * Responsive.imageSizeMultiplier;
   }
-  static width(double value) {
+
+  static double width(double value) {
     return value * Responsive.widthMultiplier;
   }
-  static height(double value) {
+
+  static double height(double value) {
     return value * Responsive.heightMultiplier;
   }
-
 }

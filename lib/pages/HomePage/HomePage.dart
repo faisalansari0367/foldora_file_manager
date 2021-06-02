@@ -57,7 +57,6 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.white,
         iconData: Icons.menu,
         bottomNavBar: false,
-        // menu: false,
       ),
       body: Container(
         color: Colors.white,

@@ -1,3 +1,4 @@
+import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
 import './LinearPercentBar.dart';
 import '../../sizeConfig.dart';
@@ -5,7 +6,7 @@ import './ShowStorageDetails.dart';
 
 class MediaStorageInfo extends StatelessWidget {
   final int index;
-  static const backgroundColor = Color(0xFF2c2c3c);
+  // static const backgroundColor = Color(0xFF2c2c3c);
   const MediaStorageInfo({this.index});
 
   static final pageDetails = Row(
@@ -39,7 +40,7 @@ class MediaStorageInfo extends StatelessWidget {
         // color: MyColors.darkGrey,
         height: 0.33 * MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
-          color: backgroundColor,
+          color: MyColors.darkGrey,
           borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(30.0),
             bottomLeft: Radius.circular(30.0),

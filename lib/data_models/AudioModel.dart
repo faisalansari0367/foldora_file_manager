@@ -6,8 +6,8 @@ class AudioModel {
   final List<Audio> audios;
   AudioModel({this.folderName, this.audios});
 
-  static audioFiles(decodedJson) {
-    return List.generate(decodedJson.length, (index) {
+  static List<Audio> audioFiles(decodedJson) {
+    final list = List.generate(decodedJson.length, (index) {
       final files = decodedJson[index];
       // print(files);q
       try {
@@ -24,6 +24,7 @@ class AudioModel {
         print('error: $e');
       }
     });
+    return list;
   }
 
   static List<AudioModel> jsonToAudio(json) {

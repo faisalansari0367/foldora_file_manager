@@ -17,6 +17,7 @@ class MediaListItem extends StatefulWidget {
   final Widget leading;
   final int index;
   final FileSystemEntity data;
+  final IconButton trailing;
 
   MediaListItem({
     this.index,
@@ -29,6 +30,7 @@ class MediaListItem extends StatefulWidget {
     this.data,
     this.selectedColor,
     this.textColor,
+    this.trailing,
   });
 
   @override
@@ -50,6 +52,7 @@ class _MediaListItemState extends State<MediaListItem> {
             title: widget.title,
             titleColor: widget.textColor,
           ),
+          if (widget.trailing != null) widget.trailing,
         ],
       ),
     );

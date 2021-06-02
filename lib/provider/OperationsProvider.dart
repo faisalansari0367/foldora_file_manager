@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:files/utilities/CopyUtils.dart';
@@ -27,12 +28,12 @@ class Operations extends ChangeNotifier {
   List<FileSystemEntity> get selectedMedia => _selectedMediaItems;
 
   // this is not related to operations its for appbar
-  double appbarSize = 12 * Responsive.heightMultiplier;
+  double appbarSize = 0 * Responsive.heightMultiplier;
   bool navRail = false;
   void scrollListener(double size, bool navigation) {
     appbarSize = size * Responsive.heightMultiplier;
+    log('$appbarSize');
     navRail = navigation;
-    // print(appbarSize);
     notifyListeners();
   }
 
