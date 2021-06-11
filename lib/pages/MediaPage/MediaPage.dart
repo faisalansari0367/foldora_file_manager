@@ -97,7 +97,6 @@ class _MediaPageState extends State<MediaPage>
       shrinkWrap: true,
       controller: _listViewController,
       physics: BouncingScrollPhysics(),
-      // children: children,
       itemCount: children.length,
       itemBuilder: (context, index) => children[index],
     );
@@ -108,7 +107,10 @@ class _MediaPageState extends State<MediaPage>
         builder: (context, value, child) {
           return storage.path == storage.currentPath
               ? listView
-              : DirectoryLister(path: storage.currentPath);
+              : DirectoryLister(
+                  path: storage.currentPath,
+                  scrollController: _listViewController,
+                );
         },
       ),
     );
@@ -116,6 +118,7 @@ class _MediaPageState extends State<MediaPage>
     final csv = CustomScrollView(
       controller: _scrollController,
       scrollDirection: Axis.vertical,
+      physics: NeverScrollableScrollPhysics(),
       slivers: [
         MySliverAppBar(),
         SliverFillRemaining(child: willPopScope),

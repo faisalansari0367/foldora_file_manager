@@ -15,15 +15,13 @@ class FileNotFoundScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final buttonColor = MaterialStateProperty.all(Color(0xFF70DAAD));
     final provider = Provider.of<MyProvider>(context, listen: false);
-    final bottom = 40 * Responsive.heightMultiplier;
+    final bottom = 22 * Responsive.heightMultiplier;
     final leftRight = 10 * Responsive.widthMultiplier;
     return Center(
       child: Container(
         color: Colors.white,
         height: 100 * Responsive.heightMultiplier,
         child: Stack(
-          // fit: StackFit.expand,
-
           children: [
             Image.asset(
               "assets/5_Something Wrong.png",
@@ -36,7 +34,7 @@ class FileNotFoundScreen extends StatelessWidget {
                     left: leftRight,
                     right: leftRight,
                     child: Container(
-                      padding: EdgeInsets.all(7 * Responsive.widthMultiplier),
+                      padding: EdgeInsets.all(8 * Responsive.widthMultiplier),
                       color: Colors.white,
                       child: Text(
                         message,
@@ -49,7 +47,7 @@ class FileNotFoundScreen extends StatelessWidget {
                   )
                 : Container(),
             Positioned(
-              bottom: MediaQuery.of(context).size.height * 0.35,
+              bottom: Responsive.height(12),
               left: MediaQuery.of(context).size.width * .37,
               child: ElevatedButton(
                 style: ButtonStyle(

@@ -10,8 +10,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'sizeConfig.dart';
+import 'widgets/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,35 +21,37 @@ void main() {
 
 // This widget is the root of your application.
 
+void systemOverlay() {
+  SystemChrome.setEnabledSystemUIOverlays(
+    [SystemUiOverlay.top, SystemUiOverlay.bottom],
+  );
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+}
+
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  void systemOverlay() {
-    SystemChrome.setEnabledSystemUIOverlays(
-      [SystemUiOverlay.top, SystemUiOverlay.bottom],
-    );
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    // SystemChrome.setSystemUIOverlayStyle(
-    // SystemUiOverlayStyle(statusBarColor: Color(0xff2c2c3c)));
+  Future<bool> isFirstTimeAppOpen() async => await Permission.storage.isGranted;
+  Future<bool> setFirstTimeSeen() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isSeen = prefs.getBool('firstSeen') ?? false;
+    return isSeen;
   }
 
-  Future<bool> isFirstTimeAppOpen() async => await Permission.storage.isGranted;
+  final PageView pageView = PageView(
+    children: [HomePage(), HomePage()],
+  );
 
   @override
   Widget build(BuildContext context) {
-    final PageView pageView = PageView(
-      children: [HomePage(), HomePage()],
-    );
-    // isFirstTimeAppOpen();
-
     final futureBuilder = FutureBuilder(
-      future: isFirstTimeAppOpen(),
+      future: setFirstTimeSeen(),
       initialData: false,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return snapshot.data ? pageView : SplashScreen();
@@ -62,13 +66,17 @@ class _MyAppState extends State<MyApp> {
             return MultiProvider(
               providers: [
                 ChangeNotifierProvider<MyProvider>(
-                    create: (context) => MyProvider()),
+                  create: (context) => MyProvider(),
+                ),
                 ChangeNotifierProvider<StoragePathProvider>(
-                    create: (context) => StoragePathProvider()),
+                  create: (context) => StoragePathProvider(),
+                ),
                 ChangeNotifierProvider<IconProvider>(
-                    create: (context) => IconProvider()),
+                  create: (context) => IconProvider(),
+                ),
                 ChangeNotifierProvider<Operations>(
-                    create: (context) => Operations()),
+                  create: (context) => Operations(),
+                ),
               ],
               child: MaterialApp(
                 theme: MyColors.themeData,
@@ -81,86 +89,6 @@ class _MyAppState extends State<MyApp> {
           },
         );
       },
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  PageController pageController;
-  @override
-  void initState() {
-    WidgetsFlutterBinding.ensureInitialized();
-    pageController = PageController(initialPage: _initialPage);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    pageController.dispose();
-    pageController = null;
-    super.dispose();
-  }
-
-  static const Duration duration = Duration(milliseconds: 100);
-  final iconPath = 'assets/undraw_app_data_re_vg5c.svg';
-  final iconPath2 = 'assets/undraw_file_manager_j85s.svg';
-
-  void redirectToHome() {
-    final pageView = PageView(children: [HomePage(), HomePage()]);
-    final route = MaterialPageRoute(builder: (context) => pageView);
-    Navigator.pushReplacement(context, route);
-  }
-
-  int _initialPage = 0;
-
-  void _onpressed() async {
-    final provider = Provider.of<MyProvider>(context, listen: false);
-    var status = await provider.getPermission();
-    if (status.isGranted) {
-      Future.delayed(duration, () {
-        pageController.animateToPage(
-          1,
-          duration: Duration(milliseconds: 350),
-          curve: Curves.decelerate,
-        );
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Widget screen(String path, String text, Function onpressed) => Column(
-          children: [
-            SvgPicture.asset(
-              path,
-              height: Responsive.height(80),
-              // width: Responsive.width(80),
-              fit: BoxFit.contain,
-            ),
-            ElevatedButton(
-              onPressed: onpressed,
-              child: Text(text),
-            )
-          ],
-        );
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: PageView(
-          onPageChanged: (int page) => _initialPage = page,
-          controller: pageController,
-          children: [
-            screen(iconPath, 'Allow Permission', _onpressed),
-            screen(iconPath2, 'Let"s Explore', redirectToHome)
-          ],
-        ),
-      ),
     );
   }
 }

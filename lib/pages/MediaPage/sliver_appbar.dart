@@ -58,15 +58,7 @@ class CustomConsumer extends StatelessWidget {
           actions: [AppbarUtils.searchIcon(context), MyDropDown()],
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(value),
-            child: value != Responsive.height(6)
-                ? TestAnim(
-                    height: Responsive.height(6),
-                  )
-                : TestAnim(
-                    child: bottom,
-                    start: 0.0,
-                    end: value,
-                  ),
+            child: value != Responsive.height(6) ? SizedBox() : bottom,
           ),
         );
       },

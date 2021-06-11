@@ -12,7 +12,8 @@ import 'LeadingIcon.dart';
 
 class DirectoryLister extends StatelessWidget {
   final String path;
-  const DirectoryLister({this.path});
+  final ScrollController scrollController;
+  const DirectoryLister({this.path, this.scrollController});
 
   static final String message =
       'This folder is empty. The file you are looking for is not here. Please search in different folder.';
@@ -32,7 +33,8 @@ class DirectoryLister extends StatelessWidget {
         } else if (snapshot.hasData && snapshot.data.isNotEmpty) {
           return Container(
             color: Colors.transparent,
-            child: DirectoryListItem(data: snapshot.data),
+            child: DirectoryListItem(
+                data: snapshot.data, scrollController: scrollController),
           );
         } else if (snapshot.hasError) {
           return MediaUtils.fileNotFound(snapshot.error.toString());
@@ -48,8 +50,10 @@ class DirectoryListItem extends StatefulWidget {
   final String path;
   final Color selected;
   final List<FileSystemEntity> data;
+  final ScrollController scrollController;
 
-  DirectoryListItem({Key key, this.data, this.path, this.selected})
+  DirectoryListItem(
+      {Key key, this.data, this.path, this.selected, this.scrollController})
       : super(key: key);
 
   @override
@@ -57,19 +61,7 @@ class DirectoryListItem extends StatefulWidget {
 }
 
 class _DirectoryListItemState extends State<DirectoryListItem> {
-  ScrollController _scrollController;
   // GlobalKey key = GlobalKey();
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +75,7 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        controller: _scrollController,
+        controller: widget.scrollController ?? ScrollController(),
         itemCount: widget.data.length,
         itemBuilder: (context, index) {
           final data = widget.data[index];
