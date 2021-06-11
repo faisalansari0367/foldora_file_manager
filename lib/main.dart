@@ -37,7 +37,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Future<bool> isFirstTimeAppOpen() async => await Permission.storage.isGranted;
   Future<bool> setFirstTimeSeen() async {
     final prefs = await SharedPreferences.getInstance();
     final isSeen = prefs.getBool('firstSeen') ?? false;
