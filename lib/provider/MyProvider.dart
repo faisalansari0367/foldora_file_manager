@@ -28,17 +28,15 @@ class MyProvider extends ChangeNotifier {
 
   List<Storage> spaceInfo = [];
 
-  String _dirPath = '/storage/emulated/0';
+  // String _dirPath = '/storage/emulated/0';
 
-  // double _totalDiskSpace = 0;
-  // double _freeDiskSpace = 0;
   bool _showHidden = false;
 
   SharedPreferences _prefs;
   SharedPreferences get prefs => _prefs;
 
   List<Data> data = [];
-  String get getDirPath => _dirPath;
+  // String get getDirPath => _dirPath;
   bool get showHidden => _showHidden;
 
   double appbarSize = 6.25 * Responsive.heightMultiplier;
@@ -124,7 +122,7 @@ class MyProvider extends ChangeNotifier {
   }
 
   void fileSystemEntitywatcher() {
-    StorageDetails.watchFilesForChanges.listen((event) {
+    StorageDetails.watchFilesForChanges.listen((dynamic event) {
       print(event);
       notifyListeners();
     });

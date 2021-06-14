@@ -17,17 +17,6 @@ class MySliverAppBar extends StatefulWidget {
 class _MySliverAppBarState extends State<MySliverAppBar> {
   @override
   Widget build(BuildContext context) {
-    // return SliverAppBar(
-    //   systemOverlayStyle: AppbarUtils.systemUiOverylay(MyColors.darkGrey),
-    //   pinned: true,
-    //   backgroundColor: MyColors.darkGrey,
-    //   leading: AppbarUtils.backIcon(context),
-    //   actions: [AppbarUtils.searchIcon(context), MyDropDown()],
-    //   bottom: PreferredSize(
-    //     preferredSize: Size.fromHeight(6 * Responsive.heightMultiplier),
-    //     child: MyBottomAppBar(backgroundColor: Colors.transparent),
-    //   ),
-    // );
     return CustomConsumer();
   }
 }
@@ -62,52 +51,6 @@ class CustomConsumer extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class TestAnim extends StatefulWidget {
-  final double height, start, end;
-  final Widget child;
-  const TestAnim({Key key, this.height, this.child, this.start, this.end})
-      : super(key: key);
-
-  @override
-  _TestAnimState createState() => _TestAnimState();
-}
-
-class _TestAnimState extends State<TestAnim>
-    with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> animation;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 2000),
-    );
-    animation = Tween<double>(
-      begin: Responsive.height(widget.start),
-      end: Responsive.height(widget.end),
-    ).animate(controller);
-    controller.forward(); // automatically animation will be started
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    animation = null;
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizeTransition(
-      axis: Axis.vertical,
-      sizeFactor: animation,
-      child: widget.child,
     );
   }
 }

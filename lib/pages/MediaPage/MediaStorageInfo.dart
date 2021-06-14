@@ -33,7 +33,6 @@ class MediaStorageInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('mediaStorageInfo called');
     return Container(
       color: Colors.white,
       child: Container(

@@ -25,16 +25,17 @@ class DirectoryLister extends StatelessWidget {
       future: provider.dirContents(path, isShowHidden: provider.showHidden),
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data.isEmpty) {
-          if (p.equals(path, provider.getDirPath)) {
+          if (p.equals(path, provider.data[provider.currentPage].path)) {
             return Container();
-          } else {
-            return MediaUtils.fileNotFound(message);
           }
+          return MediaUtils.fileNotFound(message);
         } else if (snapshot.hasData && snapshot.data.isNotEmpty) {
           return Container(
             color: Colors.transparent,
             child: DirectoryListItem(
-                data: snapshot.data, scrollController: scrollController),
+              data: snapshot.data,
+              scrollController: scrollController,
+            ),
           );
         } else if (snapshot.hasError) {
           return MediaUtils.fileNotFound(snapshot.error.toString());
@@ -61,15 +62,13 @@ class DirectoryListItem extends StatefulWidget {
 }
 
 class _DirectoryListItemState extends State<DirectoryListItem> {
-  // GlobalKey key = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     print("listBuilder");
     final provider = Provider.of<MyProvider>(context, listen: false);
     final operations = Provider.of<Operations>(context, listen: false);
     return Container(
-      color: Colors.white,
+      color: Colors.transparent,
       child: ListView.builder(
         key: UniqueKey(),
         physics: BouncingScrollPhysics(),

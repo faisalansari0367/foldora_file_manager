@@ -15,6 +15,19 @@ import '../../provider/MyProvider.dart';
 import '../../provider/OperationsProvider.dart';
 import 'MediaFiles.dart';
 
+// define the work to do
+// issues that need to be fixed
+// this is what needs to be fixed at priority file observer crashing the app...
+// photos should notify whenever a change happen...
+// file operations should happen in a service..
+// add options to encrypt and decrypt files
+// add feature to open pdf zip
+// add a video player
+// create a music player ui
+// features to add fingerpring and face authentication
+// remove the lags
+//
+
 class MediaPage extends StatefulWidget {
   final Data storage;
   final int spaceInfoIndex;
@@ -101,18 +114,36 @@ class _MediaPageState extends State<MediaPage>
       itemBuilder: (context, index) => children[index],
     );
 
+    // final selector = Selector<MyProvider, Data>(
+    //   selector: (context, provider) => provider.data[provider.currentPage],
+    //   shouldRebuild: (previous, next) =>
+    //       previous.currentPath != next.currentPath,
+    //   builder: (context, value, child) {
+    //     print(value.path);
+    //     print(value.currentPath);
+    //     return value.path == value.currentPath
+    //         ? listView
+    //         : DirectoryLister(
+    //             path: value.currentPath,
+    //             scrollController: _listViewController,
+    //           );
+    //   },
+    // );
+
+    final consumer = Consumer<MyProvider>(
+      builder: (context, value, child) {
+        return storage.path == storage.currentPath
+            ? listView
+            : DirectoryLister(
+                path: storage.currentPath,
+                scrollController: _listViewController,
+              );
+      },
+    );
+
     final WillPopScope willPopScope = WillPopScope(
       onWillPop: () => provider.onGoBack(context),
-      child: Consumer<MyProvider>(
-        builder: (context, value, child) {
-          return storage.path == storage.currentPath
-              ? listView
-              : DirectoryLister(
-                  path: storage.currentPath,
-                  scrollController: _listViewController,
-                );
-        },
-      ),
+      child: consumer,
     );
 
     final csv = CustomScrollView(

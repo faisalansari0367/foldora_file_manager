@@ -37,7 +37,7 @@ class Search extends SearchDelegate {
     SearchUtils.addSuggestions(provider.prefs, query);
     return StreamBuilder(
       stream: SearchUtils.searchDelegate(
-        path: provider.getDirPath,
+        path: provider.data[provider.currentPage].path,
         query: query,
       ),
       builder: (BuildContext context, AsyncSnapshot snapshot) {

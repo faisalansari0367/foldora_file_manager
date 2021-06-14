@@ -9,9 +9,6 @@ class ShowStorageDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<MyProvider>(context, listen: false);
-    // storage = provider.spaceInfo[provider.currentPage],
-    // used = FileUtils.formatBytes(storage.used, 2, inGB: true),
-    // available = FileUtils.formatBytes(storage.free, 2, inGB: true);
 
     final availableSpace = Selector<MyProvider, int>(
       selector: (_, page) => page.currentPage,
@@ -24,6 +21,7 @@ class ShowStorageDetails extends StatelessWidget {
         );
       },
     );
+
     final usedSpace = Selector<MyProvider, int>(
       selector: (_, page) => page.currentPage,
       builder: (_, page, __) {

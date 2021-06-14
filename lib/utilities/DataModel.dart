@@ -34,6 +34,17 @@ class Data {
   @override
   bool operator ==(Object other) {
     // currentPath == other.currentPath
-    return super == other;
+
+    if (other is Data &&
+        currentPath == other.currentPath &&
+        path == other.path &&
+        used == other.used &&
+        free == other.free &&
+        navItems == other.navItems &&
+        total == other.total) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
