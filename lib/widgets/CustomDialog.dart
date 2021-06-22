@@ -10,8 +10,7 @@ class CustomDialog extends StatefulWidget {
   final FileSystemEntity item;
   final String path;
   final String eventName;
-  const CustomDialog(
-      {@required this.item, @required this.eventName, this.path});
+  const CustomDialog({@required this.item, @required this.eventName, this.path});
 
   @override
   _CustomDialogState createState() => _CustomDialogState();
@@ -79,8 +78,7 @@ class _CustomDialogState extends State<CustomDialog> {
                   if (widget.eventName == 'rename') {
                     await provider.rename(widget.item, name);
                   } else {
-                    final currentPath =
-                        provider.data[provider.currentPage].currentPath;
+                    final currentPath = provider.data[provider.currentPage].currentPath;
                     await provider.createFileSystemEntity(currentPath, name);
                   }
                   _textController.text = '';
@@ -96,7 +94,7 @@ class _CustomDialogState extends State<CustomDialog> {
     Dialog dialog = Dialog(
       insetPadding: EdgeInsets.all(10),
       elevation: 5,
-      insetAnimationCurve: Curves.bounceInOut,
+      insetAnimationCurve: Curves.easeInBack,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       backgroundColor: MediaUtils.backgroundColor,
       child: child,

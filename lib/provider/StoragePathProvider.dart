@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:files/data_models/AudioModel.dart';
 import 'package:files/data_models/VideoModel.dart';
 import 'package:files/utilities/Utils.dart';
@@ -38,7 +36,16 @@ class StoragePathProvider extends ChangeNotifier {
 
   StoragePathProvider() {
     init();
+    // _imagesObserver();
   }
+
+  // void _imagesObserver() {
+  //   StorageDetails.watchImages.listen((event) {
+  //     print(event);
+  //     photos();
+  //     notifyListeners();
+  //   });
+  // }
 
   ///  these functions are used by photos they are not getting used here
   void updateIndex(index) {
@@ -62,48 +69,44 @@ class StoragePathProvider extends ChangeNotifier {
 
   Future<void> photos() async {
     final imagesPath = await StoragePath.imagesPath;
-    final images =
-        await FileUtils.worker.doWork(FileUtils.imagesPath, imagesPath);
+    final images = await FileUtils.worker.doWork(FileUtils.imagesPath, imagesPath);
     // await FileUtils.imagesPath(imagesPath);
     _photos = images['data'];
     _photosSize = images['size'];
-    log('images length :${_photos.length}');
+    print('images length :${_photos.length}');
     notifyListeners();
   }
 
   Future<void> documents() async {
     final documents = await StoragePath.filePath;
-    final docs = await FileUtils.worker
-        .doWork(FileUtils.storagePathDocuments, documents);
+    final docs = await FileUtils.worker.doWork(FileUtils.storagePathDocuments, documents);
     // final docs = await FileUtils.storagePathDocuments(documents);
     _documentsPath = docs['data'];
     _documentsSize = docs['size'];
-    log('_documentsPath length :${_documentsPath.length}');
+    print('_documentsPath length :${_documentsPath.length}');
     notifyListeners();
   }
 
   Future<void> videos() async {
     await Permission.storage.status;
     final videosPath = await StoragePath.videoPath;
-    final videos =
-        await FileUtils.worker.doWork(FileUtils.storagePathVideos, videosPath);
+    final videos = await FileUtils.worker.doWork(FileUtils.storagePathVideos, videosPath);
     // await FileUtils.storagePathVideos(videosPath);
     _videosPath = videos['videoModel'];
 
     _videosSize = videos['size'];
     _videos = videos['videos'];
-    log('_videosPath length :${_videosPath.length}');
+    print('_videosPath length :${_videosPath.length}');
     notifyListeners();
   }
 
   Future<void> audios() async {
     final audiosPath = await StoragePath.audioPath;
-    final audios =
-        await FileUtils.worker.doWork(FileUtils.storagePathAudios, audiosPath);
+    final audios = await FileUtils.worker.doWork(FileUtils.storagePathAudios, audiosPath);
     // await FileUtils.storagePathAudios(audiosPath);
     _audiosPath = audios['data'] as List<AudioModel>;
     _audiosSize = audios['size'];
-    log('_audiosPath length :${_audiosPath[0].audios.length}');
+    print('_audiosPath length :${_audiosPath[0].audios.length}');
 
     notifyListeners();
   }
@@ -118,6 +121,6 @@ class StoragePathProvider extends ChangeNotifier {
 
   Future<void> onRefresh() async {
     await init();
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 2));
   }
 }

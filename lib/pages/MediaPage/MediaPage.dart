@@ -8,7 +8,6 @@ import 'package:files/widgets/ListBuilder.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import './MediaStorageInfo.dart';
 import '../../provider/MyProvider.dart';
@@ -22,11 +21,11 @@ import 'MediaFiles.dart';
 // file operations should happen in a service..
 // add options to encrypt and decrypt files
 // add feature to open pdf zip
+// show and hide FileSystemEntity
 // add a video player
 // create a music player ui
-// features to add fingerpring and face authentication
+// features to add fingerprint and face authentication
 // remove the lags
-//
 
 class MediaPage extends StatefulWidget {
   final Data storage;
@@ -38,29 +37,21 @@ class MediaPage extends StatefulWidget {
   _MediaPageState createState() => _MediaPageState();
 }
 
-class _MediaPageState extends State<MediaPage>
-    with SingleTickerProviderStateMixin {
+class _MediaPageState extends State<MediaPage> with SingleTickerProviderStateMixin {
   ScrollController _scrollController;
   ScrollController _listViewController;
-  AnimationController _controller;
   Animation animation;
   Animation opacity;
+  //.
   @override
   void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 200),
-    );
-    animation = Tween<Offset>(
-      begin: Offset(0, -1.0),
-      end: Offset(0.0, 0.0),
-    ).animate(_controller);
-    opacity = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+    final operations = Provider.of<Operations>(context, listen: false);
+    final provider = Provider.of<MyProvider>(context, listen: false);
+    provider.setScrollListener(operations.scrollListener);
 
+    super.initState();
     _scrollController = ScrollController();
-    _listViewController = ScrollController();
-    _listViewController.addListener(_scrollListener);
+    _listViewController = ScrollController()..addListener(_scrollListener);
   }
 
   _scrollListener() {
@@ -68,18 +59,17 @@ class _MediaPageState extends State<MediaPage>
     var direction = _listViewController.position.userScrollDirection;
     provider.scrolledPixels = _listViewController.position.pixels;
     if (direction == ScrollDirection.forward) {
-      provider.scrollListener(6, true);
+      provider.scrollListener(6);
     } else if (direction == ScrollDirection.reverse) {
-      provider.scrollListener(0, false);
+      provider.scrollListener(0);
     }
   }
 
   @override
   void dispose() {
     print('mediapage disposed');
-    _scrollController.removeListener(_scrollListener);
+    _listViewController.removeListener(_scrollListener);
     _scrollController.dispose();
-    _listViewController.dispose();
     super.dispose();
   }
 
@@ -88,23 +78,10 @@ class _MediaPageState extends State<MediaPage>
     final storage = widget.storage;
 
     List<Widget> children = <Widget>[
-      AnimationConfiguration.synchronized(
-        child: FadeInAnimation(
-          child: MediaStorageInfo(),
-        ),
-      ),
-      // MediaStorageInfo(),
+      MediaStorageInfo(),
       MediaFiles(),
       DirectoryLister(path: storage.path),
     ];
-
-    // final mediaStorage = Sliver(
-    //   child: AnimationConfiguration.synchronized(
-    //     child: FadeInAnimation(
-    //       child: MediaStorageInfo(),
-    //     ),
-    //   ),
-    // );
 
     final listView = ListView.builder(
       shrinkWrap: true,
@@ -114,30 +91,16 @@ class _MediaPageState extends State<MediaPage>
       itemBuilder: (context, index) => children[index],
     );
 
-    // final selector = Selector<MyProvider, Data>(
-    //   selector: (context, provider) => provider.data[provider.currentPage],
-    //   shouldRebuild: (previous, next) =>
-    //       previous.currentPath != next.currentPath,
-    //   builder: (context, value, child) {
-    //     print(value.path);
-    //     print(value.currentPath);
-    //     return value.path == value.currentPath
-    //         ? listView
-    //         : DirectoryLister(
-    //             path: value.currentPath,
-    //             scrollController: _listViewController,
-    //           );
-    //   },
-    // );
-
     final consumer = Consumer<MyProvider>(
       builder: (context, value, child) {
-        return storage.path == storage.currentPath
-            ? listView
-            : DirectoryLister(
-                path: storage.currentPath,
-                scrollController: _listViewController,
-              );
+        if (storage.path == storage.currentPath) {
+          return listView;
+        } else {
+          return DirectoryLister(
+            path: storage.currentPath,
+            scrollController: _listViewController,
+          );
+        }
       },
     );
 

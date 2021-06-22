@@ -30,10 +30,10 @@ class Operations extends ChangeNotifier {
   // this is not related to operations its for appbar
   double appbarSize = 0 * Responsive.heightMultiplier;
   bool navRail = false;
-  void scrollListener(double size, bool navigation) {
+  void scrollListener(double size) {
     appbarSize = size * Responsive.heightMultiplier;
     log('$appbarSize');
-    navRail = navigation;
+    // navRail = navigation;
     notifyListeners();
   }
 

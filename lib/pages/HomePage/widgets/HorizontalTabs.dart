@@ -69,6 +69,7 @@ class _PhotosTab extends StatelessWidget {
     return Consumer<StoragePathProvider>(
       builder: (BuildContext context, photos, child) {
         var itemsCount = photos.imagesPath.length;
+        print(itemsCount);
         var size = photos.photosSize;
         return MediaStack(
           image: "assets/image.png",

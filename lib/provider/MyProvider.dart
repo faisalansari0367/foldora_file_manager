@@ -12,8 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as p;
 import 'package:storage_details/storage_details.dart';
 
-import '../sizeConfig.dart';
-
 class MyProvider extends ChangeNotifier {
   MyProvider() {
     init();
@@ -23,35 +21,31 @@ class MyProvider extends ChangeNotifier {
   void init() async {
     await diskSpace();
     initSharedPreferences();
-    fileSystemEntitywatcher();
   }
 
+  //   StorageDetails.watchFilesForChanges.listen((dynamic event) {
+  //     print(event);
+  //     notifyListeners();
+  //   });
+  // }
+
   List<Storage> spaceInfo = [];
-
-  // String _dirPath = '/storage/emulated/0';
-
   bool _showHidden = false;
 
   SharedPreferences _prefs;
   SharedPreferences get prefs => _prefs;
 
   List<Data> data = [];
-  // String get getDirPath => _dirPath;
   bool get showHidden => _showHidden;
 
-  double appbarSize = 6.25 * Responsive.heightMultiplier;
-  bool showBottomAppbar = true;
+  Function scrollListener;
 
-  void scrollListener(ScrollController controller) {
-    var direction = controller.position.userScrollDirection;
-    if (direction == ScrollDirection.forward) {
-      appbarSize = 12.5 * Responsive.heightMultiplier;
-      notifyListeners();
-    }
+  void setScrollListener(Function listener) {
+    scrollListener = listener;
   }
 
   void initSharedPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     _prefs = prefs;
     notifyListeners();
   }
@@ -75,9 +69,9 @@ class MyProvider extends ChangeNotifier {
         File(folderPath)..create();
       } else {
         Directory(folderPath)..create();
-        print(folderPath);
+        // print(folderPath);
       }
-      // notifyListeners();
+      notifyListeners();
     } catch (e) {
       throw Exception(e);
     }
@@ -86,6 +80,7 @@ class MyProvider extends ChangeNotifier {
   Future<void> rename(FileSystemEntity item, String name) async {
     final newPath = item.path.replaceAll(p.basename(item.path), name);
     await item.rename(newPath);
+    notifyListeners();
   }
 
   Future<void> diskSpace() async {
@@ -108,28 +103,18 @@ class MyProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<FileSystemEntity>> dirContents(String path,
-      {isShowHidden: false}) async {
+  Future<List<FileSystemEntity>> dirContents(String path, {isShowHidden: false}) async {
     Map args = {'path': path, 'showHidden': isShowHidden};
     try {
-      // final result = FileUtils.directoryList(args);
-      final result =
-          await FileUtils.worker.doWork(FileUtils.directoryList, args);
+      final result = await FileUtils.worker.doWork(FileUtils.directoryList, args);
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  void fileSystemEntitywatcher() {
-    StorageDetails.watchFilesForChanges.listen((dynamic event) {
-      print(event);
-      notifyListeners();
-    });
-  }
-
   int currentPage = 0;
-  void onPageChanged(value) {
+  void onPageChanged(int value) {
     currentPage = value;
     notifyListeners();
   }
@@ -138,6 +123,7 @@ class MyProvider extends ChangeNotifier {
     if (dir is Directory) {
       data[currentPage].currentPath = dir.path;
       addPath(dir.path);
+      scrollListener(6.0);
     } else {
       OpenFile.open(dir.path);
     }
