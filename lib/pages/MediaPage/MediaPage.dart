@@ -40,8 +40,7 @@ class MediaPage extends StatefulWidget {
 class _MediaPageState extends State<MediaPage> with SingleTickerProviderStateMixin {
   ScrollController _scrollController;
   ScrollController _listViewController;
-  Animation animation;
-  Animation opacity;
+
   //.
   @override
   void initState() {
