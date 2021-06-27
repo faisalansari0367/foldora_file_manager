@@ -9,6 +9,7 @@ import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import '../../sizeConfig.dart';
 import './MediaStorageInfo.dart';
 import '../../provider/MyProvider.dart';
 import '../../provider/OperationsProvider.dart';
@@ -40,27 +41,27 @@ class MediaPage extends StatefulWidget {
 class _MediaPageState extends State<MediaPage> with SingleTickerProviderStateMixin {
   ScrollController _scrollController;
   ScrollController _listViewController;
+  Operations operations;
+  MyProvider provider;
 
   //.
   @override
   void initState() {
-    final operations = Provider.of<Operations>(context, listen: false);
-    final provider = Provider.of<MyProvider>(context, listen: false);
+    operations = Provider.of<Operations>(context, listen: false);
+    provider = Provider.of<MyProvider>(context, listen: false);
     provider.setScrollListener(operations.scrollListener);
-
-    super.initState();
     _scrollController = ScrollController();
     _listViewController = ScrollController()..addListener(_scrollListener);
+    super.initState();
   }
 
-  _scrollListener() {
-    final provider = Provider.of<Operations>(context, listen: false);
+  void _scrollListener() {
     var direction = _listViewController.position.userScrollDirection;
-    provider.scrolledPixels = _listViewController.position.pixels;
+    operations.scrolledPixels = _listViewController.position.pixels;
     if (direction == ScrollDirection.forward) {
-      provider.scrollListener(6);
+      operations.scrollListener(6);
     } else if (direction == ScrollDirection.reverse) {
-      provider.scrollListener(0);
+      operations.scrollListener(0);
     }
   }
 
@@ -73,10 +74,9 @@ class _MediaPageState extends State<MediaPage> with SingleTickerProviderStateMix
   }
 
   Widget build(BuildContext context) {
-    final provider = Provider.of<MyProvider>(context, listen: false);
     final storage = widget.storage;
 
-    List<Widget> children = <Widget>[
+    final children = <Widget>[
       MediaStorageInfo(),
       MediaFiles(),
       DirectoryLister(path: storage.path),
@@ -92,14 +92,11 @@ class _MediaPageState extends State<MediaPage> with SingleTickerProviderStateMix
 
     final consumer = Consumer<MyProvider>(
       builder: (context, value, child) {
-        if (storage.path == storage.currentPath) {
-          return listView;
-        } else {
-          return DirectoryLister(
-            path: storage.currentPath,
-            scrollController: _listViewController,
-          );
-        }
+        if (storage.path == storage.currentPath) return listView;
+        return DirectoryLister(
+          path: storage.currentPath,
+          scrollController: _listViewController,
+        );
       },
     );
 
@@ -121,10 +118,11 @@ class _MediaPageState extends State<MediaPage> with SingleTickerProviderStateMix
     return AnnotatedRegion(
       value: AppbarUtils.systemUiOverylay(MyColors.darkGrey),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: SafeArea(child: csv),
         backgroundColor: Colors.white,
         bottomNavigationBar: OperationsUtils.bottomNavigation(),
-        floatingActionButton: FAB(),
+        floatingActionButton: const FAB(),
       ),
     );
   }

@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:files/data_models/AudioModel.dart';
 import 'package:files/data_models/VideoModel.dart';
 import 'package:files/utilities/Utils.dart';
@@ -112,11 +115,9 @@ class StoragePathProvider extends ChangeNotifier {
   }
 
   Future<void> init() async {
-    photos();
-    videos();
-    audios();
-    documents();
-    await Future.delayed(Duration(seconds: 1));
+    final timer = Stopwatch()..start();
+    await Future.wait([photos(), videos(), audios(), documents()]);
+    log('future completes in ${timer.elapsed.inMilliseconds} ms');
   }
 
   Future<void> onRefresh() async {

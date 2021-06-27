@@ -32,18 +32,17 @@ class Operations extends ChangeNotifier {
   bool navRail = false;
   void scrollListener(double size) {
     appbarSize = size * Responsive.heightMultiplier;
-    log('$appbarSize');
     // navRail = navigation;
     notifyListeners();
   }
 
   double scrolledPixels = 0.0;
-  //
   void pixelsScrolled(double value) {
     scrolledPixels = value;
     notifyListeners();
   }
 
+  //
   List<String> sharePaths() {
     var paths = _selectedMediaItems.map((e) => e.path).toList();
     return paths;
@@ -76,20 +75,20 @@ class Operations extends ChangeNotifier {
       }
     } on FileSystemException catch (e) {
       print(e.toString());
-      StorageDetails.deleteWhenError(sharePaths());
-      notifyListeners();
+      // StorageDetails.deleteWhenError(sharePaths());
+      // notifyListeners();
     }
     _selectedMediaItems.clear();
     notifyListeners();
   }
 
   bool operationIsRunning = false;
+
   Future<void> copySelectedItems(String currentPath) async {
     operationIsRunning = true;
     Map args = {'items': selectedMedia, 'currentPath': currentPath};
-    final Stream<dynamic> stream =
-        // await FileUtils.worker.doOperation(CopyUtils.copySelectedItems, args);
-        CopyUtils.copySelectedItems(args);
+    final Stream<dynamic> stream = CopyUtils.copySelectedItems(args);
+    // await FileUtils.worker.doOperation(CopyUtils.copySelectedItems, args);
 
     stream.listen((event) {
       if (event is String) {
@@ -107,7 +106,7 @@ class Operations extends ChangeNotifier {
 
   Future<void> move(String currentPath) async {
     operationIsRunning = true;
-    final int totalFiles = _selectedMediaItems.length;
+    final totalFiles = _selectedMediaItems.length;
     int movedFiles = 0;
     // final currentPath = MediaUtils.currentPath;
     for (var item in _selectedMediaItems) {
@@ -118,6 +117,7 @@ class Operations extends ChangeNotifier {
     }
     operationIsRunning = false;
     clearFields();
+    notifyListeners();
   }
 
   Future<void> renameFSE(BuildContext context) async {
@@ -128,6 +128,7 @@ class Operations extends ChangeNotifier {
         eventName: 'rename',
       );
     }
+    notifyListeners();
   }
 
   void clearFields() {

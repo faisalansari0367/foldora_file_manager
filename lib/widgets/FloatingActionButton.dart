@@ -5,21 +5,19 @@ import 'package:provider/provider.dart';
 
 class FAB extends StatefulWidget {
   final String path;
-  FAB({this.path});
+  const FAB({this.path});
 
   @override
   _FABState createState() => _FABState();
 }
 
 class _FABState extends State<FAB> {
-  static Widget addIcon =
-      Icon(Icons.add, color: Colors.white, key: UniqueKey());
+  static Widget addIcon = Icon(Icons.add, color: Colors.white, key: UniqueKey());
   final Widget close = OperationsUtils.copyProgress();
 
   @override
   Widget build(BuildContext context) {
-    final ontap = () => OperationsUtils.myDialog(context,
-        eventName: "Create", path: widget.path);
+    final ontap = () => OperationsUtils.myDialog(context, eventName: "Create", path: widget.path);
     final Widget open = OperationsUtils.customFAB(addIcon, ontap: ontap);
 
     return Selector<Operations, bool>(
@@ -29,8 +27,7 @@ class _FABState extends State<FAB> {
           duration: Duration(milliseconds: 300),
           firstChild: open,
           secondChild: close,
-          crossFadeState:
-              value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          crossFadeState: value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
         );
       },
     );

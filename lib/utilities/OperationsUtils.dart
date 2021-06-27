@@ -20,7 +20,6 @@ class OperationsUtils {
         child: child,
       ),
     );
-
     return inkWell;
   }
 
@@ -88,8 +87,12 @@ class OperationsUtils {
     );
   }
 
-  static myDialog(BuildContext context,
-      {FileSystemEntity item, @required String eventName, String path}) async {
+  static myDialog(
+    BuildContext context, {
+    FileSystemEntity item,
+    @required String eventName,
+    String path,
+  }) async {
     return await showDialog(
       context: context,
       builder: (context) => CustomDialog(

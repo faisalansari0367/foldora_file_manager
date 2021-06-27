@@ -19,7 +19,7 @@ class MediaListItem extends StatefulWidget {
   final FileSystemEntity data;
   final IconButton trailing;
 
-  MediaListItem({
+  const MediaListItem({
     this.index,
     this.title,
     this.description,

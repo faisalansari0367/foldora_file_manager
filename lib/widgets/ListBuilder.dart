@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
+import '../sizeConfig.dart';
 import 'LeadingIcon.dart';
 
 class DirectoryLister extends StatelessWidget {
@@ -53,8 +54,7 @@ class DirectoryListItem extends StatefulWidget {
   final List<FileSystemEntity> data;
   final ScrollController scrollController;
 
-  DirectoryListItem(
-      {Key key, this.data, this.path, this.selected, this.scrollController})
+  DirectoryListItem({Key key, this.data, this.path, this.selected, this.scrollController})
       : super(key: key);
 
   @override
@@ -69,6 +69,7 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
     final operations = Provider.of<Operations>(context, listen: false);
     return Container(
       color: Colors.transparent,
+      // height: Responsive.height(100),
       child: ListView.builder(
         key: UniqueKey(),
         physics: BouncingScrollPhysics(),
@@ -93,8 +94,11 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
           return AnimationConfiguration.synchronized(
             duration: Duration(milliseconds: 375),
             child: SlideAnimation(
+              // delay: Duration(milliseconds: 100),
               verticalOffset: 20.0,
+              // curve: Curves.easeIn,
               child: FadeInAnimation(
+                duration: Duration(milliseconds: 500),
                 child: mediaListItem,
               ),
             ),

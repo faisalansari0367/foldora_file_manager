@@ -41,7 +41,9 @@ class CopyUtils {
   }
 
   static Stream<Map<String, dynamic>> _toCopyDirectories(
-      Directory item, String currentPath) async* {
+    Directory item,
+    String currentPath,
+  ) async* {
     final copiedDir = Directory(p.join(currentPath, p.basename(item.path)));
     await copiedDir.create();
     var stream = item.list();
@@ -55,7 +57,9 @@ class CopyUtils {
   }
 
   static Stream<Map<String, dynamic>> _copyFileSystemEntity(
-      File file, String folderDestPath) async* {
+    File file,
+    String folderDestPath,
+  ) async* {
     final Stream<List<int>> srcFile = file.openRead();
     final int srcFileLength = await file.length();
     var _srcSize = FileUtils.formatBytes(srcFileLength, 2);
@@ -76,8 +80,7 @@ class CopyUtils {
     await destFile.close();
   }
 
-  static Future<int> _getTotalSize(
-      List<FileSystemEntity> _selectedMediaItems) async {
+  static Future<int> _getTotalSize(List<FileSystemEntity> _selectedMediaItems) async {
     var totalSize = 0;
     for (var item in _selectedMediaItems) {
       if (item is Directory) {

@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'package:files/utilities/DataModel.dart';
 import 'package:files/utilities/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/rendering.dart';
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,8 +19,9 @@ class MyProvider extends ChangeNotifier {
   }
 
   void init() async {
-    await diskSpace();
-    initSharedPreferences();
+    final timer = Stopwatch()..start();
+    await Future.wait([diskSpace(), initSharedPreferences()]);
+    log('future completes in ${timer.elapsed.inMilliseconds}');
   }
 
   //   StorageDetails.watchFilesForChanges.listen((dynamic event) {
@@ -44,7 +45,7 @@ class MyProvider extends ChangeNotifier {
     scrollListener = listener;
   }
 
-  void initSharedPreferences() async {
+  Future<void> initSharedPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     _prefs = prefs;
     notifyListeners();
@@ -76,6 +77,8 @@ class MyProvider extends ChangeNotifier {
       throw Exception(e);
     }
   }
+
+  void notify() => Future.delayed(Duration(milliseconds: 200), () => notifyListeners());
 
   Future<void> rename(FileSystemEntity item, String name) async {
     final newPath = item.path.replaceAll(p.basename(item.path), name);
