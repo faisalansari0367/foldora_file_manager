@@ -22,6 +22,7 @@ class MyProvider extends ChangeNotifier {
     final timer = Stopwatch()..start();
     await Future.wait([diskSpace(), initSharedPreferences()]);
     log('future completes in ${timer.elapsed.inMilliseconds}');
+    timer.stop();
   }
 
   //   StorageDetails.watchFilesForChanges.listen((dynamic event) {

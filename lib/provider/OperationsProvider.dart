@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:files/utilities/CopyUtils.dart';
@@ -7,8 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart' as p;
 import '../sizeConfig.dart';
 import '../utilities/OperationsUtils.dart';
-
-import 'package:storage_details/storage_details.dart';
 
 class Operations extends ChangeNotifier {
   int _copied = 0;
@@ -73,12 +70,12 @@ class Operations extends ChangeNotifier {
       for (var item in _selectedMediaItems) {
         await item.delete(recursive: true);
       }
+      _selectedMediaItems.clear();
     } on FileSystemException catch (e) {
       print(e.toString());
       // StorageDetails.deleteWhenError(sharePaths());
       // notifyListeners();
     }
-    _selectedMediaItems.clear();
     notifyListeners();
   }
 

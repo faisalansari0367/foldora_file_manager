@@ -39,7 +39,9 @@ class _SplashScreenState extends State<SplashScreen> {
   static final iconPath2 = 'assets/undraw_file_manager_j85s.svg';
 
   void redirectToHome() {
-    final pageView = PageView(children: [HomePage(), HomePage()]);
+    final pageView = PageView(
+      children: [HomePage(), HomePage()],
+    );
     final route = MaterialPageRoute(builder: (context) => pageView);
     Navigator.pushReplacement(context, route);
   }
@@ -73,6 +75,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: PageView(
           onPageChanged: (int page) => _initialPage = page,
           controller: pageController,
+          physics: NeverScrollableScrollPhysics(),
           children: [
             screen(iconPath, 'Allow Permission', _onpressed),
             screen(iconPath2, 'Let"s Explore', redirectToHome)

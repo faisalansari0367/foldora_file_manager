@@ -40,7 +40,7 @@ class CustomConsumer extends StatelessWidget {
           ),
         );
         return SliverAppBar(
-          systemOverlayStyle: AppbarUtils.systemUiOverylay(MyColors.darkGrey),
+          systemOverlayStyle: AppbarUtils.systemUiOverylay(),
           pinned: true,
           backgroundColor: MyColors.darkGrey,
           leading: AppbarUtils.backIcon(context),

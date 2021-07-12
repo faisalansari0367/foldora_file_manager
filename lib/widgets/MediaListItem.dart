@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../sizeConfig.dart';
+import 'MyAppBar.dart';
 
 class MediaListItem extends StatefulWidget {
   final Color selectedColor;
@@ -61,16 +62,17 @@ class _MediaListItemState extends State<MediaListItem> {
       onTap: widget.ontap,
       onLongPress: widget.onLongPress,
       child: Consumer<Operations>(
+        child: padding,
         builder: (context, provider, child) {
           final selectedMedia = provider.selectedMedia;
           final isSelected = selectedMedia.contains(widget.data);
           final color = isSelected ? widget.selectedColor : Colors.transparent;
           return Container(
+            // duration: AppbarUtils.duration,
             color: color,
             child: child,
           );
         },
-        child: padding,
       ),
     );
   }
@@ -98,7 +100,7 @@ class _Item extends StatelessWidget {
               ),
             ),
             SizedBox(height: Responsive.height(0.5)),
-            description,
+            if (description != null) description,
           ],
         ),
       ),

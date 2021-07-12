@@ -51,22 +51,38 @@ class MediaUtils {
   }
 
   static Widget description(FileSystemEntity data, {Color textColor}) {
-    return FutureBuilder(
-      future: FileUtils.worker.doWork(FileUtils.checkFileType, data),
-      builder: (context, snapshot) {
-        var text = '';
-        if (snapshot.hasData && snapshot.data.isNotEmpty) {
-          text = snapshot.data;
-        }
-        return Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 1.4 * Responsive.textMultiplier,
-            color: textColor ?? Colors.grey[700],
-          ),
-        );
-      },
+    var text = '';
+
+    if (data is File) text = '${FileUtils.formatBytes(data.statSync().size, 2)})';
+    if (data is Directory) {
+      text = 'Directory';
+    }
+
+    return Text(
+      text,
+      style: TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: 1.4 * Responsive.textMultiplier,
+        color: textColor ?? Colors.grey[700],
+      ),
     );
+
+    // return FutureBuilder(
+    //   future: FileUtils.worker.doWork(FileUtils.checkFileType, data),
+    //   builder: (context, snapshot) {
+    //     var text = '';
+    //     if (snapshot.hasData && snapshot.data.isNotEmpty) {
+    //       text = snapshot.data;
+    //     }
+    //     return Text(
+    //       text,
+    //       style: TextStyle(
+    //         fontWeight: FontWeight.w400,
+    //         fontSize: 1.4 * Responsive.textMultiplier,
+    //         color: textColor ?? Colors.grey[700],
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:files/data_models/AudioModel.dart';
 import 'package:files/data_models/VideoModel.dart';
@@ -15,6 +16,7 @@ class StoragePathProvider extends ChangeNotifier {
   int _videosSize = 0;
   int _photosSize = 0;
   int photosIndex = 0;
+  bool hasBottomNav = false;
 
   int get documentsSize => _documentsSize;
   int get audiosSize => _audiosSize;
@@ -27,12 +29,12 @@ class StoragePathProvider extends ChangeNotifier {
 
   List<Video> _videos = [];
   List<Video> get videosFiles => _videos;
-
+  List<int> selectedPhotos = [];
   List _audiosPath = [];
   List _documentsPath = [];
   List _rootDirectories = [];
-  List _photos = [];
-  List get imagesPath => _photos;
+  List<File> _photos = [];
+  List<File> get imagesPath => _photos;
   List get rootDirectory => _rootDirectories;
   List get audiosPath => _audiosPath;
   List get documentsPath => _documentsPath;
@@ -80,6 +82,20 @@ class StoragePathProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// for deleting photos
+  void deletePhoto(int index) {
+    _photos[index].delete();
+    _photos.removeAt(index);
+    notifyListeners();
+  }
+
+  /// on long press in photos
+  void onLongPress(int index) {
+    selectedPhotos.contains(index) ? selectedPhotos.remove(index) : selectedPhotos.add(index);
+    hasBottomNav = selectedPhotos.isEmpty ? false : true;
+    notifyListeners();
+  }
+
   Future<void> documents() async {
     final documents = await StoragePath.filePath;
     final docs = await FileUtils.worker.doWork(FileUtils.storagePathDocuments, documents);
@@ -118,6 +134,7 @@ class StoragePathProvider extends ChangeNotifier {
     final timer = Stopwatch()..start();
     await Future.wait([photos(), videos(), audios(), documents()]);
     log('future completes in ${timer.elapsed.inMilliseconds} ms');
+    timer.stop();
   }
 
   Future<void> onRefresh() async {

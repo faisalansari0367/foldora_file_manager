@@ -8,8 +8,9 @@ import 'package:files/widgets/ListBuilder.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+
 import 'package:provider/provider.dart';
-import '../../sizeConfig.dart';
 import './MediaStorageInfo.dart';
 import '../../provider/MyProvider.dart';
 import '../../provider/OperationsProvider.dart';
@@ -38,17 +39,73 @@ class MediaPage extends StatefulWidget {
   _MediaPageState createState() => _MediaPageState();
 }
 
-class _MediaPageState extends State<MediaPage> with SingleTickerProviderStateMixin {
+class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
   ScrollController _scrollController;
   ScrollController _listViewController;
   Operations operations;
   MyProvider provider;
 
   //.
+  AnimationController controller;
+  Animation<double> opacity;
+  Animation<double> opacity1;
+  Animation<double> opacity2;
+
+  void initController() {
+    controller = AnimationController(vsync: this, duration: Duration(seconds: 3));
+
+    opacity = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: Interval(
+          0.0,
+          0.8,
+          curve: Curves.ease,
+        ),
+      ),
+    );
+    opacity1 = Tween<double>(
+      begin: 0.8,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: Interval(
+          0.3,
+          0.6,
+          curve: Curves.ease,
+        ),
+      ),
+    );
+    controller.forward();
+
+    // opacity2 = Tween<double>(
+    //   begin: 0.0,
+    //   end: 1.0,
+    // ).animate(
+    //   CurvedAnimation(
+    //     parent: controller,
+    //     curve: Interval(
+    //       0.6,
+    //       1.0,
+    //       curve: Curves.ease,
+    //     ),
+    //   ),
+    // );
+    // controller.forward();
+  }
+
   @override
   void initState() {
+    SystemChrome.setSystemUIOverlayStyle(
+      AppbarUtils.systemUiOverylay(backgroundColor: MyColors.darkGrey),
+    );
     operations = Provider.of<Operations>(context, listen: false);
     provider = Provider.of<MyProvider>(context, listen: false);
+    initController();
     provider.setScrollListener(operations.scrollListener);
     _scrollController = ScrollController();
     _listViewController = ScrollController()..addListener(_scrollListener);
@@ -68,6 +125,7 @@ class _MediaPageState extends State<MediaPage> with SingleTickerProviderStateMix
   @override
   void dispose() {
     print('mediapage disposed');
+    controller.dispose();
     _listViewController.removeListener(_scrollListener);
     _scrollController.dispose();
     super.dispose();
@@ -75,24 +133,29 @@ class _MediaPageState extends State<MediaPage> with SingleTickerProviderStateMix
 
   Widget build(BuildContext context) {
     final storage = widget.storage;
-
+    // var start = 0.0;
+    // var end = 0.0;
     final children = <Widget>[
       MediaStorageInfo(),
       MediaFiles(),
       DirectoryLister(path: storage.path),
     ];
 
-    final listView = ListView.builder(
-      shrinkWrap: true,
-      controller: _listViewController,
-      physics: BouncingScrollPhysics(),
-      itemCount: children.length,
-      itemBuilder: (context, index) => children[index],
-    );
-
     final consumer = Consumer<MyProvider>(
       builder: (context, value, child) {
-        if (storage.path == storage.currentPath) return listView;
+        if (storage.path == storage.currentPath) {
+          return ListView.builder(
+            shrinkWrap: true,
+            controller: _listViewController,
+            physics: BouncingScrollPhysics(),
+            itemCount: children.length,
+            itemBuilder: (context, index) {
+              return children[index];
+            },
+          );
+        }
+        // return listView;
+
         return DirectoryLister(
           path: storage.currentPath,
           scrollController: _listViewController,
@@ -116,11 +179,11 @@ class _MediaPageState extends State<MediaPage> with SingleTickerProviderStateMix
     );
 
     return AnnotatedRegion(
-      value: AppbarUtils.systemUiOverylay(MyColors.darkGrey),
+      value: AppbarUtils.systemUiOverylay(backgroundColor: MyColors.darkGrey),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(child: csv),
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         bottomNavigationBar: OperationsUtils.bottomNavigation(),
         floatingActionButton: const FAB(),
       ),

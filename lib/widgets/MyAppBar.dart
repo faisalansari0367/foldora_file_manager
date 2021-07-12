@@ -14,14 +14,14 @@ class AppbarUtils {
   static const duration = Duration(milliseconds: 100);
   static const splashRadius = 25.0;
 
-  static SystemUiOverlayStyle systemUiOverylay(Color backgroundColor) =>
-      SystemUiOverlayStyle(
+  static SystemUiOverlayStyle systemUiOverylay({Color backgroundColor}) => SystemUiOverlayStyle(
         statusBarBrightness: Brightness.light,
         // systemNavigationBarDividerColor: Colors.white,
         statusBarIconBrightness: Brightness.dark,
         systemNavigationBarColor: Colors.white,
+
         // systemNavigationBarIconBrightness: Brightness.dark,
-        statusBarColor: backgroundColor.withAlpha(248),
+        statusBarColor: backgroundColor ?? Colors.transparent,
       );
 
   static IconButton searchIcon(BuildContext context) {
@@ -97,14 +97,14 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
-  Size get preferredSize => Size.fromHeight(
-      (bottomNavBar ? 12.36 : 6.36) * Responsive.heightMultiplier);
+  Size get preferredSize =>
+      Size.fromHeight((bottomNavBar ? 12.36 : 6.36) * Responsive.heightMultiplier);
 
   @override
   Widget build(BuildContext context) {
     final color = backgroundColor ?? MyColors.darkGrey;
     return AppBar(
-      systemOverlayStyle: AppbarUtils.systemUiOverylay(color),
+      systemOverlayStyle: AppbarUtils.systemUiOverylay(),
       backgroundColor: color,
       leading: AppbarUtils.backIcon(context),
       elevation: 0.0,
