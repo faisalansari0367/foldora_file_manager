@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:files/provider/StoragePathProvider.dart';
 import 'package:files/sizeConfig.dart';
 import 'package:files/utilities/MyColors.dart';
+import 'package:files/widgets/delete_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +39,7 @@ class _BottomSlideAnimationState extends State<BottomSlideAnimation>
 
   @override
   Widget build(BuildContext context) {
+    final storage = Provider.of<StoragePathProvider>(context, listen: false);
     final myChild = Container(
       height: Responsive.height(6),
       color: MyColors.darkGrey,
@@ -43,7 +47,26 @@ class _BottomSlideAnimationState extends State<BottomSlideAnimation>
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              var list = <File>[];
+              for (var item in storage.selectedPhotos) {
+                // list.add(storage.imagesPath[item]);
+                print(item);
+              }
+              print(list);
+              deleteModal(
+                context: context,
+                list: list,
+                onPressed: () {
+                  storage.deletePhotos(list);
+                  for (var item in list) {
+                    storage.imagesPath.remove(item);
+                  }
+                  storage.selectedPhotos.clear();
+                  Navigator.pop(context);
+                },
+              );
+            },
             icon: Icon(Icons.delete),
             color: MyColors.appbarActionsColor,
             splashColor: MyColors.whitish,

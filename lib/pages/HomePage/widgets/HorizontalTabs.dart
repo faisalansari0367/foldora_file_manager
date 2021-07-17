@@ -22,10 +22,10 @@ class HorizontalTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     print('horizontal tabs');
     final MyProvider provider = Provider.of<MyProvider>(context, listen: true);
-    final list = provider?.data;
+    final list = provider.data;
     final PageView pageView = PageView.builder(
       onPageChanged: (value) => provider.onPageChanged(value),
-      allowImplicitScrolling: true,
+      // allowImplicitScrolling: true,
       itemCount: list.length,
       itemBuilder: (context, index) {
         return MediaPage(
@@ -52,8 +52,6 @@ class HorizontalTabs extends StatelessWidget {
     return Container(
       height: 40 * Responsive.heightMultiplier,
       child: ListView(
-        // reverse: true,
-        primary: true,
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
         children: children,

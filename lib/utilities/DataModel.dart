@@ -33,8 +33,6 @@ class Data {
 
   @override
   bool operator ==(Object other) {
-    // currentPath == other.currentPath
-
     if (other is Data &&
         currentPath == other.currentPath &&
         path == other.path &&
@@ -46,5 +44,10 @@ class Data {
     } else {
       return false;
     }
+  }
+
+  @override
+  String toString() {
+    return 'path $path\n currentPath: $currentPath\n used: $used\n free $free \n navItems: $navItems\n total: $total';
   }
 }

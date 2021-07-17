@@ -22,21 +22,14 @@ class CircleChart extends StatefulWidget {
   _CircleChartState createState() => _CircleChartState();
 }
 
-class _CircleChartState extends State<CircleChart>
-    with TickerProviderStateMixin {
+class _CircleChartState extends State<CircleChart> with SingleTickerProviderStateMixin {
   AnimationController _controller;
+  Animation<double> tween;
   static const duration = const Duration(milliseconds: 1000);
   var percentage = 0.0;
   void createAnimation(AnimationController controller) {
-    final curved =
-        CurvedAnimation(parent: controller, curve: Curves.easeInOutBack);
-    final tween = Tween<double>(begin: 0, end: widget.percentage);
-    final animationValue = tween.animate(curved);
-    animationValue.addListener(() {
-      setState(() {
-        percentage = animationValue.value;
-      });
-    });
+    final curved = CurvedAnimation(parent: controller, curve: Curves.easeInOutBack);
+    tween = Tween<double>(begin: 0, end: widget.percentage).animate(curved);
   }
 
   @override
@@ -48,14 +41,14 @@ class _CircleChartState extends State<CircleChart>
 
     createAnimation(_controller);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.forward(); // Start the animation when widget is displayed
+      // Start the animation when widget is displayed
+      _controller.forward();
     });
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant CircleChart oldWidget) {
-    print('widget update');
     createAnimation(_controller);
     _controller.forward();
     super.didUpdateWidget(oldWidget);
@@ -63,7 +56,6 @@ class _CircleChartState extends State<CircleChart>
 
   @override
   void dispose() {
-    _controller.removeListener(() {});
     _controller.dispose();
     _controller = null;
     super.dispose();
@@ -72,16 +64,21 @@ class _CircleChartState extends State<CircleChart>
   @override
   Widget build(BuildContext context) {
     final size = Responsive.imageSize(5);
-    return CustomPaint(
-      willChange: true,
-      key: UniqueKey(),
-      size: Size(size, size),
-      painter: MyPainter(
-        strokeWidth: widget.strokeWidth,
-        color: widget.color,
-        radius: Responsive.imageSize(widget.radius),
-        percentage: percentage,
-      ),
+    return AnimatedBuilder(
+      animation: tween,
+      builder: (context, child) {
+        return CustomPaint(
+          willChange: true,
+          key: UniqueKey(),
+          size: Size(size, size),
+          painter: MyPainter(
+            strokeWidth: widget.strokeWidth,
+            color: widget.color,
+            radius: Responsive.imageSize(widget.radius),
+            percentage: tween.value,
+          ),
+        );
+      },
     );
   }
 }

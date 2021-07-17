@@ -20,7 +20,7 @@ class _FABState extends State<FAB> {
     final ontap = () => OperationsUtils.myDialog(context, eventName: "Create", path: widget.path);
     final Widget open = OperationsUtils.customFAB(addIcon, ontap: ontap);
 
-    return Selector<Operations, bool>(
+    return Selector<OperationsProvider, bool>(
       selector: (_, value) => value.operationIsRunning,
       builder: (_, value, __) {
         return AnimatedCrossFade(

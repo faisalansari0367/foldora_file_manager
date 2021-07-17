@@ -7,7 +7,12 @@ import 'package:path/path.dart' as p;
 import '../sizeConfig.dart';
 import '../utilities/OperationsUtils.dart';
 
-class Operations extends ChangeNotifier {
+class OperationsProvider extends ChangeNotifier {
+  // Operations operations;
+  // OperationsProvider() {
+  //   operations = Operations();
+  // }
+
   int _copied = 0;
   double _progress = 0.0;
   String _speed = '';
@@ -25,19 +30,19 @@ class Operations extends ChangeNotifier {
   List<FileSystemEntity> get selectedMedia => _selectedMediaItems;
 
   // this is not related to operations its for appbar
-  double appbarSize = 0 * Responsive.heightMultiplier;
-  bool navRail = false;
-  void scrollListener(double size) {
-    appbarSize = size * Responsive.heightMultiplier;
-    // navRail = navigation;
-    notifyListeners();
-  }
+  // double appbarSize = 0 * Responsive.heightMultiplier;
+  // bool navRail = false;
 
-  double scrolledPixels = 0.0;
-  void pixelsScrolled(double value) {
-    scrolledPixels = value;
-    notifyListeners();
-  }
+  // void scrollListener(double size) {
+  //   appbarSize = size * Responsive.heightMultiplier;
+  //   notifyListeners();
+  // }
+
+  // double scrolledPixels = 0.0;
+  // void pixelsScrolled(double value) {
+  //   scrolledPixels = value;
+  //   notifyListeners();
+  // }
 
   //
   List<String> sharePaths() {
@@ -59,6 +64,7 @@ class Operations extends ChangeNotifier {
   void onTapOfLeading(FileSystemEntity item) {
     var isExist = _selectedMediaItems.contains(item);
     isExist ? _selectedMediaItems.remove(item) : _selectedMediaItems.add(item);
+    // operations.selectItem(_selectedMediaItems, item);
     showBottomNavbar = _selectedMediaItems.isEmpty ? false : true;
     print(_selectedMediaItems);
     notifyListeners();
@@ -73,16 +79,18 @@ class Operations extends ChangeNotifier {
       _selectedMediaItems.clear();
     } on FileSystemException catch (e) {
       print(e.toString());
-      // StorageDetails.deleteWhenError(sharePaths());
-      // notifyListeners();
+      notifyListeners();
     }
+    // operations.delete(_selectedMediaItems);
     notifyListeners();
   }
 
   bool operationIsRunning = false;
 
   Future<void> copySelectedItems(String currentPath) async {
+    if (selectedMedia.isEmpty) return;
     operationIsRunning = true;
+
     Map args = {'items': selectedMedia, 'currentPath': currentPath};
     final Stream<dynamic> stream = CopyUtils.copySelectedItems(args);
     // await FileUtils.worker.doOperation(CopyUtils.copySelectedItems, args);
@@ -114,7 +122,7 @@ class Operations extends ChangeNotifier {
     }
     operationIsRunning = false;
     clearFields();
-    notifyListeners();
+    // notifyListeners();
   }
 
   Future<void> renameFSE(BuildContext context) async {

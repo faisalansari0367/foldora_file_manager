@@ -1,5 +1,6 @@
 import 'package:files/pages/HomePage/widgets/HorizontalTabs.dart';
 import 'package:files/pages/HomePage/widgets/circleChartAndFilePercent.dart';
+import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/StoragePathProvider.dart';
 import 'package:files/widgets/FloatingActionButton.dart';
 import 'package:files/widgets/MyAppBar.dart';
@@ -17,6 +18,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<MyProvider>(context, listen: false);
+    print(provider.data.toString());
     final children = <Widget>[
       Padding(
         padding: EdgeInsets.only(

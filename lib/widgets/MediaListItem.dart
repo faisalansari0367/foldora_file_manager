@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../sizeConfig.dart';
-import 'MyAppBar.dart';
 
 class MediaListItem extends StatefulWidget {
   final Color selectedColor;
@@ -61,7 +60,7 @@ class _MediaListItemState extends State<MediaListItem> {
     return InkWell(
       onTap: widget.ontap,
       onLongPress: widget.onLongPress,
-      child: Consumer<Operations>(
+      child: Consumer<OperationsProvider>(
         child: padding,
         builder: (context, provider, child) {
           final selectedMedia = provider.selectedMedia;
@@ -94,7 +93,7 @@ class _Item extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: 1.9 * Responsive.textMultiplier,
+                fontSize: 1.8 * Responsive.textMultiplier,
                 fontWeight: FontWeight.w500,
                 color: titleColor ?? Colors.grey[800],
               ),

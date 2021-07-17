@@ -21,7 +21,7 @@ class LeadingIcon extends StatelessWidget {
   });
 
   Widget build(BuildContext context) {
-    final provider = Provider.of<Operations>(context, listen: false);
+    final provider = Provider.of<OperationsProvider>(context, listen: false);
     return Center(
       child: InkWell(
         onTap: () => provider.onTapOfLeading(data),

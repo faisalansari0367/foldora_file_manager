@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:files/provider/StoragePathProvider.dart';
 import 'package:files/sizeConfig.dart';
 import 'package:files/utilities/MyColors.dart';
@@ -8,7 +10,8 @@ import 'package:provider/provider.dart';
 
 class FullScreenImage extends StatefulWidget {
   final int index;
-  FullScreenImage({this.index});
+  final File file;
+  FullScreenImage({this.index, this.file});
 
   @override
   _FullScreenImageState createState() => _FullScreenImageState();
@@ -20,6 +23,8 @@ class _FullScreenImageState extends State<FullScreenImage> {
   void initState() {
     super.initState();
     controller = PageController(initialPage: widget.index);
+    final provider = Provider.of<StoragePathProvider>(context, listen: false);
+    provider.updatePageViewCurrentIndex(widget.index);
   }
 
   @override
@@ -31,8 +36,8 @@ class _FullScreenImageState extends State<FullScreenImage> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<StoragePathProvider>(context, listen: false);
-    final width = 1080;
-    bool fullScreen = true;
+    // bool fullScreen = true;
+    // int index = 0;
     return WillPopScope(
       onWillPop: () async {
         SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom, SystemUiOverlay.top]);
@@ -44,31 +49,61 @@ class _FullScreenImageState extends State<FullScreenImage> {
         child: AnnotatedRegion(
           value: AppbarUtils.systemUiOverylay(),
           child: Scaffold(
-            body: Container(
-              color: Colors.black,
-              child: Center(
-                child: PageView.builder(
-                  allowImplicitScrolling: true,
-                  physics: BouncingScrollPhysics(),
-                  controller: controller,
-                  itemCount: provider.imagesPath.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onVerticalDragStart: (_) => dragStart(context, provider.deletePhoto, index),
-                      onVerticalDragUpdate: print,
-                      onVerticalDragEnd: print,
-                      // onVerticalDragDown: (_) => Navigator.pop(context),
-                      onTap: () {
-                        fullScreen ? resetOverlay() : setOverlay();
-                        fullScreen = !fullScreen;
-                      },
-                      child: Image.file(
-                        provider.imagesPath[index],
-                        cacheWidth: width,
-                      ),
-                    );
-                  },
-                ),
+            backgroundColor: Colors.black,
+            body: SafeArea(
+              child: Stack(
+                // fit: StackFit.expand,
+                children: [
+                  PageView.builder(
+                    physics: BouncingScrollPhysics(),
+                    controller: controller,
+                    itemCount: provider.imagesPath.length,
+                    onPageChanged: provider.updatePageViewCurrentIndex,
+                    itemBuilder: (context, index) {
+                      // final image = provider.imagesPath[index];
+
+                      print(provider.pageViewCurrentIndex);
+                      print('index of current photo : $index');
+                      return InteractiveViewer(
+                        minScale: 1.0,
+                        maxScale: 100.0,
+                        child: Image.file(
+                          widget.file,
+                          fit: BoxFit.contain,
+                          cacheWidth: 1080,
+                        ),
+                      );
+                    },
+                  ),
+                  Positioned(
+                    bottom: 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: Responsive.widthMultiplier * 15,
+                        ),
+                        button(
+                          Icons.delete_outline_rounded,
+                          onPressed: () {
+                            provider.deleteAndUpdateImage(controller);
+                          },
+                        ),
+                        SizedBox(
+                          width: Responsive.widthMultiplier * 15,
+                        ),
+                        button(Icons.share_rounded),
+                        SizedBox(
+                          width: Responsive.widthMultiplier * 15,
+                        ),
+                        button(Icons.info_outline_rounded),
+                        SizedBox(
+                          width: Responsive.widthMultiplier * 15,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -76,43 +111,13 @@ class _FullScreenImageState extends State<FullScreenImage> {
       ),
     );
   }
-
-  void dragStart(BuildContext context, Function deletePhoto, int index) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          color: MyColors.darkGrey,
-          height: Responsive.height(6),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              button(
-                Icons.delete,
-                onPressed: () {
-                  controller.animateToPage(
-                    index++,
-                    duration: Duration(milliseconds: 500),
-                    curve: Curves.easeIn,
-                  );
-                  Future.delayed(Duration.zero, () {
-                    deletePhoto(index);
-                  });
-                },
-              ),
-              button(Icons.info),
-              button(Icons.share),
-              // button(iconData)
-            ],
-          ),
-        );
-      },
-    );
-  }
 }
 
 void setOverlay() {
-  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom, SystemUiOverlay.top]);
+  SystemChrome.setEnabledSystemUIOverlays([
+    SystemUiOverlay.bottom,
+    SystemUiOverlay.top,
+  ]);
 }
 
 void resetOverlay() {
@@ -129,4 +134,45 @@ IconButton button(IconData iconData, {onPressed}) {
       size: Responsive.imageSize(6),
     ),
   );
+}
+
+class MyPageView extends StatefulWidget {
+  final int index;
+  final File file;
+  const MyPageView({Key key, this.index, this.file}) : super(key: key);
+
+  @override
+  _MyPageViewState createState() => _MyPageViewState();
+}
+
+class _MyPageViewState extends State<MyPageView> {
+  PageController pageController;
+  @override
+  void initState() {
+    pageController = PageController(initialPage: widget.index);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<StoragePathProvider>(context, listen: false);
+    return PageView.builder(
+      physics: BouncingScrollPhysics(),
+      controller: pageController,
+      onPageChanged: provider.updatePageViewCurrentIndex,
+      itemBuilder: (context, index) {
+        return Image.file(
+          // provider.imagesPath[index],
+          widget.file,
+          cacheWidth: 1080,
+        );
+      },
+    );
+  }
 }

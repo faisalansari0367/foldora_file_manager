@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:files/data_models/AudioModel.dart';
+import 'package:files/data_models/ImageModel.dart';
 import 'package:files/data_models/VideoModel.dart';
 import 'package:files/utilities/Utils.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class StoragePathProvider extends ChangeNotifier {
   int _videosSize = 0;
   int _photosSize = 0;
   int photosIndex = 0;
+  int pageViewCurrentIndex = 0;
   bool hasBottomNav = false;
 
   int get documentsSize => _documentsSize;
@@ -33,8 +35,8 @@ class StoragePathProvider extends ChangeNotifier {
   List _audiosPath = [];
   List _documentsPath = [];
   List _rootDirectories = [];
-  List<File> _photos = [];
-  List<File> get imagesPath => _photos;
+  List<ImageModel> _photos = [];
+  List<ImageModel> get imagesPath => _photos;
   List get rootDirectory => _rootDirectories;
   List get audiosPath => _audiosPath;
   List get documentsPath => _documentsPath;
@@ -58,6 +60,38 @@ class StoragePathProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// this function updates the index to delete the photo in pageView
+  void updatePageViewCurrentIndex(int index) {
+    pageViewCurrentIndex = index;
+    notifyListeners();
+  }
+
+  void deleteAndUpdateImage(PageController controller) async {
+    log('index is $pageViewCurrentIndex');
+    controller.animateToPage(
+      pageViewCurrentIndex + 1,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeInOutExpo,
+    );
+    await deletePhoto(pageViewCurrentIndex);
+    updatePageViewCurrentIndex(pageViewCurrentIndex + 1);
+    log('after updating index $pageViewCurrentIndex');
+    // notifyListeners()
+    // print(pageViewCurrentIndex);
+  }
+
+  void addImage(int index) {
+    selectedPhotos.contains(index) ? selectedPhotos.remove(index) : selectedPhotos.add(index);
+    notifyListeners();
+  }
+
+  Future<void> deletePhotos(List<FileSystemEntity> list) async {
+    for (var item in list) {
+      await item.delete();
+    }
+    notifyListeners();
+  }
+
   bool reverse = false;
   void onHorizontalDragEnd(double velocity, int value) {
     if (velocity < 0 && velocity != 0.0) {
@@ -74,6 +108,7 @@ class StoragePathProvider extends ChangeNotifier {
 
   Future<void> photos() async {
     final imagesPath = await StoragePath.imagesPath;
+    // log(imagesPath);
     final images = await FileUtils.worker.doWork(FileUtils.imagesPath, imagesPath);
     // await FileUtils.imagesPath(imagesPath);
     _photos = images['data'];
@@ -83,8 +118,8 @@ class StoragePathProvider extends ChangeNotifier {
   }
 
   /// for deleting photos
-  void deletePhoto(int index) {
-    _photos[index].delete();
+  void deletePhoto(int index) async {
+    // await _photos[index].delete();
     _photos.removeAt(index);
     notifyListeners();
   }

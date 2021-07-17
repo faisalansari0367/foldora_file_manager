@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:files/data_models/AudioModel.dart';
 import 'package:files/data_models/DocumentsModel.dart';
+import 'package:files/data_models/ImageModel.dart';
 import 'package:files/data_models/VideoModel.dart';
 import 'package:files/utilities/SearchUtils.dart';
 import 'package:files/utilities/Worker.dart';
@@ -35,9 +36,7 @@ class FileUtils {
       try {
         final List list = await data.list().toList();
         final int length = list.length;
-        itemsCount = length == 1
-            ? 'Directory | $length Item'
-            : 'Directory | $length Items';
+        itemsCount = length == 1 ? 'Directory | $length Item' : 'Directory | $length Items';
       } on FileSystemException catch (e) {
         print(e);
       }
@@ -142,11 +141,13 @@ class FileUtils {
   static imagesPath(json) async {
     final decodeJson = await jsonDecode(json);
     int _size = 0;
-    List<File> storePhotos = [];
+    List<ImageModel> storePhotos = [];
     for (var item in decodeJson) {
+      final model = ImageModel.fromJson(item);
+      storePhotos.add(model);
       for (var i in item['files']) {
         final file = File(i);
-        storePhotos.add(file);
+        // storePhotos.add(file);
         var fileStat = await file.stat();
         _size += fileStat.size;
       }
@@ -154,12 +155,9 @@ class FileUtils {
     return {"data": storePhotos, "size": _size};
   }
 
-  static List<FileSystemEntity> sortListAlphabetically(
-      List<FileSystemEntity> list) {
-    var sort = (a, b) => p
-        .basename(a.path)
-        .toLowerCase()
-        .compareTo(p.basename(b.path).toLowerCase());
+  static List<FileSystemEntity> sortListAlphabetically(List<FileSystemEntity> list) {
+    var sort =
+        (a, b) => p.basename(a.path).toLowerCase().compareTo(p.basename(b.path).toLowerCase());
     list.sort(sort);
     return list;
   }

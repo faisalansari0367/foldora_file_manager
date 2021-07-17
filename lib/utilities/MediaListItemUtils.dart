@@ -53,7 +53,7 @@ class MediaUtils {
   static Widget description(FileSystemEntity data, {Color textColor}) {
     var text = '';
 
-    if (data is File) text = '${FileUtils.formatBytes(data.statSync().size, 2)})';
+    if (data is File) text = '${FileUtils.formatBytes(data.statSync().size, 2)}';
     if (data is Directory) {
       text = 'Directory';
     }

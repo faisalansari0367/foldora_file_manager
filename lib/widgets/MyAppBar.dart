@@ -11,18 +11,19 @@ import 'Search.dart';
 import 'package:path/path.dart' as p;
 
 class AppbarUtils {
-  static const duration = Duration(milliseconds: 100);
+  static const duration = const Duration(milliseconds: 100);
   static const splashRadius = 25.0;
 
-  static SystemUiOverlayStyle systemUiOverylay({Color backgroundColor}) => SystemUiOverlayStyle(
-        statusBarBrightness: Brightness.light,
-        // systemNavigationBarDividerColor: Colors.white,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: Colors.white,
-
-        // systemNavigationBarIconBrightness: Brightness.dark,
-        statusBarColor: backgroundColor ?? Colors.transparent,
-      );
+  static SystemUiOverlayStyle systemUiOverylay({Color backgroundColor}) {
+    return SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: Colors.white,
+      statusBarColor: backgroundColor ?? Colors.transparent,
+      // systemNavigationBarDividerColor: Colors.white,
+      // systemNavigationBarIconBrightness: Brightness.dark,
+    );
+  }
 
   static IconButton searchIcon(BuildContext context) {
     return AppbarUtils.icon(
@@ -88,12 +89,14 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final IconData iconData;
   final bool menu;
   final bool bottomNavBar;
+  final Widget bottom;
   // final StorageType storageType;
   const MyAppBar({
     this.backgroundColor,
     this.iconData,
     this.menu,
     this.bottomNavBar = false,
+    this.bottom,
   });
 
   @override
@@ -109,6 +112,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: AppbarUtils.backIcon(context),
       elevation: 0.0,
       actions: [AppbarUtils.searchIcon(context), MyDropDown()],
+      bottom: bottom,
       // bottom: bottomNavBar ? MyBottomAppBar() : null,
     );
   }

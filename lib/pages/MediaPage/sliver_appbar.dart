@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:files/provider/OperationsProvider.dart';
+import 'package:files/provider/scroll_provider.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/MediaPageAppbar.dart';
 import 'package:files/widgets/MyAppBar.dart';
@@ -15,30 +18,26 @@ class MySliverAppBar extends StatefulWidget {
 }
 
 class _MySliverAppBarState extends State<MySliverAppBar> {
-  @override
-  Widget build(BuildContext context) {
-    return CustomConsumer();
-  }
-}
+  static const duration = const Duration(milliseconds: 500);
 
-class CustomConsumer extends StatelessWidget {
+  final bottom = AnimationConfiguration.synchronized(
+    duration: duration,
+    child: FadeInAnimation(
+      delay: duration,
+      child: SlideAnimation(
+        verticalOffset: -50,
+        child: MyBottomAppBar(
+          backgroundColor: Colors.transparent,
+        ),
+      ),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
-    return Selector<Operations, double>(
+    return Selector<ScrollProvider, double>(
       selector: (context, value) => value.appbarSize,
       builder: (context, value, child) {
-        final bottom = AnimationConfiguration.synchronized(
-          duration: Duration(milliseconds: 500),
-          child: FadeInAnimation(
-            delay: Duration(milliseconds: 500),
-            child: SlideAnimation(
-              verticalOffset: -50,
-              child: MyBottomAppBar(
-                backgroundColor: Colors.transparent,
-              ),
-            ),
-          ),
-        );
         return SliverAppBar(
           systemOverlayStyle: AppbarUtils.systemUiOverylay(),
           pinned: true,
@@ -47,6 +46,7 @@ class CustomConsumer extends StatelessWidget {
           actions: [AppbarUtils.searchIcon(context), MyDropDown()],
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(value),
+            // child: value != Responsive.height(6) ? SizedBox() : bottom,
             child: value != Responsive.height(6) ? SizedBox() : bottom,
           ),
         );

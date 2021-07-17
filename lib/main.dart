@@ -3,6 +3,7 @@ import 'package:files/provider/LeadingIconProvider.dart';
 import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/provider/StoragePathProvider.dart';
 import 'package:files/provider/MyProvider.dart';
+import 'package:files/provider/scroll_provider.dart';
 import 'package:files/sizeConfig.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
@@ -71,8 +72,11 @@ class _MyAppState extends State<MyApp> {
                 ChangeNotifierProvider<IconProvider>(
                   create: (context) => IconProvider(),
                 ),
-                ChangeNotifierProvider<Operations>(
-                  create: (context) => Operations(),
+                ChangeNotifierProvider<OperationsProvider>(
+                  create: (context) => OperationsProvider(),
+                ),
+                ChangeNotifierProvider<ScrollProvider>(
+                  create: (context) => ScrollProvider(),
                 ),
               ],
               child: MaterialApp(

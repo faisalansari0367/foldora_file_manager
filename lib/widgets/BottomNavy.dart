@@ -26,13 +26,17 @@ class _BottomNavyState extends State<BottomNavy> {
       elevation: 4,
       context: context,
       builder: (context) {
-        final operations = Provider.of<Operations>(context, listen: true);
+        final operations = Provider.of<OperationsProvider>(context, listen: true);
         final myProvider = Provider.of<MyProvider>(context, listen: false);
 
         return Container(
-          color: Color(0xFF737373),
+          // color: Color(0xFF737373),
+          color: Colors.transparent,
           width: double.infinity,
           child: Container(
+            // width: Responsive.widthMultiplier * 10,
+            // margin: EdgeInsets.symmetric(horizontal: Responsive.width(3)),
+            padding: EdgeInsets.symmetric(horizontal: Responsive.width(3)),
             decoration: BoxDecoration(
               color: MyColors.darkGrey,
               borderRadius: BorderRadius.only(
@@ -41,14 +45,14 @@ class _BottomNavyState extends State<BottomNavy> {
               ),
             ),
             child: Column(
-              mainAxisSize: MainAxisSize.max,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(height: 40),
                 Row(
                   children: [
                     SizedBox(width: 20),
                     Text(
-                      'Delete files',
+                      'Are you sure want to delete these files',
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: MyColors.whitish,
@@ -74,6 +78,7 @@ class _BottomNavyState extends State<BottomNavy> {
                           icon: Icon(
                             Icons.clear,
                             color: Colors.grey[700],
+                            size: Responsive.imageSize(5),
                           ),
                         ),
                         title: p.basename(data.path),
@@ -104,13 +109,21 @@ class _BottomNavyState extends State<BottomNavy> {
                     // padding: EdgeInsets.all(),
                     elevation: 4,
                     primary: MyColors.teal,
+                    shadowColor: MyColors.teal,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0),
+                      borderRadius: BorderRadius.circular(32.0),
                       side: BorderSide(color: MyColors.teal),
                     ),
-                    minimumSize: Size(Responsive.width(85), Responsive.height(6)),
+
+                    minimumSize: Size(Responsive.width(87), Responsive.height(6)),
                   ),
-                  child: Text('Delete'),
+                  child: Text(
+                    'Delete Files',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
                 SizedBox(height: Responsive.height(1)),
               ],
@@ -123,9 +136,10 @@ class _BottomNavyState extends State<BottomNavy> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<Operations>(context, listen: true);
+    final provider = Provider.of<OperationsProvider>(context, listen: true);
     final myProvider = Provider.of<MyProvider>(context, listen: true);
     final currentPath = myProvider.data[myProvider.currentPage].currentPath;
+    final color = Colors.black;
     final _paste = () async {
       await provider.copySelectedItems(currentPath);
       provider.ontapCopy();
@@ -135,7 +149,7 @@ class _BottomNavyState extends State<BottomNavy> {
     final IconButton copyPasteSwitcher = provider.showCopy
         ? IconButton(
             splashColor: Colors.teal[300],
-            icon: Icon(Icons.content_copy, color: Colors.teal),
+            icon: Icon(Icons.content_copy, color: color),
             onPressed: () => provider.ontapCopy(),
             key: ValueKey(1),
           )
@@ -146,49 +160,47 @@ class _BottomNavyState extends State<BottomNavy> {
             key: ValueKey(2),
           );
 
-    final sizedBox = SizedBox(width: 0.2 * Responsive.widthMultiplier);
+    // final sizedBox = SizedBox(width: 0.2 * Responsive.widthMultiplier);
 
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
+      color: MyColors.white,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // mainAxisSize: MainAxisSize.min,
         children: [
-          sizedBox,
+          // sizedBox,
           AnimatedSwitcher(
             duration: Duration(milliseconds: 200),
             child: copyPasteSwitcher,
           ),
           IconButton(
             splashColor: Colors.red[300],
-            icon: Icon(Icons.delete, color: Colors.red),
+            icon: Icon(Icons.delete, color: color),
             onPressed: _showModalBottomSheet,
           ),
           IconButton(
-            icon: Icon(Icons.create, color: Colors.amber),
+            icon: Icon(Icons.create, color: color),
             onPressed: () async {
               provider.renameFSE(context);
               myProvider.notify();
             },
           ),
           IconButton(
-            icon: Icon(Icons.content_cut, color: Colors.cyan),
+            icon: Icon(Icons.content_cut, color: color),
             onPressed: () {
               provider.move(currentPath);
               myProvider.notify();
             },
           ),
           IconButton(
-            icon: Icon(Icons.share, color: Colors.cyan),
+            icon: Icon(Icons.share, color: color),
             onPressed: () => Share.shareFiles(provider.sharePaths()),
           ),
           IconButton(
-            icon: Icon(Icons.more_vert, color: Colors.teal),
+            icon: Icon(Icons.more_vert, color: color),
             onPressed: () {},
           ),
-          sizedBox
+          // sizedBox
         ],
       ),
     );
