@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:files/provider/StoragePathProvider.dart';
+import 'package:files/sizeConfig.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,9 @@ class FolderImage extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       height: 200,
+      // decoration: BoxDecoration(
+      //   gradient: LinearGradient(colors: [Colors.red, Colors.transparent]),
+      // ),
       // width: 200,
       child: GestureDetector(
         onTap: () {
@@ -67,23 +71,53 @@ class FolderImage extends StatelessWidget {
           alignment: Alignment.center,
 
           children: [
-            Opacity(
-              opacity: 0.4,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.file(
-                  image,
-                  cacheWidth: 720,
-                  fit: BoxFit.cover,
-                ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.file(
+                image,
+                cacheWidth: 720,
+                fit: BoxFit.cover,
               ),
             ),
-            Center(
-              child: Text(
-                folderName,
-                style: TextStyle(
-                  color: Colors.grey[400],
-                  fontSize: 20,
+            Positioned(
+              left: 0,
+              bottom: 0,
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.black26, Colors.transparent],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                ),
+                width: Responsive.width(100),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        folderName,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '43 Photos',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

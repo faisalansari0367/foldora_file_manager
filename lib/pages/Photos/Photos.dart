@@ -28,7 +28,7 @@ class Photos extends StatelessWidget {
       },
     );
     return Scaffold(
-      bottomNavigationBar: BottomSlideAnimation(),
+      // bottomNavigationBar: BottomSlideAnimation(),
       backgroundColor: Colors.black54,
       appBar: MyAppBar(
         backgroundColor: MyColors.darkGrey,
