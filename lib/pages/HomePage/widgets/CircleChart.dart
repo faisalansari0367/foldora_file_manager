@@ -25,7 +25,7 @@ class CircleChart extends StatefulWidget {
 class _CircleChartState extends State<CircleChart> with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> tween;
-  static const duration = const Duration(milliseconds: 1000);
+  static const duration = Duration(milliseconds: 1000);
   var percentage = 0.0;
   void createAnimation(AnimationController controller) {
     final curved = CurvedAnimation(parent: controller, curve: Curves.easeInOutBack);
@@ -98,20 +98,20 @@ class MyPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    var paint = Paint()
+    final paint = Paint()
       ..color = color
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    var backGroundCircle = Paint()
+    final backGroundCircle = Paint()
       ..color = Colors.grey[100]
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    Offset center = Offset(size.width / 2, size.height / 2);
-    double arcAngle = 2 * pi * percentage / 100;
+    final Offset center = Offset(size.width / 2, size.height / 2);
+    final double arcAngle = 2 * pi * percentage / 100;
     canvas.drawCircle(center, radius, backGroundCircle);
 
     canvas.drawArc(

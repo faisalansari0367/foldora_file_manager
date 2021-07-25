@@ -68,9 +68,9 @@ class MyProvider extends ChangeNotifier {
     final folderPath = p.join(path, name);
     try {
       if (p.extension(folderPath) != '') {
-        File(folderPath)..create();
+        File(folderPath).create();
       } else {
-        Directory(folderPath)..create();
+        Directory(folderPath).create();
         // print(folderPath);
       }
       notifyListeners();
@@ -95,10 +95,10 @@ class MyProvider extends ChangeNotifier {
 
   /// Only use this function for CircleChartAndFilePercent..
   String calculatePercent(int bytes, int decimals) {
-    if (data.length == 0) return '0.0';
+    if (data.isEmpty) return '0.0';
     final _data = data[currentPage];
-    double percent = bytes / ((_data.total - _data.free)) * 100;
-    final result = percent.isNaN ? "0.0" : percent.toStringAsFixed(decimals);
+    final double percent = bytes / ((_data.total - _data.free)) * 100;
+    final result = percent.isNaN ? '0.0' : percent.toStringAsFixed(decimals);
     return result;
   }
 
@@ -107,13 +107,13 @@ class MyProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<FileSystemEntity>> dirContents(String path, {isShowHidden: false}) async {
-    Map args = {'path': path, 'showHidden': isShowHidden};
+  Future<List<FileSystemEntity>> dirContents(String path, {isShowHidden = false}) async {
+    final Map args = {'path': path, 'showHidden': isShowHidden};
     try {
       final result = await FileUtils.worker.doWork(FileUtils.directoryList, args);
       return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 

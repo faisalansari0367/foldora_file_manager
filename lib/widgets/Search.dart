@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'ListBuilder.dart';
 
 class Search extends SearchDelegate {
-  static double _splashRadius = 25.0;
+  static final double _splashRadius = 25.0;
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -58,7 +58,7 @@ class Search extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     final provider = Provider.of<MyProvider>(context, listen: false);
-    var suggestions = provider.prefs.getStringList('suggestions') ?? [];
+    final suggestions = provider.prefs.getStringList('suggestions') ?? [];
     return ListView.builder(
       itemCount: suggestions.length,
       itemBuilder: (context, int index) {

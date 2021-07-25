@@ -35,7 +35,7 @@ class HorizontalTabs extends StatelessWidget {
       },
     );
 
-    List<Widget> children = <Widget>[
+    final List<Widget> children = <Widget>[
       sizedBox,
       MediaUtils.tab(child: _PhotosTab(), page: Photos(), context: context),
       sizedBox,
@@ -66,15 +66,15 @@ class _PhotosTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<StoragePathProvider>(
       builder: (BuildContext context, photos, child) {
-        var itemsCount = photos.imagesPath.length;
+        final itemsCount = photos.imagesPath.length;
         print(itemsCount);
-        var size = photos.photosSize;
+        final size = photos.photosSize;
         return MediaStack(
-          image: "assets/image.png",
+          image: 'assets/image.png',
           color: Colors.green.withOpacity(0.15),
-          media: "Photos",
-          items: "$itemsCount Items",
-          privacy: "Private Folder",
+          media: 'Photos',
+          items: '$itemsCount Items',
+          privacy: 'Private Folder',
           shadow: Colors.green[200],
           lock: Icon(
             Icons.lock_outline,
@@ -88,7 +88,7 @@ class _PhotosTab extends StatelessWidget {
 }
 
 class _MediaTab extends StatelessWidget {
-  _MediaTab({Key key}) : super(key: key);
+  const _MediaTab({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final storage = Provider.of<MyProvider>(context, listen: false);
@@ -104,11 +104,11 @@ class _MediaTab extends StatelessWidget {
           itemsCount = snapshot?.data?.length;
         }
         return MediaStack(
-          image: "assets/video.png",
+          image: 'assets/video.png',
           color: Colors.amber.withOpacity(0.2),
-          media: "Files",
-          items: "${itemsCount ?? 0} items",
-          privacy: "Private Folder",
+          media: 'Files',
+          items: '${itemsCount ?? 0} items',
+          privacy: 'Private Folder',
           shadow: Colors.amber[200],
           lock: Icon(
             Icons.lock_outline,
@@ -127,17 +127,17 @@ class _VideosTab extends StatelessWidget {
     final provider = Provider.of<StoragePathProvider>(context, listen: true);
     final videosLength = provider.videosFiles.length;
     return MediaStack(
-      image: "assets/doc.png",
+      image: 'assets/doc.png',
       color: Color(0xff7e7dd6).withOpacity(0.2),
-      media: "Videos",
-      items: "${videosLength ?? 0} items",
-      privacy: "Private Folder",
+      media: 'Videos',
+      items: '${videosLength ?? 0} items',
+      privacy: 'Private Folder',
       shadow: Color(0xff7e7dd6).withOpacity(0.5),
       lock: Icon(
         Icons.lock_outline,
         color: Colors.indigo[500],
       ),
-      size: FileUtils.formatBytes((provider.videosSize), 1),
+      size: FileUtils.formatBytes(provider.videosSize, 1),
       // size: '0.0 GB',
     );
   }
@@ -147,13 +147,13 @@ class VideosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<StoragePathProvider>(context);
-    var videos = provider.videosFiles;
+    final videos = provider.videosFiles;
     return Scaffold(
       appBar: MyAppBar(),
       body: ListView.builder(
         itemCount: videos.length,
         itemBuilder: (context, index) {
-          var video = videos[index];
+          final video = videos[index];
           return MediaListItem(
             currentPath: video.file.path,
             data: video.file,

@@ -11,7 +11,7 @@ import 'Search.dart';
 import 'package:path/path.dart' as p;
 
 class AppbarUtils {
-  static const duration = const Duration(milliseconds: 100);
+  static const duration = Duration(milliseconds: 100);
   static const splashRadius = 25.0;
 
   static SystemUiOverlayStyle systemUiOverylay({Color backgroundColor}) {

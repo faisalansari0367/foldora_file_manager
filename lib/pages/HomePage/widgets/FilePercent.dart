@@ -7,7 +7,7 @@ class FilePercent extends StatelessWidget {
   final String name;
   final Future future;
 
-  FilePercent({this.color, this.percent, this.name, this.future});
+  const FilePercent({this.color, this.percent, this.name, this.future});
 
   @override
   Widget build(BuildContext context) {

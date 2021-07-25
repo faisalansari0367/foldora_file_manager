@@ -15,7 +15,7 @@ class MyGridView extends StatefulWidget {
 }
 
 class _MyGridViewState extends State<MyGridView> {
-  int _crossAxisCount = 4;
+  final int _crossAxisCount = 4;
 
   @override
   Widget build(BuildContext context) {

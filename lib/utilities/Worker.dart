@@ -24,19 +24,19 @@ class Worker {
   }
 
   static workerIsolate(SendPort mainSendPort) async {
-    ReceivePort childReceivePort = ReceivePort();
+    final ReceivePort childReceivePort = ReceivePort();
     mainSendPort.send(childReceivePort.sendPort);
 
-    await for (var message in childReceivePort) {
-      SendPort replyPort = message[1];
+    await for (final message in childReceivePort) {
+      final SendPort replyPort = message[1];
 
       try {
-        var data = message[0];
+        final data = message[0];
         final bool isStream = data['isStream'];
         final Function function = data['fun'];
         final args = data['args'];
         if (isStream) {
-          var stream = function(args);
+          final stream = function(args);
           stream.listen((event) {
             replyPort.send(event);
           }, onDone: () {
@@ -48,18 +48,18 @@ class Worker {
           replyPort.send(result);
         }
       } catch (e) {
-        log("ERROR FROM ISOLATE: $e");
+        log('ERROR FROM ISOLATE: $e');
       }
     }
   }
 
-  Future<dynamic> doWork(Function function, args, {isStream: false}) async {
+  Future<dynamic> doWork(Function function, args, {isStream = false}) async {
     await isReady;
     final ReceivePort responsePort = ReceivePort();
-    final Map map = {'fun': function, "args": args, "isStream": isStream};
+    final Map map = {'fun': function, 'args': args, 'isStream': isStream};
     childSendPort.send([map, responsePort.sendPort]);
     // responsePort.listen((message) { }, on)
-    var response = await responsePort.first;
+    final response = await responsePort.first;
 
     if (response is Exception) {
       throw response;
@@ -70,10 +70,10 @@ class Worker {
     }
   }
 
-  Future<dynamic> doOperation(Function function, args, {isStream: true}) async {
+  Future<dynamic> doOperation(Function function, args, {isStream = true}) async {
     await isReady;
     final ReceivePort responsePort = ReceivePort();
-    final Map map = {'fun': function, "args": args, "isStream": isStream};
+    final Map map = {'fun': function, 'args': args, 'isStream': isStream};
     childSendPort.send([map, responsePort.sendPort]);
     return responsePort;
   }

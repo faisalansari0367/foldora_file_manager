@@ -16,7 +16,7 @@ class AnimatedButton extends StatefulWidget {
 class _AnimatedButtonState extends State<AnimatedButton> with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _scale;
-  static const duration = const Duration(milliseconds: 200);
+  static const duration = Duration(milliseconds: 200);
   @override
   void initState() {
     _controller = AnimationController(vsync: this, duration: duration);

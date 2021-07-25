@@ -7,11 +7,12 @@ class FileNotFoundScreen extends StatelessWidget {
   final String message;
   // final Exception exception;
 
-  FileNotFoundScreen({
+  const FileNotFoundScreen({
     this.message,
   });
 
   // @override
+  @override
   Widget build(BuildContext context) {
     final buttonColor = MaterialStateProperty.all(Color(0xFF70DAAD));
     final provider = Provider.of<MyProvider>(context, listen: false);
@@ -24,11 +25,10 @@ class FileNotFoundScreen extends StatelessWidget {
         child: Stack(
           children: [
             Image.asset(
-              "assets/5_Something Wrong.png",
+              'assets/5_Something Wrong.png',
               fit: BoxFit.cover,
             ),
-            message != null
-                ? AnimatedPositioned(
+            if (message != null) AnimatedPositioned(
                     duration: Duration(milliseconds: 500),
                     bottom: bottom,
                     left: leftRight,
@@ -44,8 +44,7 @@ class FileNotFoundScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                  )
-                : Container(),
+                  ) else Container(),
             Positioned(
               bottom: Responsive.height(12),
               left: MediaQuery.of(context).size.width * .37,
@@ -66,7 +65,7 @@ class FileNotFoundScreen extends StatelessWidget {
                 // ),
                 onPressed: () => provider.onGoBack(context),
                 child: Text(
-                  "Go Back".toUpperCase(),
+                  'Go Back'.toUpperCase(),
                   style: TextStyle(color: Colors.white),
                 ),
               ),

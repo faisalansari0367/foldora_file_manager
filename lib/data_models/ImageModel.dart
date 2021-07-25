@@ -10,9 +10,9 @@ class ImageModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['files'] = this.files;
-    data['folderName'] = this.folderName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['files'] = files;
+    data['folderName'] = folderName;
     return data;
   }
 }

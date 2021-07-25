@@ -64,7 +64,7 @@ class _CustomDialogState extends State<CustomDialog> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                child: Text("Cancel".toUpperCase(), style: textStyle),
+                child: Text('Cancel'.toUpperCase(), style: textStyle),
                 onPressed: () => Navigator.of(context).pop(),
               ),
               TextButton(
@@ -91,7 +91,7 @@ class _CustomDialogState extends State<CustomDialog> {
       ),
     );
 
-    Dialog dialog = Dialog(
+    final Dialog dialog = Dialog(
       insetPadding: EdgeInsets.all(10),
       elevation: 5,
       insetAnimationCurve: Curves.easeInBack,

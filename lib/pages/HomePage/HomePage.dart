@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
           right: 6 * Responsive.imageSizeMultiplier,
         ),
         child: bigText(
-          title: "My Files",
+          title: 'My Files',
           color: Colors.grey[500],
           height: 6,
           // iconName: Icons.more_horiz,
@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
         ),
         child: bigText(
           height: 1,
-          title: "Latest Files",
+          title: 'Latest Files',
           iconName: Icons.more_horiz,
           color: Colors.grey[500],
         ),
@@ -143,13 +143,11 @@ Widget bigText({height, title, iconName, color}) {
         style: TextStyle(fontSize: 3.4 * Responsive.textMultiplier),
       ),
       Spacer(),
-      iconName != null
-          ? Icon(
+      if (iconName != null) Icon(
               Icons.more_horiz,
               size: 6 * Responsive.imageSizeMultiplier,
               color: color,
-            )
-          : Container(height: 0, width: 0),
+            ) else Container(height: 0, width: 0),
     ],
   );
 }

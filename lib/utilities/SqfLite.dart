@@ -34,7 +34,7 @@ class SqfLite {
       localApps = await openDatabase(localAppsDatabase);
       _isReady.complete();
     } else {
-      var stopwatch = Stopwatch()..start();
+      final stopwatch = Stopwatch()..start();
       systemApps = await createDatabase(
         tableName: systemAppsTable,
         databaseName: systemAppsDatabase,
@@ -46,14 +46,14 @@ class SqfLite {
       await createSystemAppsTable(systemApps);
       await createLocalAppsTable(localApps);
       _isReady.complete();
-      print("database took this ${stopwatch.elapsed} time");
+      print('database took this ${stopwatch.elapsed} time');
     }
   }
 
   static Future<Database> createDatabase(
       {String tableName, String databaseName}) async {
     final dbDataPath = await getDatabasesPath();
-    String path = join(dbDataPath, databaseName);
+    final String path = join(dbDataPath, databaseName);
     final String createTable =
         'CREATE TABLE $tableName (id INTEGER PRIMARY KEY AUTOINCREMENT, $appName TEXT, $packageName TEXT, $apkFilePath TEXT, $appIcon BLOB)';
     try {
@@ -78,7 +78,7 @@ class SqfLite {
 
     try {
       final Batch batch = database.batch();
-      for (var item in apps) {
+      for (final item in apps) {
         final query = await database.query(
           localAppsTable,
           where: '$apkFilePath = ?',
@@ -99,7 +99,7 @@ class SqfLite {
   }
 
   static Future<void> createSystemAppsTable(Database db) async {
-    var _systemApps = await DeviceApps.getInstalledApplications(
+    final _systemApps = await DeviceApps.getInstalledApplications(
       includeAppIcons: true,
       includeSystemApps: true,
       // onlyAppsWithLaunchIntent: true,
@@ -108,7 +108,7 @@ class SqfLite {
         await FileUtils.worker.doWork(App.fromList, _systemApps);
     try {
       final Batch batch = db.batch();
-      for (var item in systemApps) {
+      for (final item in systemApps) {
         db.insert(
           systemAppsTable,
           toMap(item),

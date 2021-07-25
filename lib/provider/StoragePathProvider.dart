@@ -34,7 +34,7 @@ class StoragePathProvider extends ChangeNotifier {
   List<int> selectedPhotos = [];
   List _audiosPath = [];
   List _documentsPath = [];
-  List _rootDirectories = [];
+  final List _rootDirectories = [];
   List<ImageModel> _photos = [];
   List<ImageModel> get imagesPath => _photos;
   List get rootDirectory => _rootDirectories;
@@ -55,7 +55,7 @@ class StoragePathProvider extends ChangeNotifier {
   // }
 
   ///  these functions are used by photos they are not getting used here
-  void updateIndex(index) {
+  void updateIndex(int index) {
     photosIndex = index;
     notifyListeners();
   }
@@ -66,14 +66,14 @@ class StoragePathProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteAndUpdateImage(PageController controller) async {
+  void deleteAndUpdateImage(PageController controller) {
     log('index is $pageViewCurrentIndex');
     controller.animateToPage(
       pageViewCurrentIndex + 1,
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOutExpo,
     );
-    await deletePhoto(pageViewCurrentIndex);
+    deletePhoto(pageViewCurrentIndex);
     updatePageViewCurrentIndex(pageViewCurrentIndex + 1);
     log('after updating index $pageViewCurrentIndex');
     // notifyListeners()
@@ -81,12 +81,14 @@ class StoragePathProvider extends ChangeNotifier {
   }
 
   void addImage(int index) {
-    selectedPhotos.contains(index) ? selectedPhotos.remove(index) : selectedPhotos.add(index);
+    selectedPhotos.contains(index)
+        ? selectedPhotos.remove(index)
+        : selectedPhotos.add(index);
     notifyListeners();
   }
 
   Future<void> deletePhotos(List<FileSystemEntity> list) async {
-    for (var item in list) {
+    for (final FileSystemEntity item in list) {
       await item.delete();
     }
     notifyListeners();
@@ -96,20 +98,24 @@ class StoragePathProvider extends ChangeNotifier {
   void onHorizontalDragEnd(double velocity, int value) {
     if (velocity < 0 && velocity != 0.0) {
       reverse = false;
-      if (value != imagesPath.length - 1) updateIndex(value + 1);
-      // updateIndex(value + 1);
+      if (value != imagesPath.length - 1) {
+        updateIndex(value + 1);
+      }
     } else if (velocity > 0 && velocity != 0.0) {
       reverse = true;
-      if (value != 0) updateIndex(value - 1);
+      if (value != 0) {
+        updateIndex(value - 1);
+      }
     }
   }
 
   /// end
 
   Future<void> photos() async {
-    final imagesPath = await StoragePath.imagesPath;
+    final String imagesPath = await StoragePath.imagesPath;
     // log(imagesPath);
-    final images = await FileUtils.worker.doWork(FileUtils.imagesPath, imagesPath);
+    final images =
+        await FileUtils.worker.doWork(FileUtils.imagesPath, imagesPath);
     // await FileUtils.imagesPath(imagesPath);
     _photos = images['data'];
     _photosSize = images['size'];
@@ -126,14 +132,17 @@ class StoragePathProvider extends ChangeNotifier {
 
   /// on long press in photos
   void onLongPress(int index) {
-    selectedPhotos.contains(index) ? selectedPhotos.remove(index) : selectedPhotos.add(index);
+    selectedPhotos.contains(index)
+        ? selectedPhotos.remove(index)
+        : selectedPhotos.add(index);
     hasBottomNav = selectedPhotos.isEmpty ? false : true;
     notifyListeners();
   }
 
   Future<void> documents() async {
     final documents = await StoragePath.filePath;
-    final docs = await FileUtils.worker.doWork(FileUtils.storagePathDocuments, documents);
+    final docs = await FileUtils.worker
+        .doWork(FileUtils.storagePathDocuments, documents);
     // final docs = await FileUtils.storagePathDocuments(documents);
     _documentsPath = docs['data'];
     _documentsSize = docs['size'];
@@ -144,7 +153,8 @@ class StoragePathProvider extends ChangeNotifier {
   Future<void> videos() async {
     await Permission.storage.status;
     final videosPath = await StoragePath.videoPath;
-    final videos = await FileUtils.worker.doWork(FileUtils.storagePathVideos, videosPath);
+    final videos =
+        await FileUtils.worker.doWork(FileUtils.storagePathVideos, videosPath);
     // await FileUtils.storagePathVideos(videosPath);
     _videosPath = videos['videoModel'];
 
@@ -156,7 +166,8 @@ class StoragePathProvider extends ChangeNotifier {
 
   Future<void> audios() async {
     final audiosPath = await StoragePath.audioPath;
-    final audios = await FileUtils.worker.doWork(FileUtils.storagePathAudios, audiosPath);
+    final audios =
+        await FileUtils.worker.doWork(FileUtils.storagePathAudios, audiosPath);
     // await FileUtils.storagePathAudios(audiosPath);
     _audiosPath = audios['data'] as List<AudioModel>;
     _audiosSize = audios['size'];

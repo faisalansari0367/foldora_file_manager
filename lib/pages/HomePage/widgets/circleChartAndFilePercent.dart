@@ -92,8 +92,8 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
                   selector: (context, value) => value.photosSize,
                   builder: (context, value, child) {
                     return FilePercent(
-                      name: "Photos",
-                      percent: "${_photosPercent.toStringAsFixed(1)}%",
+                      name: 'Photos',
+                      percent: '${_photosPercent.toStringAsFixed(1)}%',
                       color: Colors.teal[300],
                     );
                   },
@@ -102,8 +102,8 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
                   selector: (context, value) => value.mediaSize,
                   builder: (_, value, __) {
                     return FilePercent(
-                      name: "Media",
-                      percent: "${_mediaPercent.toStringAsFixed(1)}%",
+                      name: 'Media',
+                      percent: '${_mediaPercent.toStringAsFixed(1)}%',
                       color: Colors.amber[300],
                     );
                   },
@@ -113,8 +113,8 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
                   // shouldRebuild: (a, b) => true,
                   builder: (context, value, child) {
                     return FilePercent(
-                      name: "Documents",
-                      percent: "${_documentsPercent.toStringAsFixed(1)}%",
+                      name: 'Documents',
+                      percent: '${_documentsPercent.toStringAsFixed(1)}%',
                       color: Colors.indigo[300],
                     );
                   },

@@ -14,7 +14,7 @@ class LinearPercentBar extends StatelessWidget {
         storage = provider.spaceInfo[provider.currentPage],
         calculatePercent = storage.used / storage.total * 100;
 
-    Widget child = Padding(
+    final Widget child = Padding(
       padding: EdgeInsets.only(
         right: 6 * Responsive.imageSizeMultiplier,
         left: 6 * Responsive.imageSizeMultiplier,

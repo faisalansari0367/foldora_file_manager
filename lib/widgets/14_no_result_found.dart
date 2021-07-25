@@ -8,7 +8,7 @@ class NoResultFoundScreen extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            "assets/14_No Search Results.png",
+            'assets/14_No Search Results.png',
             fit: BoxFit.cover,
           ),
           Positioned(
@@ -29,7 +29,7 @@ class NoResultFoundScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 12),
                 onChanged: (value) async {},
                 decoration: InputDecoration(
-                  hintText: "Search...",
+                  hintText: 'Search...',
                   contentPadding: EdgeInsets.symmetric(horizontal: 20),
                   fillColor: Colors.white,
                   filled: true,

@@ -20,13 +20,13 @@ class FileUtils {
 
   static const String apkIconPath = '/storage/emulated/0/.apkIcons';
 
-  static String formatBytes(bytes, decimals, {bool inGB: false}) {
-    if (bytes == 0 || bytes == -1) return "0 B";
+  static String formatBytes(bytes, decimals, {bool inGB = false}) {
+    if (bytes == 0 || bytes == -1) return '0 B';
     var k = 1024,
         dm = decimals <= 0 ? 0 : decimals,
         sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
         i = inGB ? 3 : (log(bytes) / log(k)).floor();
-    return (((bytes / pow(k, i)).toStringAsFixed(dm)) + ' ' + sizes[i]);
+    return ((bytes / pow(k, i)).toStringAsFixed(dm)) + ' ' + sizes[i];
     // final size = "${bytes / pow(k,i)} ";
   }
 
@@ -36,13 +36,15 @@ class FileUtils {
       try {
         final List list = await data.list().toList();
         final int length = list.length;
-        itemsCount = length == 1 ? 'Directory | $length Item' : 'Directory | $length Items';
+        itemsCount = length == 1
+            ? 'Directory | $length Item'
+            : 'Directory | $length Items';
       } on FileSystemException catch (e) {
         print(e);
       }
       return itemsCount;
     } else {
-      var size = data.statSync().size;
+      final size = data.statSync().size;
       return FileUtils.formatBytes(size, 2);
     }
   }
@@ -75,7 +77,7 @@ class FileUtils {
           // maxHeight: position.ceil(),
           quality: 100,
         );
-        print("file is Located at: $filePath");
+        print('file is Located at: $filePath');
         return filePath;
       }
     } catch (e) {
@@ -84,12 +86,12 @@ class FileUtils {
   }
 
   static storagePathVideos(dynamic json) {
-    var result = VideoModel.jsonToVideo(json);
-    List<Video> videos = [];
+    final result = VideoModel.jsonToVideo(json);
+    final List<Video> videos = [];
     int size = 0;
 
-    for (var item in result) {
-      for (var i in item.videos) {
+    for (final item in result) {
+      for (final i in item.videos) {
         videos.add(i);
         size += i.size;
       }
@@ -114,22 +116,22 @@ class FileUtils {
 
   static storagePathDocuments(json) async {
     final decodedJson = jsonDecode(json);
-    var result = DocumentsModel.jsonToDocument(decodedJson);
+    final result = DocumentsModel.jsonToDocument(decodedJson);
     int totalSize = 0;
-    for (var i in result) {
-      for (var e in i.document) {
+    for (final i in result) {
+      for (final e in i.document) {
         totalSize += e.size;
       }
     }
-    return {"data": result, "size": totalSize};
+    return {'data': result, 'size': totalSize};
   }
 
   static storagePathAudios(json) {
-    List<Audio> audios = [];
+    final List<Audio> audios = [];
     int size = 0;
     final result = AudioModel.jsonToAudio(json);
-    for (var item in result) {
-      for (var i in item.audios) {
+    for (final item in result) {
+      for (final i in item.audios) {
         audios.add(i);
         size += i?.size ?? 0;
       }
@@ -138,26 +140,29 @@ class FileUtils {
   }
 
   /// this function works for StoragePath.imagesPath
-  static imagesPath(json) async {
+  static imagesPath(String json) async {
     final decodeJson = await jsonDecode(json);
     int _size = 0;
-    List<ImageModel> storePhotos = [];
-    for (var item in decodeJson) {
+    final List<ImageModel> storePhotos = [];
+    for (final item in decodeJson) {
       final model = ImageModel.fromJson(item);
       storePhotos.add(model);
-      for (var i in item['files']) {
+      for (final i in item['files']) {
         final file = File(i);
         // storePhotos.add(file);
-        var fileStat = await file.stat();
+        final fileStat = await file.stat();
         _size += fileStat.size;
       }
     }
-    return {"data": storePhotos, "size": _size};
+    return {'data': storePhotos, 'size': _size};
   }
 
-  static List<FileSystemEntity> sortListAlphabetically(List<FileSystemEntity> list) {
-    var sort =
-        (a, b) => p.basename(a.path).toLowerCase().compareTo(p.basename(b.path).toLowerCase());
+  static List<FileSystemEntity> sortListAlphabetically(
+      List<FileSystemEntity> list) {
+    final sort = (a, b) => p
+        .basename(a.path)
+        .toLowerCase()
+        .compareTo(p.basename(b.path).toLowerCase());
     list.sort(sort);
     return list;
   }
@@ -177,16 +182,16 @@ class FileUtils {
   // ignore: missing_return
   static Future<List<FileSystemEntity>> directoryList(Map args) async {
     List<FileSystemEntity> sortedList = [];
-    List<Directory> directories = [];
-    List<File> files = [];
-    List<FileSystemEntity> hiddenFiles = [];
+    final List<Directory> directories = [];
+    final List<File> files = [];
+    final List<FileSystemEntity> hiddenFiles = [];
 
     final String path = args['path'];
     final bool showHidden = args['showHidden'];
 
     try {
-      var list = Directory(path).list();
-      await for (var event in list) {
+      final list = Directory(path).list();
+      await for (final event in list) {
         if (p.basename(event.path).startsWith('.')) {
           hiddenFiles.add(event);
         } else {

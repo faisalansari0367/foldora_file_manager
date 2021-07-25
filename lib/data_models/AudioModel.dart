@@ -6,7 +6,7 @@ class AudioModel {
   final List<Audio> audios;
   AudioModel({this.folderName, this.audios});
 
-  static List<Audio> audioFiles(decodedJson) {
+  static List<Audio> audioFiles(dynamic decodedJson) {
     final list = List.generate(decodedJson.length, (index) {
       final files = decodedJson[index];
       // print(files);q
@@ -27,27 +27,20 @@ class AudioModel {
     return list;
   }
 
-  static List<AudioModel> jsonToAudio(json) {
-    final source = jsonDecode(json);
-    return List.generate(source.length, (index) {
-      final data = source[index];
+  static List<AudioModel> jsonToAudio(String json) {
+    final List<Map<String, dynamic>> source =
+        jsonDecode(json) as List<Map<String, dynamic>>;
+    return List<AudioModel>.generate(source.length, (int index) {
+      final Map<String, dynamic> data = source[index];
       return AudioModel(
         audios: audioFiles(data['files']),
-        folderName: data["folderName"],
+        folderName: data['folderName'] as String,
       );
     });
   }
 }
 
 class Audio {
-  final String album;
-  final String artist;
-  final File file;
-  final String dateAdded;
-  final String displayName;
-  final String duration;
-  final int size;
-
   Audio({
     this.album,
     this.artist,
@@ -57,4 +50,11 @@ class Audio {
     this.duration,
     this.size,
   });
+  final String album;
+  final String artist;
+  final File file;
+  final String dateAdded;
+  final String displayName;
+  final String duration;
+  final int size;
 }

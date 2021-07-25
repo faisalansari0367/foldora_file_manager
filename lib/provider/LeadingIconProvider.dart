@@ -42,13 +42,13 @@ class IconProvider extends ChangeNotifier {
     final _localAppsData = await _localApps.query(SqfLite.localAppsTable);
     localApps = await FileUtils.worker.doWork(SqfLite.fromMap, _localAppsData);
 
-    print("system apps count ${systemApps.length}");
-    print("local apps count ${localApps.length}");
+    print('system apps count ${systemApps.length}');
+    print('local apps count ${localApps.length}');
     notifyListeners();
   }
 
   Future<void> _initPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     _prefs = prefs;
     notifyListeners();
   }
@@ -72,7 +72,7 @@ class IconProvider extends ChangeNotifier {
 
   Future<Widget> _toShowApkIcon(path,
       {iconBgColor, iconColor, decoration}) async {
-    var result = Widgets.folderIcons(Widgets.fileIcon,
+    final result = Widgets.folderIcons(Widgets.fileIcon,
         bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
 
     final appsData = await DeviceApps.getAppByApkFile([path]);
@@ -109,7 +109,7 @@ class IconProvider extends ChangeNotifier {
       decoration: decoration,
     );
     final name = p.basename(path);
-    for (var item in systemApps) {
+    for (final item in systemApps) {
       if (item.name == name || item.packageName == name) {
         result = Widgets.folderIcons(
           folderIcon,
@@ -202,20 +202,18 @@ class IconProvider extends ChangeNotifier {
 
   Widget caseApk(data, {iconBgColor, iconColor, decoration, double radius}) {
     Widget widget;
-    var result = Widgets.folderIcons(Widgets.fileIcon,
+    final result = Widgets.folderIcons(Widgets.fileIcon,
         bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
 
-    for (var item in localApps) {
+    for (final item in localApps) {
       if (item.filePath == data.path) {
         widget = Widgets.forImage(item.icon, radius: 10);
       }
     }
-    if (widget == null) {
-      widget = forQueryingDatabase(
+    widget ??= forQueryingDatabase(
         future: _toShowApkIcon(data.path),
         initialData: result,
       );
-    }
     return widget;
   }
 

@@ -68,7 +68,7 @@ class _AppsState extends State<Apps> {
                   minimumSize: Size(Responsive.width(100), Responsive.height(6)),
                 ),
                 onPressed: () async {
-                  for (var app in apps) {
+                  for (final app in apps) {
                     await OpenFile.open(app);
                   }
                 },

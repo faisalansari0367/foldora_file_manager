@@ -18,6 +18,7 @@ class DirectoryLister extends StatelessWidget {
   final ScrollController scrollController;
   const DirectoryLister({this.path, this.scrollController});
 
+  @override
   Widget build(BuildContext context) {
     final provider = Provider.of<MyProvider>(context, listen: true);
 
@@ -91,7 +92,7 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
 
   @override
   Widget build(BuildContext context) {
-    print("listBuilder");
+    print('listBuilder');
     final provider = Provider.of<MyProvider>(context, listen: false);
     final operations = Provider.of<OperationsProvider>(context, listen: false);
     return ListView.builder(

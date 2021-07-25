@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 class FullScreenImage extends StatefulWidget {
   final int index;
   final File file;
-  FullScreenImage({this.index, this.file});
+  const FullScreenImage({this.index, this.file});
 
   @override
   _FullScreenImageState createState() => _FullScreenImageState();

@@ -39,7 +39,7 @@ class MediaPage extends StatefulWidget {
   final Data storage;
   final int spaceInfoIndex;
 
-  MediaPage({this.storage, this.spaceInfoIndex});
+  const MediaPage({this.storage, this.spaceInfoIndex});
 
   @override
   _MediaPageState createState() => _MediaPageState();
@@ -68,7 +68,7 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
   }
 
   void _scrollListener() {
-    var direction = _listViewController.position.userScrollDirection;
+    final direction = _listViewController.position.userScrollDirection;
     // operations.scrolledPixels = _listViewController.position.pixels;
     if (direction == ScrollDirection.forward) {
       scrollProvider.scrollListener(6);
@@ -85,6 +85,7 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     final storage = widget.storage;
     final children = <Widget>[

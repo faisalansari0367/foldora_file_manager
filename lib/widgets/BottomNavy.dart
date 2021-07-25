@@ -139,7 +139,7 @@ class _BottomNavyState extends State<BottomNavy> {
     final provider = Provider.of<OperationsProvider>(context, listen: true);
     final myProvider = Provider.of<MyProvider>(context, listen: true);
     final currentPath = myProvider.data[myProvider.currentPage].currentPath;
-    final color = Colors.black;
+    const color = Colors.black;
     final _paste = () async {
       await provider.copySelectedItems(currentPath);
       provider.ontapCopy();

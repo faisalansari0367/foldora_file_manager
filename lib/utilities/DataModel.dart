@@ -50,4 +50,9 @@ class Data {
   String toString() {
     return 'path $path\n currentPath: $currentPath\n used: $used\n free $free \n navItems: $navItems\n total: $total';
   }
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => super.hashCode;
+
 }

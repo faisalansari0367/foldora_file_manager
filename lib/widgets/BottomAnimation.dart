@@ -48,8 +48,8 @@ class _BottomSlideAnimationState extends State<BottomSlideAnimation>
         children: [
           IconButton(
             onPressed: () {
-              var list = <File>[];
-              for (var item in storage.selectedPhotos) {
+              final list = <File>[];
+              for (final item in storage.selectedPhotos) {
                 // list.add(storage.imagesPath[item]);
                 print(item);
               }
@@ -59,7 +59,7 @@ class _BottomSlideAnimationState extends State<BottomSlideAnimation>
                 list: list,
                 onPressed: () {
                   storage.deletePhotos(list);
-                  for (var item in list) {
+                  for (final item in list) {
                     storage.imagesPath.remove(item);
                   }
                   storage.selectedPhotos.clear();

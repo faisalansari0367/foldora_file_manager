@@ -18,7 +18,7 @@ class MySliverAppBar extends StatefulWidget {
 }
 
 class _MySliverAppBarState extends State<MySliverAppBar> {
-  static const duration = const Duration(milliseconds: 500);
+  static const duration = Duration(milliseconds: 500);
 
   final bottom = AnimationConfiguration.synchronized(
     duration: duration,

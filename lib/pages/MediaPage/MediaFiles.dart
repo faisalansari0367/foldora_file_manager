@@ -20,7 +20,7 @@ class MediaFiles extends StatelessWidget {
         children: <Widget>[
           SizedBox(height: 6 * Responsive.heightMultiplier),
           Text(
-            "Media Files",
+            'Media Files',
             style: TextStyle(
               fontSize: 3.4 * Responsive.textMultiplier,
             ),

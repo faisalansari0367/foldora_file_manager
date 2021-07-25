@@ -59,7 +59,7 @@ Container _column(context, available) {
         available,
         SizedBox(height: 0.5 * Responsive.heightMultiplier),
         Text(
-          "Available",
+          'Available',
           style: TextStyle(color: Colors.grey[400]),
         ),
       ],
@@ -83,12 +83,12 @@ Row _row(context, used) {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              "GB",
+              'GB',
               style: TextStyle(color: Colors.grey[400]),
             ),
             SizedBox(height: 0.5 * Responsive.heightMultiplier),
             Text(
-              "Used",
+              'Used',
               style: TextStyle(color: Colors.grey[400]),
             ),
           ],

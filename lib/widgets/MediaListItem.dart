@@ -38,6 +38,7 @@ class MediaListItem extends StatefulWidget {
 }
 
 class _MediaListItemState extends State<MediaListItem> {
+  @override
   Widget build(BuildContext context) {
     final Widget padding = Padding(
       padding: EdgeInsets.symmetric(

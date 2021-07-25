@@ -9,7 +9,7 @@ import 'MyAppBar.dart';
 class MyBottomAppBar extends StatefulWidget {
   final Color backgroundColor;
   final double height;
-  MyBottomAppBar({this.backgroundColor, this.height});
+  const MyBottomAppBar({this.backgroundColor, this.height});
 
   @override
   _MyBottomAppBarState createState() => _MyBottomAppBarState();
@@ -19,7 +19,7 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<MyProvider>(context, listen: true);
-    var list = provider.getListOfNavigation() ?? [];
+    final list = provider.getListOfNavigation() ?? [];
     final child = Container(
       color: widget.backgroundColor ?? MyColors.darkGrey,
       height: widget.height ?? 6 * Responsive.heightMultiplier,

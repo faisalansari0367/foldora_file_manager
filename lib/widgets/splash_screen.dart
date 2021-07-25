@@ -35,8 +35,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   static const Duration duration = Duration(milliseconds: 100);
-  static final iconPath = 'assets/undraw_app_data_re_vg5c.svg';
-  static final iconPath2 = 'assets/undraw_file_manager_j85s.svg';
+  static const iconPath = 'assets/undraw_app_data_re_vg5c.svg';
+  static const iconPath2 = 'assets/undraw_file_manager_j85s.svg';
 
   void redirectToHome() {
     final pageView = PageView(
@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _onpressed() async {
     final provider = Provider.of<MyProvider>(context, listen: false);
-    var status = await provider.getPermission();
+    final status = await provider.getPermission();
 
     if (status.isGranted) {
       setFirstSeen();

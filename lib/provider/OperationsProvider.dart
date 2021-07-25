@@ -19,7 +19,7 @@ class OperationsProvider extends ChangeNotifier {
   String _remaining = '';
   String _srcName = '';
   String _srcSize = '0.0 KB';
-  List<FileSystemEntity> _selectedMediaItems = [];
+  final List<FileSystemEntity> _selectedMediaItems = [];
 
   String get totalSize => _srcSize;
   String get speed => _speed;
@@ -46,7 +46,7 @@ class OperationsProvider extends ChangeNotifier {
 
   //
   List<String> sharePaths() {
-    var paths = _selectedMediaItems.map((e) => e.path).toList();
+    final paths = _selectedMediaItems.map((e) => e.path).toList();
     return paths;
   }
 
@@ -62,7 +62,7 @@ class OperationsProvider extends ChangeNotifier {
   bool showBottomNavbar = false;
 
   void onTapOfLeading(FileSystemEntity item) {
-    var isExist = _selectedMediaItems.contains(item);
+    final isExist = _selectedMediaItems.contains(item);
     isExist ? _selectedMediaItems.remove(item) : _selectedMediaItems.add(item);
     // operations.selectItem(_selectedMediaItems, item);
     showBottomNavbar = _selectedMediaItems.isEmpty ? false : true;
@@ -73,7 +73,7 @@ class OperationsProvider extends ChangeNotifier {
   Future<void> deleteFileOrFolder() async {
     if (_selectedMediaItems.isEmpty) return;
     try {
-      for (var item in _selectedMediaItems) {
+      for (final item in _selectedMediaItems) {
         await item.delete(recursive: true);
       }
       _selectedMediaItems.clear();
@@ -91,7 +91,7 @@ class OperationsProvider extends ChangeNotifier {
     if (selectedMedia.isEmpty) return;
     operationIsRunning = true;
 
-    Map args = {'items': selectedMedia, 'currentPath': currentPath};
+    final Map args = {'items': selectedMedia, 'currentPath': currentPath};
     final Stream<dynamic> stream = CopyUtils.copySelectedItems(args);
     // await FileUtils.worker.doOperation(CopyUtils.copySelectedItems, args);
 
@@ -114,7 +114,7 @@ class OperationsProvider extends ChangeNotifier {
     final totalFiles = _selectedMediaItems.length;
     int movedFiles = 0;
     // final currentPath = MediaUtils.currentPath;
-    for (var item in _selectedMediaItems) {
+    for (final item in _selectedMediaItems) {
       movedFiles++;
       _srcName = p.basename(item.path);
       await item.rename(p.join(currentPath, _srcName));
@@ -126,7 +126,7 @@ class OperationsProvider extends ChangeNotifier {
   }
 
   Future<void> renameFSE(BuildContext context) async {
-    for (var item in _selectedMediaItems) {
+    for (final item in _selectedMediaItems) {
       await OperationsUtils.myDialog(
         context,
         item: item,

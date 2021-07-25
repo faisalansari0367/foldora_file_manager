@@ -20,6 +20,7 @@ class LeadingIcon extends StatelessWidget {
     this.imageRadius,
   });
 
+  @override
   Widget build(BuildContext context) {
     final provider = Provider.of<OperationsProvider>(context, listen: false);
     return Center(

@@ -16,12 +16,12 @@ class MediaStorageInfo extends StatelessWidget {
           right: 3 * Responsive.widthMultiplier,
         ),
         child: Image.asset(
-          "assets/video.png",
+          'assets/video.png',
           height: 3.4 * Responsive.textMultiplier,
         ),
       ),
       Text(
-        "Media",
+        'Media',
         style: TextStyle(
           fontSize: 3.3 * Responsive.textMultiplier,
           color: Colors.white,
