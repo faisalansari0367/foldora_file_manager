@@ -28,8 +28,7 @@ class AudioModel {
   }
 
   static List<AudioModel> jsonToAudio(String json) {
-    final List<Map<String, dynamic>> source =
-        jsonDecode(json) as List<Map<String, dynamic>>;
+    final source = jsonDecode(json);
     return List<AudioModel>.generate(source.length, (int index) {
       final Map<String, dynamic> data = source[index];
       return AudioModel(

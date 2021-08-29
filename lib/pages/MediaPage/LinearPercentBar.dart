@@ -22,6 +22,13 @@ class LinearPercentBar extends StatelessWidget {
       ),
       child: Center(
         child: LinearPercentIndicator(
+          animation: true,
+          curve: Curves.easeInOutBack,
+          animationDuration: 1000,
+          // restartAnimation: false,
+
+          // restartAnimation: true,
+          animateFromLastPercent: true,
           width: 0.87 * MediaQuery.of(context).size.width,
           lineHeight: 8.0,
           percent: calculatePercent / 100,
@@ -34,3 +41,32 @@ class LinearPercentBar extends StatelessWidget {
     return child;
   }
 }
+
+// class StoragePercent extends StatefulWidget {
+//   const StoragePercent({Key key}) : super(key: key);
+
+//   @override
+//   StoragePercentState createState() => StoragePercentState();
+// }
+
+// class StoragePercentState extends State<StoragePercent> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return CustomPaint(
+//       painter: LinePainter(),
+//     );
+//   }
+// }
+
+// class LinePainter extends CustomPainter {
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//       // TODO: implement paint
+//     }
+
+//     @override
+//     bool shouldRepaint(covariant CustomPainter oldDelegate) {
+//     // TODO: implement shouldRepaint
+//     throw UnimplementedError();
+//   }
+// }

@@ -72,7 +72,6 @@ class _BottomNavyState extends State<BottomNavy> {
                       return MediaListItem(
                         index: index,
                         data: data,
-                        // ontap: () => provider.ontap(data),
                         trailing: IconButton(
                           onPressed: () => operations.selectedMedia.remove(data),
                           icon: Icon(
@@ -101,12 +100,12 @@ class _BottomNavyState extends State<BottomNavy> {
                 ElevatedButton(
                   onPressed: () async {
                     await operations.deleteFileOrFolder();
+                    await myProvider.diskSpace();
                     Navigator.of(context).pop();
                     // for notifing myProvider so user can we notified
                     myProvider.notify();
                   },
                   style: ElevatedButton.styleFrom(
-                    // padding: EdgeInsets.all(),
                     elevation: 4,
                     primary: MyColors.teal,
                     shadowColor: MyColors.teal,
@@ -114,7 +113,6 @@ class _BottomNavyState extends State<BottomNavy> {
                       borderRadius: BorderRadius.circular(32.0),
                       side: BorderSide(color: MyColors.teal),
                     ),
-
                     minimumSize: Size(Responsive.width(87), Responsive.height(6)),
                   ),
                   child: Text(

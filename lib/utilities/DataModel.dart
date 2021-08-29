@@ -1,4 +1,5 @@
 import 'package:storage_details/storage_details.dart';
+// import 'package:equatable/equatable.dart';
 
 class Data {
   String path;
@@ -34,6 +35,7 @@ class Data {
   @override
   bool operator ==(Object other) {
     if (other is Data &&
+        runtimeType == other.runtimeType &&
         currentPath == other.currentPath &&
         path == other.path &&
         used == other.used &&
@@ -47,12 +49,5 @@ class Data {
   }
 
   @override
-  String toString() {
-    return 'path $path\n currentPath: $currentPath\n used: $used\n free $free \n navItems: $navItems\n total: $total';
-  }
-
-  @override
-  // TODO: implement hashCode
   int get hashCode => super.hashCode;
-
 }

@@ -31,17 +31,20 @@ class MyProvider extends ChangeNotifier {
   //   });
   // }
 
+  Function scrollListener;
+  int currentPage = 0;
   List<Storage> spaceInfo = [];
   bool _showHidden = false;
-
   SharedPreferences _prefs;
-  SharedPreferences get prefs => _prefs;
-
   List<Data> data = [];
+
+  // getters to get the values
+  SharedPreferences get prefs => _prefs;
   bool get showHidden => _showHidden;
 
-  Function scrollListener;
+  // to show and hide the navigation rail on opening new directory.
 
+  // for setting the scroll listener.
   void setScrollListener(Function listener) {
     scrollListener = listener;
   }
@@ -53,6 +56,7 @@ class MyProvider extends ChangeNotifier {
   }
 
   Future<List<FileSystemEntity>> files() async {
+    if (data.isEmpty) await diskSpace();
     return await Directory(data[currentPage].path).list().toList();
   }
 
@@ -117,7 +121,6 @@ class MyProvider extends ChangeNotifier {
     }
   }
 
-  int currentPage = 0;
   void onPageChanged(int value) {
     currentPage = value;
     notifyListeners();

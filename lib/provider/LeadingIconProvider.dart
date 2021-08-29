@@ -7,6 +7,8 @@ import 'package:files/utilities/Utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
@@ -36,8 +38,7 @@ class IconProvider extends ChangeNotifier {
     final Database _systemApps = SqfLite.systemApps;
 
     final _systemAppsData = await _systemApps.query(SqfLite.systemAppsTable);
-    systemApps =
-        await FileUtils.worker.doWork(SqfLite.fromMap, _systemAppsData);
+    systemApps = await FileUtils.worker.doWork(SqfLite.fromMap, _systemAppsData);
 
     final _localAppsData = await _localApps.query(SqfLite.localAppsTable);
     localApps = await FileUtils.worker.doWork(SqfLite.fromMap, _localAppsData);
@@ -53,8 +54,7 @@ class IconProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  static Widget forQueryingDatabase(
-      {@required Future future, Widget initialData}) {
+  static Widget forQueryingDatabase({@required Future future, Widget initialData}) {
     return FutureBuilder<Widget>(
       future: future,
       initialData: initialData,
@@ -70,16 +70,17 @@ class IconProvider extends ChangeNotifier {
 
   static final IconData folderIcon = Icons.folder_open;
 
-  Future<Widget> _toShowApkIcon(path,
-      {iconBgColor, iconColor, decoration}) async {
-    final result = Widgets.folderIcons(Widgets.fileIcon,
-        bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
+  Future<Widget> _toShowApkIcon(path, {iconBgColor, iconColor, decoration}) async {
+    final result = Widgets.folderIcons(
+      Widgets.fileIcon,
+      bgColor: iconBgColor,
+      iconColor: iconColor,
+      decoration: decoration,
+    );
 
     final appsData = await DeviceApps.getAppByApkFile([path]);
     if (appsData.isEmpty) return result;
-    final List<App> apps =
-        await FileUtils.worker.doWork(App.fromList, appsData);
-    // App.fromList(appsData);
+    final List<App> apps = await FileUtils.worker.doWork(App.fromList, appsData);
     await SqfLite.isReady;
     SqfLite.localApps.insert(
       SqfLite.localAppsTable,
@@ -89,15 +90,27 @@ class IconProvider extends ChangeNotifier {
     return Widgets.forImage(apps[0].appIcon);
   }
 
-  Future<Widget> _createVideoThumbnail(path,
-      {iconBgColor, iconColor, decoration, radius}) async {
-    final String filePath = await FileUtils.createThumbnail(path);
+  Future<Widget> _createVideoThumbnail(path, {iconBgColor, iconColor, decoration, radius}) async {
+    String filePath;
+    try {
+      filePath = await FileUtils.createThumbnail(path);
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
     if (filePath != null) {
       final File file = File(filePath);
-      return Widgets.forImage(file, decoration: decoration, radius: radius);
+      return Widgets.forImage(
+        file,
+        decoration: decoration,
+        radius: radius,
+      );
     } else {
-      return Widgets.folderIcons(Icons.videocam,
-          bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
+      return Widgets.folderIcons(
+        Icons.videocam,
+        bgColor: iconBgColor,
+        iconColor: iconColor,
+        decoration: decoration,
+      );
     }
   }
 
@@ -125,13 +138,14 @@ class IconProvider extends ChangeNotifier {
   }
 
   Widget switchCaseForIcons(FileSystemEntity data,
-      {Color iconBgColor,
-      Color iconColor,
-      BoxDecoration decoration,
-      double imageRadius}) {
+      {Color iconBgColor, Color iconColor, BoxDecoration decoration, double imageRadius}) {
     if (data is Directory)
-      return _showIcon(data.path,
-          bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
+      return _showIcon(
+        data.path,
+        bgColor: iconBgColor,
+        iconColor: iconColor,
+        decoration: decoration,
+      );
     switch (p.extension(data.path).toLowerCase()) {
       case '.mp3':
       case '.m4a':
@@ -140,8 +154,12 @@ class IconProvider extends ChangeNotifier {
       case '.3ga':
       case '.wav':
       case '.wma':
-        return Widgets.folderIcons(Icons.library_music,
-            bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
+        return Widgets.folderIcons(
+          Icons.library_music,
+          bgColor: iconBgColor ?? Colors.orange[800],
+          iconColor: iconColor,
+          decoration: decoration,
+        );
         break;
       case '.mp4':
       case '.mkv':
@@ -151,16 +169,18 @@ class IconProvider extends ChangeNotifier {
       case '.flv':
       case '.avchd':
       case '.webm':
-        return video(data,
-            iconBgColor: iconBgColor,
-            iconColor: iconColor,
-            decoration: decoration,
-            imageRadius: imageRadius);
+        return video(
+          data,
+          iconBgColor: iconBgColor,
+          iconColor: iconColor,
+          decoration: decoration,
+          imageRadius: imageRadius,
+        );
         break;
       case '.zip':
         return Widgets.folderIcons(
           Icons.archive,
-          bgColor: Colors.indigo[200],
+          bgColor: iconBgColor ?? Colors.brown,
           iconColor: iconColor,
           decoration: decoration,
         );
@@ -168,19 +188,39 @@ class IconProvider extends ChangeNotifier {
       case '.jpg':
       case '.png':
       case '.gif':
-        return Widgets.forImage(File(data.path),
-            cacheWidth: 150, decoration: decoration, radius: imageRadius);
+      case '.jpeg':
+      case '.webp':
+        return Widgets.forImage(
+          File(data.path),
+          cacheWidth: 150,
+          decoration: decoration,
+          radius: imageRadius,
+        );
         break;
       case '.apk':
-        return caseApk(data,
-            iconBgColor: iconBgColor,
-            iconColor: iconColor,
-            decoration: decoration,
-            radius: imageRadius);
+        return caseApk(
+          data,
+          iconBgColor: iconBgColor,
+          iconColor: iconColor,
+          decoration: decoration,
+          radius: imageRadius,
+        );
+        break;
+      case '.pdf':
+        return Widgets.folderIcons(
+          Icons.picture_as_pdf_sharp,
+          bgColor: iconBgColor ?? Colors.red[400],
+          iconColor: iconColor,
+          decoration: decoration,
+        );
         break;
       default:
-        return Widgets.folderIcons(Widgets.fileIcon,
-            bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
+        return Widgets.folderIcons(
+          Widgets.fileIcon,
+          bgColor: iconBgColor,
+          iconColor: iconColor,
+          decoration: decoration,
+        );
         break;
     }
   }
@@ -188,15 +228,11 @@ class IconProvider extends ChangeNotifier {
   video(data, {iconBgColor, iconColor, decoration, imageRadius}) {
     final map = FileUtils.isVideoThumbnailExist(data.path);
     return map['isFileExist']
-        ? Widgets.forImage(map['thumb'],
-            decoration: decoration, radius: imageRadius)
+        ? Widgets.forImage(map['thumb'], decoration: decoration, radius: imageRadius)
         : forQueryingDatabase(
-            future: _createVideoThumbnail(data.path,
-                decoration: decoration, radius: imageRadius),
+            future: _createVideoThumbnail(data.path, decoration: decoration, radius: imageRadius),
             initialData: Widgets.folderIcons(Icons.videocam,
-                bgColor: iconBgColor,
-                iconColor: iconColor,
-                decoration: decoration),
+                bgColor: iconBgColor, iconColor: iconColor, decoration: decoration),
           );
   }
 
@@ -211,9 +247,9 @@ class IconProvider extends ChangeNotifier {
       }
     }
     widget ??= forQueryingDatabase(
-        future: _toShowApkIcon(data.path),
-        initialData: result,
-      );
+      future: _toShowApkIcon(data.path),
+      initialData: result,
+    );
     return widget;
   }
 

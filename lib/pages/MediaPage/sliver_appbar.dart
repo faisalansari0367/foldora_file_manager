@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/provider/scroll_provider.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/MediaPageAppbar.dart';

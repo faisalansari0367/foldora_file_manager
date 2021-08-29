@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:files/provider/StoragePathProvider.dart';
 import 'package:files/utilities/MyColors.dart';
-import 'package:files/widgets/BottomAnimation.dart';
 import 'package:files/widgets/FileNotFoundScreen.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +21,7 @@ class Photos extends StatelessWidget {
         ];
         final grid =
             value.imagesPath.isNotEmpty ? MyGridView(photos: photos) : FileNotFoundScreen();
-        return PageView(
-          children: [grid, ImageFolders()],
-        );
+        return PageView(children: [grid, ImageFolders()]);
       },
     );
     return Scaffold(

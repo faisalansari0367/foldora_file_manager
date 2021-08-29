@@ -46,7 +46,9 @@ class SqfLite {
       await createSystemAppsTable(systemApps);
       await createLocalAppsTable(localApps);
       _isReady.complete();
-      print('database took this ${stopwatch.elapsed} time');
+      print('database took this ${stopwatch.elapsed} time to create');
+      stopwatch.stop();
+      // stopwatch
     }
   }
 
@@ -72,9 +74,7 @@ class SqfLite {
     final List<String> allApps = await FileUtils.getAllLocalApps();
     print('AllApps length: ${allApps.length}');
     final appsData = await DeviceApps.getAppByApkFile(allApps);
-    final List<App> apps =
-        // await FileUtils.worker.doWork(App.fromList, appsData);
-        App.fromList(appsData);
+    final List<App> apps = App.fromList(appsData);
 
     try {
       final Batch batch = database.batch();

@@ -18,17 +18,20 @@ class CircleChart extends StatefulWidget {
     this.strokeWidth,
     this.duration,
   });
+
   @override
   _CircleChartState createState() => _CircleChartState();
 }
 
-class _CircleChartState extends State<CircleChart> with SingleTickerProviderStateMixin {
+class _CircleChartState extends State<CircleChart>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> tween;
   static const duration = Duration(milliseconds: 1000);
   var percentage = 0.0;
   void createAnimation(AnimationController controller) {
-    final curved = CurvedAnimation(parent: controller, curve: Curves.easeInOutBack);
+    final curved =
+        CurvedAnimation(parent: controller, curve: Curves.easeInOutBack);
     tween = Tween<double>(begin: 0, end: widget.percentage).animate(curved);
   }
 

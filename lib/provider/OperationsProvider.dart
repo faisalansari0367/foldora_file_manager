@@ -1,25 +1,22 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:files/utilities/CopyUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart' as p;
-import '../sizeConfig.dart';
 import '../utilities/OperationsUtils.dart';
 
 class OperationsProvider extends ChangeNotifier {
-  // Operations operations;
-  // OperationsProvider() {
-  //   operations = Operations();
-  // }
-
   int _copied = 0;
   double _progress = 0.0;
   String _speed = '';
   String _remaining = '';
   String _srcName = '';
   String _srcSize = '0.0 KB';
-  final List<FileSystemEntity> _selectedMediaItems = [];
+  int selectedIndex = 5;
+  bool showCopy = true;
+  List<FileSystemEntity> _selectedMediaItems = [];
 
   String get totalSize => _srcSize;
   String get speed => _speed;
@@ -29,29 +26,11 @@ class OperationsProvider extends ChangeNotifier {
   double get progress => _progress;
   List<FileSystemEntity> get selectedMedia => _selectedMediaItems;
 
-  // this is not related to operations its for appbar
-  // double appbarSize = 0 * Responsive.heightMultiplier;
-  // bool navRail = false;
-
-  // void scrollListener(double size) {
-  //   appbarSize = size * Responsive.heightMultiplier;
-  //   notifyListeners();
-  // }
-
-  // double scrolledPixels = 0.0;
-  // void pixelsScrolled(double value) {
-  //   scrolledPixels = value;
-  //   notifyListeners();
-  // }
-
-  //
+  // for sharing the files
   List<String> sharePaths() {
     final paths = _selectedMediaItems.map((e) => e.path).toList();
     return paths;
   }
-
-  int selectedIndex = 5;
-  bool showCopy = true;
 
   void ontapCopy() {
     showCopy = !showCopy;
@@ -59,6 +38,7 @@ class OperationsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// have to deal with it. it should not be in here.
   bool showBottomNavbar = false;
 
   void onTapOfLeading(FileSystemEntity item) {
@@ -74,14 +54,14 @@ class OperationsProvider extends ChangeNotifier {
     if (_selectedMediaItems.isEmpty) return;
     try {
       for (final item in _selectedMediaItems) {
-        await item.delete(recursive: true);
+        final result = await item.delete(recursive: true);
+        print('item deleted $result');
       }
       _selectedMediaItems.clear();
-    } on FileSystemException catch (e) {
-      print(e.toString());
       notifyListeners();
+    } on FileSystemException catch (e) {
+      print('item deletion failed : $e');
     }
-    // operations.delete(_selectedMediaItems);
     notifyListeners();
   }
 
@@ -117,7 +97,11 @@ class OperationsProvider extends ChangeNotifier {
     for (final item in _selectedMediaItems) {
       movedFiles++;
       _srcName = p.basename(item.path);
-      await item.rename(p.join(currentPath, _srcName));
+      try {
+        await item.rename(p.join(currentPath, _srcName));
+      } catch (e) {
+        log('item moving failed $e');
+      }
       _progress = movedFiles / totalFiles * 100;
     }
     operationIsRunning = false;

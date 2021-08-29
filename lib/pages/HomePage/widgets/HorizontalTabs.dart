@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:files/pages/HomePage/widgets/MediaStack.dart';
 import 'package:files/pages/MediaPage/MediaPage.dart';
 import 'package:files/pages/Photos/Photos.dart';
+import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/provider/StoragePathProvider.dart';
 import 'package:files/provider/MyProvider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
@@ -66,7 +69,11 @@ class _PhotosTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<StoragePathProvider>(
       builder: (BuildContext context, photos, child) {
-        final itemsCount = photos.imagesPath.length;
+        var length = 0;
+        for (var item in photos.imagesPath) {
+          length += item.files.length;
+        }
+        final itemsCount = length;
         print(itemsCount);
         final size = photos.photosSize;
         return MediaStack(
@@ -169,6 +176,22 @@ class VideosPage extends StatelessWidget {
               // iconName: Icons.folder_open,
             ),
           );
+        },
+      ),
+      bottomNavigationBar: ElevatedButton(
+        child: Text('move all videos to a different folder'),
+        onPressed: () async {
+          final dir = await Directory('/storage/emulated/0/AllVIdeos').create();
+
+          final provider = Provider.of<OperationsProvider>(context, listen: false);
+          for (var item in videos) {
+            provider.onTapOfLeading(item.file);
+          }
+
+          for (var item in provider.selectedMedia) {
+            provider.move(dir.path);
+            print('item is moving $item');
+          }
         },
       ),
     );

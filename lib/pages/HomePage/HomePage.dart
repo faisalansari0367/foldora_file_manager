@@ -10,10 +10,27 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import '../../sizeConfig.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   // double sizing;
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   Future<void> _onRefresh(context) async {
     await Provider.of<StoragePathProvider>(context, listen: false).onRefresh();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // void systemOverlay() {
+    //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    //   final overlays = [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown];
+    //   SystemChrome.setPreferredOrientations(overlays);
+    // }
+
+    // systemOverlay();
   }
 
   @override
@@ -23,8 +40,6 @@ class HomePage extends StatelessWidget {
     final children = <Widget>[
       Padding(
         padding: EdgeInsets.only(
-          // top: 6 * Responsive.imageSizeMultiplier,
-          // left: 6 * Responsive.imageSizeMultiplier,
           left: 6 * Responsive.widthMultiplier,
           right: 6 * Responsive.imageSizeMultiplier,
         ),
@@ -53,55 +68,17 @@ class HomePage extends StatelessWidget {
           color: Colors.grey[500],
         ),
       ),
-      // Container(
-      //   margin: EdgeInsets.all(Responsive.width(8)),
-      //   height: Responsive.width(15),
-      //   decoration: BoxDecoration(
-      //     color: Color(0xff01cd98),
-      //     borderRadius: BorderRadius.circular(22),
-      //   ),
-      //   child: GestureDetector(
-      //     onTap: () {
-      //       final route = MaterialPageRoute(builder: (context) => Apps());
-      //       Navigator.push(context, route);
-      //     },
-      //     child: Row(
-      //       children: [
-      //         SizedBox(width: 20),
-      //         Icon(
-      //           Icons.app_settings_alt_rounded,
-      //           color: Colors.white,
-      //           size: 35,
-      //         ),
-      //         SizedBox(width: 20),
-      //         Text(
-      //           'Applications',
-      //           style: TextStyle(color: Colors.white, fontSize: 20),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
-      // Padding(
-      //   padding: EdgeInsets.only(
-      //     right: Responsive.width(6),
-      //     left: Responsive.width(6),
-      //     bottom: Responsive.height(2),
-      //   ),
-      //   child: bigText(
-      //     height: 1,
-      //     title: "Latest Files",
-      //     iconName: Icons.more_horiz,
-      //     color: Colors.grey[500],
-      //   ),
-      // ),
     ];
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: AppbarUtils.systemUiOverylay(backgroundColor: Colors.white),
+      value: AppbarUtils.systemUiOverylay(
+        backgroundColor: Colors.transparent,
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.transparent,
+      ),
       child: Scaffold(
         floatingActionButton: FAB(),
-        // backgroundColor: Colors.black,
         appBar: MyAppBar(
           backgroundColor: Colors.white,
           iconData: Icons.menu,
@@ -112,7 +89,7 @@ class HomePage extends StatelessWidget {
           child: RefreshIndicator(
             onRefresh: () => _onRefresh(context),
             child: ListView(
-              physics: BouncingScrollPhysics(),
+              physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               children: AnimationConfiguration.toStaggeredList(
                 duration: const Duration(milliseconds: 400),
                 childAnimationBuilder: (widget) => SlideAnimation(
@@ -143,11 +120,14 @@ Widget bigText({height, title, iconName, color}) {
         style: TextStyle(fontSize: 3.4 * Responsive.textMultiplier),
       ),
       Spacer(),
-      if (iconName != null) Icon(
-              Icons.more_horiz,
-              size: 6 * Responsive.imageSizeMultiplier,
-              color: color,
-            ) else Container(height: 0, width: 0),
+      if (iconName != null)
+        Icon(
+          Icons.more_horiz,
+          size: 6 * Responsive.imageSizeMultiplier,
+          color: color,
+        )
+      else
+        Container(height: 0, width: 0),
     ],
   );
 }

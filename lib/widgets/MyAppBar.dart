@@ -14,7 +14,12 @@ class AppbarUtils {
   static const duration = Duration(milliseconds: 100);
   static const splashRadius = 25.0;
 
-  static SystemUiOverlayStyle systemUiOverylay({Color backgroundColor}) {
+  static SystemUiOverlayStyle systemUiOverylay({
+    Color backgroundColor,
+    Brightness statusBarIconBrightness,
+    Brightness statusBarBrightness,
+    Color systemNavigationBarColor,
+  }) {
     return SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.light,

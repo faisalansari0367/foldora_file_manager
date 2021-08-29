@@ -21,9 +21,9 @@ void main() {
 // This widget is the root of your application.
 
 void systemOverlay() {
-  SystemChrome.setEnabledSystemUIOverlays(
-    [SystemUiOverlay.top, SystemUiOverlay.bottom],
-  );
+  SystemChrome.setEnabledSystemUIMode(
+      // overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+      SystemUiMode.immersive);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -83,7 +83,7 @@ class _MyAppState extends State<MyApp> {
                 theme: MyColors.themeData,
                 showPerformanceOverlay: false,
                 debugShowCheckedModeBanner: false,
-                title: 'Files App',
+                title: 'Foldora',
                 home: futureBuilder,
               ),
             );

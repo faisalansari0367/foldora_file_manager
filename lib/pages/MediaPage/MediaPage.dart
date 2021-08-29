@@ -58,8 +58,6 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
       AppbarUtils.systemUiOverylay(backgroundColor: MyColors.darkGrey),
     );
     scrollProvider = Provider.of<ScrollProvider>(context, listen: false);
-
-    // operations = Provider.of<OperationsProvider>(context, listen: false);
     provider = Provider.of<MyProvider>(context, listen: false);
     provider.setScrollListener(scrollProvider.scrollListener);
     _scrollController = ScrollController();
@@ -69,7 +67,6 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
 
   void _scrollListener() {
     final direction = _listViewController.position.userScrollDirection;
-    // operations.scrolledPixels = _listViewController.position.pixels;
     if (direction == ScrollDirection.forward) {
       scrollProvider.scrollListener(6);
     } else if (direction == ScrollDirection.reverse) {
@@ -81,6 +78,7 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
   void dispose() {
     print('mediapage disposed');
     _listViewController.removeListener(_scrollListener);
+    _listViewController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -98,7 +96,6 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
           child: FadeInAnimation(
             child: DirectoryLister(
               path: storage.path,
-              // scrollController: _listViewController,
             ),
           ),
         ),
@@ -133,16 +130,6 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                           itemCount: children.length,
                           itemBuilder: (context, index) {
                             return children[index];
-                            // return AnimationConfiguration.staggeredList(
-                            //   position: index,
-                            //   duration: const Duration(milliseconds: 375),
-                            //   child: SlideAnimation(
-                            //     verticalOffset: 50.0,
-                            //     child: FadeInAnimation(
-                            //       child: children[index],
-                            //     ),
-                            //   ),
-                            // );
                           },
                         );
                       }

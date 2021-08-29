@@ -36,9 +36,7 @@ class FileUtils {
       try {
         final List list = await data.list().toList();
         final int length = list.length;
-        itemsCount = length == 1
-            ? 'Directory | $length Item'
-            : 'Directory | $length Items';
+        itemsCount = length == 1 ? 'Directory | $length Item' : 'Directory | $length Items';
       } on FileSystemException catch (e) {
         print(e);
       }
@@ -72,16 +70,13 @@ class FileUtils {
           video: path,
           imageFormat: ImageFormat.PNG,
           timeMs: 10000,
-          // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-          // maxWidth: position.ceil(),
-          // maxHeight: position.ceil(),
           quality: 100,
         );
         print('file is Located at: $filePath');
         return filePath;
       }
     } catch (e) {
-      Exception(e);
+      throw e;
     }
   }
 
@@ -157,12 +152,9 @@ class FileUtils {
     return {'data': storePhotos, 'size': _size};
   }
 
-  static List<FileSystemEntity> sortListAlphabetically(
-      List<FileSystemEntity> list) {
-    final sort = (a, b) => p
-        .basename(a.path)
-        .toLowerCase()
-        .compareTo(p.basename(b.path).toLowerCase());
+  static List<FileSystemEntity> sortListAlphabetically(List<FileSystemEntity> list) {
+    final sort =
+        (a, b) => p.basename(a.path).toLowerCase().compareTo(p.basename(b.path).toLowerCase());
     list.sort(sort);
     return list;
   }

@@ -58,7 +58,7 @@ class FolderImage extends StatelessWidget {
         onTap: () {
           final photos = images[index];
           final list = [for (var item in photos.files) File(item)];
-
+          print(photos);
           MediaUtils.redirectToPage(
             context,
             page: MyGridView(
@@ -86,7 +86,7 @@ class FolderImage extends StatelessWidget {
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.black26, Colors.transparent],
+                    colors: [Colors.black54, Colors.transparent],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                   ),
@@ -97,23 +97,27 @@ class FolderImage extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        folderName,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                        ),
-                      ),
+                      child: Text(folderName,
+                          // style: TextStyle(
+                          //   color: Colors.white,
+                          //   fontWeight: FontWeight.w500,
+                          //   fontSize: 20,
+                          // ),
+                          style: Theme.of(context).textTheme.headline5.copyWith(
+                                color: MyColors.whitish,
+                                fontWeight: FontWeight.w300,
+                              )),
                     ),
                     SizedBox(height: 5),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        '43 Photos',
+                        // '43 Photos',
+                        images[index].files.length.toString(),
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 15,
+                          // fontWeight: FontWeight.w300,
                         ),
                       ),
                     ),
