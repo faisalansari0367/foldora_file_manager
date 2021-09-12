@@ -56,7 +56,7 @@ class Worker {
   Future<dynamic> doWork(Function function, args, {isStream = false}) async {
     await isReady;
     final responsePort = ReceivePort();
-    final Map map = {'fun': function, 'args': args, 'isStream': isStream};
+    final map = {'fun': function, 'args': args, 'isStream': isStream};
     childSendPort.send([map, responsePort.sendPort]);
     // responsePort.listen((message) { }, on)
     final response = await responsePort.first;
@@ -73,7 +73,7 @@ class Worker {
   Future<dynamic> doOperation(Function function, args, {isStream = true}) async {
     await isReady;
     final responsePort = ReceivePort();
-    final Map map = {'fun': function, 'args': args, 'isStream': isStream};
+    final map = {'fun': function, 'args': args, 'isStream': isStream};
     childSendPort.send([map, responsePort.sendPort]);
     return responsePort;
   }

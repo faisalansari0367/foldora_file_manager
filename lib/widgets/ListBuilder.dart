@@ -5,7 +5,6 @@ import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/widgets/MediaListItem.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
 import 'LeadingIcon.dart';

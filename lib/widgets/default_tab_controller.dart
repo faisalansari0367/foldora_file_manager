@@ -15,7 +15,6 @@ class _MyTabControllerState extends State<MyTabController> with SingleTickerProv
   TabController tabController;
   @override
   void initState() {
-    // TODO: implement initState
     tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
