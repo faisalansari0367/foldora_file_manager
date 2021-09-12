@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:files/provider/StoragePathProvider.dart';
-import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/FileNotFoundScreen.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';
@@ -28,11 +27,11 @@ class Photos extends StatelessWidget {
       // bottomNavigationBar: BottomSlideAnimation(),
       backgroundColor: Colors.black54,
       appBar: MyAppBar(
-        backgroundColor: MyColors.darkGrey,
+        backgroundColor: Colors.black54,
         // bottom: MyTabController(),
       ),
-      body: Container(
-        margin: const EdgeInsets.only(left: 12, right: 12, top: 12),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: widget,
       ),
     );

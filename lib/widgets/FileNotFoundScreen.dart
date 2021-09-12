@@ -28,23 +28,27 @@ class FileNotFoundScreen extends StatelessWidget {
               'assets/5_Something Wrong.png',
               fit: BoxFit.cover,
             ),
-            if (message != null) AnimatedPositioned(
-                    duration: Duration(milliseconds: 500),
-                    bottom: bottom,
-                    left: leftRight,
-                    right: leftRight,
-                    child: Container(
-                      padding: EdgeInsets.all(8 * Responsive.widthMultiplier),
-                      color: Colors.white,
-                      child: Text(
-                        message,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          backgroundColor: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ) else Container(),
+            if (message != null)
+              AnimatedPositioned(
+                duration: Duration(milliseconds: 500),
+                bottom: bottom,
+                left: leftRight,
+                right: leftRight,
+                child: Container(
+                  padding: EdgeInsets.all(8 * Responsive.widthMultiplier),
+                  color: Colors.white,
+                  child: Text(
+                    message,
+                    textAlign: TextAlign.center,
+                    style:
+                        Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 13, height: 1.5),
+                    // style: TextStyle(
+                    //   fontWeight: FontWeight.bold,
+                    //   backgroundColor: Colors.white,
+                    // ),
+                  ),
+                ),
+              ),
             Positioned(
               bottom: Responsive.height(12),
               left: MediaQuery.of(context).size.width * .37,

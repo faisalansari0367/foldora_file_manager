@@ -22,7 +22,7 @@ class VideoModel {
     });
   }
 
-  static jsonToVideo(json) {
+  static List<VideoModel> jsonToVideo(json) {
     final source = jsonDecode(json);
     return List.generate(source.length, (index) {
       final value = source[index];

@@ -24,9 +24,9 @@ class HorizontalTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('horizontal tabs');
-    final MyProvider provider = Provider.of<MyProvider>(context, listen: true);
+    final provider = Provider.of<MyProvider>(context, listen: true);
     final list = provider.data;
-    final PageView pageView = PageView.builder(
+    final pageView = PageView.builder(
       onPageChanged: (value) => provider.onPageChanged(value),
       // allowImplicitScrolling: true,
       itemCount: list.length,
@@ -38,7 +38,7 @@ class HorizontalTabs extends StatelessWidget {
       },
     );
 
-    final List<Widget> children = <Widget>[
+    final children = <Widget>[
       sizedBox,
       MediaUtils.tab(child: _PhotosTab(), page: Photos(), context: context),
       sizedBox,
@@ -189,7 +189,7 @@ class VideosPage extends StatelessWidget {
           }
 
           for (var item in provider.selectedMedia) {
-            provider.move(dir.path);
+            await provider.move(dir.path);
             print('item is moving $item');
           }
         },

@@ -91,7 +91,7 @@ class _CustomDialogState extends State<CustomDialog> {
       ),
     );
 
-    final Dialog dialog = Dialog(
+    final dialog = Dialog(
       insetPadding: EdgeInsets.all(10),
       elevation: 5,
       insetAnimationCurve: Curves.easeInBack,

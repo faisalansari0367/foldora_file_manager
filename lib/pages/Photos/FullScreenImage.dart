@@ -40,12 +40,12 @@ class _FullScreenImageState extends State<FullScreenImage> {
     // int index = 0;
     return WillPopScope(
       onWillPop: () async {
-        SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom, SystemUiOverlay.top]);
+        await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
         Navigator.pop(context);
         return true;
       },
       child: AnnotatedRegion(
-        value: SystemChrome.setEnabledSystemUIOverlays([]),
+        value: SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []),
         child: AnnotatedRegion(
           value: AppbarUtils.systemUiOverylay(),
           child: Scaffold(
@@ -114,14 +114,14 @@ class _FullScreenImageState extends State<FullScreenImage> {
 }
 
 void setOverlay() {
-  SystemChrome.setEnabledSystemUIOverlays([
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
     SystemUiOverlay.bottom,
     SystemUiOverlay.top,
   ]);
 }
 
 void resetOverlay() {
-  SystemChrome.setEnabledSystemUIOverlays([]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 }
 
 IconButton button(IconData iconData, {onPressed}) {

@@ -23,6 +23,7 @@ class DirectoryLister extends StatelessWidget {
     final provider = Provider.of<MyProvider>(context, listen: true);
 
     return FutureBuilder(
+      key: UniqueKey(),
       future: provider.dirContents(path, isShowHidden: provider.showHidden),
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data.isEmpty) {

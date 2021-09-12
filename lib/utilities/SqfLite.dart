@@ -55,8 +55,8 @@ class SqfLite {
   static Future<Database> createDatabase(
       {String tableName, String databaseName}) async {
     final dbDataPath = await getDatabasesPath();
-    final String path = join(dbDataPath, databaseName);
-    final String createTable =
+    final path = join(dbDataPath, databaseName);
+    final createTable =
         'CREATE TABLE $tableName (id INTEGER PRIMARY KEY AUTOINCREMENT, $appName TEXT, $packageName TEXT, $apkFilePath TEXT, $appIcon BLOB)';
     try {
       return await openDatabase(
@@ -71,13 +71,13 @@ class SqfLite {
   }
 
   static Future<void> createLocalAppsTable(Database database) async {
-    final List<String> allApps = await FileUtils.getAllLocalApps();
+    final allApps = await FileUtils.getAllLocalApps();
     print('AllApps length: ${allApps.length}');
     final appsData = await DeviceApps.getAppByApkFile(allApps);
-    final List<App> apps = App.fromList(appsData);
+    final apps = App.fromList(appsData);
 
     try {
-      final Batch batch = database.batch();
+      final batch = database.batch();
       for (final item in apps) {
         final query = await database.query(
           localAppsTable,
@@ -85,7 +85,7 @@ class SqfLite {
           whereArgs: [item.apkFilePath],
         );
         if (query.isEmpty) {
-          database.insert(
+          await database.insert(
             localAppsTable,
             toMap(item),
             conflictAlgorithm: ConflictAlgorithm.ignore,
@@ -107,9 +107,9 @@ class SqfLite {
     final List<App> systemApps =
         await FileUtils.worker.doWork(App.fromList, _systemApps);
     try {
-      final Batch batch = db.batch();
+      final batch = db.batch();
       for (final item in systemApps) {
-        db.insert(
+        await db.insert(
           systemAppsTable,
           toMap(item),
           conflictAlgorithm: ConflictAlgorithm.ignore,

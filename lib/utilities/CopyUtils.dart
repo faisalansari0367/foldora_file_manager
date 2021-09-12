@@ -60,11 +60,11 @@ class CopyUtils {
     File file,
     String folderDestPath,
   ) async* {
-    final Stream<List<int>> srcFile = file.openRead();
-    final int srcFileLength = await file.length();
+    final srcFile = file.openRead();
+    final srcFileLength = await file.length();
     final _srcSize = FileUtils.formatBytes(srcFileLength, 2);
     final _srcName = p.basename(file.path);
-    final String destPath = p.join(folderDestPath, p.basename(file.path));
+    final destPath = p.join(folderDestPath, p.basename(file.path));
     final destFile = File(destPath).openWrite(mode: FileMode.append);
     await for (final event in srcFile) {
       destFile.add(event);
@@ -86,7 +86,7 @@ class CopyUtils {
       if (item is Directory) {
         totalSize += await _getDirectorySize(item);
       } else if (item is File) {
-        final FileStat stat = await item.stat();
+        final stat = await item.stat();
         totalSize += stat.size;
       }
     }
@@ -99,7 +99,7 @@ class CopyUtils {
       if (dir is Directory) {
         totalSize += await _getDirectorySize(dir);
       } else if (dir is File) {
-        final FileStat stat = await dir.stat();
+        final stat = await dir.stat();
         totalSize += stat.size;
       }
     }

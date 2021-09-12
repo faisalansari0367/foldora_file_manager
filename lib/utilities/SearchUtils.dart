@@ -20,7 +20,7 @@ class SearchUtils {
       SharedPreferences prefs, String query) async {
     final suggestions = prefs.getStringList('suggestions') ?? [];
     if (suggestions.contains(query)) {
-      final int index = suggestions.indexOf(query);
+      final index = suggestions.indexOf(query);
       suggestions.removeAt(index);
       suggestions.insert(0, query);
       await prefs.setStringList('suggestions', suggestions);
@@ -32,10 +32,10 @@ class SearchUtils {
 
   static Stream searchDelegate(
       {String path, String query, bool withExt = false}) async* {
-    final List<FileSystemEntity> results = [];
-    final Directory dir = Directory(path);
+    final results = <FileSystemEntity>[];
+    final dir = Directory(path);
 
-    final Stream<FileSystemEntity> stream = dir.list();
+    final stream = dir.list();
 
     try {
       await for (final i in stream) {
@@ -68,9 +68,9 @@ class SearchUtils {
     final bool withExt = args['withExt'];
     final bool wantOnlyPath = args['wantOnlyPath'];
     //
-    final Stream<FileSystemEntity> stream = Directory(path).list();
-    final List<FileSystemEntity> results = [];
-    final List<String> paths = [];
+    final stream = Directory(path).list();
+    final results = <FileSystemEntity>[];
+    final paths = <String>[];
     try {
       await for (final i in stream) {
         if (!i.path.contains(_excludedPath)) {
@@ -79,8 +79,9 @@ class SearchUtils {
             await for (final item in stream) {
               if (withExt) {
                 if (wantOnlyPath) {
-                  if (searchWithExtension(item.path, query))
+                  if (searchWithExtension(item.path, query)) {
                     paths.add(item.path);
+                  }
                 } else {
                   if (searchWithExtension(item.path, query)) results.add(item);
                 }

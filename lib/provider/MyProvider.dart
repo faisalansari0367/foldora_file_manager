@@ -71,10 +71,11 @@ class MyProvider extends ChangeNotifier {
   Future<void> createFileSystemEntity(String path, String name) async {
     final folderPath = p.join(path, name);
     try {
+      notifyListeners();
       if (p.extension(folderPath) != '') {
-        File(folderPath).create();
+        await File(folderPath).create();
       } else {
-        Directory(folderPath).create();
+        await Directory(folderPath).create();
         // print(folderPath);
       }
       notifyListeners();
@@ -101,7 +102,7 @@ class MyProvider extends ChangeNotifier {
   String calculatePercent(int bytes, int decimals) {
     if (data.isEmpty) return '0.0';
     final _data = data[currentPage];
-    final double percent = bytes / ((_data.total - _data.free)) * 100;
+    final percent = bytes / ((_data.total - _data.free)) * 100;
     final result = percent.isNaN ? '0.0' : percent.toStringAsFixed(decimals);
     return result;
   }
@@ -112,7 +113,7 @@ class MyProvider extends ChangeNotifier {
   }
 
   Future<List<FileSystemEntity>> dirContents(String path, {isShowHidden = false}) async {
-    final Map args = {'path': path, 'showHidden': isShowHidden};
+    final args = {'path': path, 'showHidden': isShowHidden};
     try {
       final result = await FileUtils.worker.doWork(FileUtils.directoryList, args);
       return result;
@@ -137,14 +138,16 @@ class MyProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  onGoBack(context) {
+  Future<bool> onGoBack(context) async {
     final value = data[currentPage];
     if (value.currentPath == value.path) {
-      return Navigator.pop(context);
+      Navigator.pop(context);
+      return true;
     } else {
       value.currentPath = Directory(value.currentPath).parent.path;
     }
     notifyListeners();
+    return false;
   }
 
   List<String> getListOfNavigation() {

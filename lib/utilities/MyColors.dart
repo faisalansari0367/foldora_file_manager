@@ -10,7 +10,7 @@ class MyColors {
   static const whitish = Color(0xfffcfcff);
   static final appbarActionsColor = Colors.grey[500];
   // 0xff5ace99
-  static const teal = const Color(0xff5ace99);
+  static const teal = Color(0xff5ace99);
   static final primaryText = Colors.grey[400];
   static final dropdownText = Colors.grey[300];
 

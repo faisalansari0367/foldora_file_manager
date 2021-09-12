@@ -95,7 +95,7 @@ Future<void> deleteModal({
               ElevatedButton(
                 onPressed: onPressed ??
                     () async {
-                      await operations.deleteFileOrFolder();
+                      await operations.deleteFileOrFolder(context);
                       Navigator.of(context).pop();
                       // for notifing myProvider so user can we notified
                       myProvider.notify();

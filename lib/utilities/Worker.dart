@@ -13,18 +13,18 @@ class Worker {
   Future<void> get isReady => _isReady.future;
 
   Future<void> _start() async {
-    final ReceivePort receivePort = ReceivePort();
-    final ReceivePort errorPort = ReceivePort();
+    final receivePort = ReceivePort();
+    final errorPort = ReceivePort();
 
-    _isolate = await Isolate.spawn(workerIsolate, receivePort.sendPort,
-        onError: errorPort.sendPort);
+    _isolate =
+        await Isolate.spawn(workerIsolate, receivePort.sendPort, onError: errorPort.sendPort);
     errorPort.listen(print);
     childSendPort = await receivePort.first;
     _isReady.complete();
   }
 
-  static workerIsolate(SendPort mainSendPort) async {
-    final ReceivePort childReceivePort = ReceivePort();
+  static Future<void> workerIsolate(SendPort mainSendPort) async {
+    final childReceivePort = ReceivePort();
     mainSendPort.send(childReceivePort.sendPort);
 
     await for (final message in childReceivePort) {
@@ -55,7 +55,7 @@ class Worker {
 
   Future<dynamic> doWork(Function function, args, {isStream = false}) async {
     await isReady;
-    final ReceivePort responsePort = ReceivePort();
+    final responsePort = ReceivePort();
     final Map map = {'fun': function, 'args': args, 'isStream': isStream};
     childSendPort.send([map, responsePort.sendPort]);
     // responsePort.listen((message) { }, on)
@@ -72,7 +72,7 @@ class Worker {
 
   Future<dynamic> doOperation(Function function, args, {isStream = true}) async {
     await isReady;
-    final ReceivePort responsePort = ReceivePort();
+    final responsePort = ReceivePort();
     final Map map = {'fun': function, 'args': args, 'isStream': isStream};
     childSendPort.send([map, responsePort.sendPort]);
     return responsePort;

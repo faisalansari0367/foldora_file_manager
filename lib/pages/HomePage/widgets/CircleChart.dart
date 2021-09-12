@@ -113,8 +113,8 @@ class MyPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    final Offset center = Offset(size.width / 2, size.height / 2);
-    final double arcAngle = 2 * pi * percentage / 100;
+    final center = Offset(size.width / 2, size.height / 2);
+    final arcAngle = 2 * pi * percentage / 100;
     canvas.drawCircle(center, radius, backGroundCircle);
 
     canvas.drawArc(

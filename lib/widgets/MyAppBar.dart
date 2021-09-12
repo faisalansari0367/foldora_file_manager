@@ -16,17 +16,18 @@ class AppbarUtils {
 
   static SystemUiOverlayStyle systemUiOverylay({
     Color backgroundColor,
-    Brightness statusBarIconBrightness,
-    Brightness statusBarBrightness,
+    Brightness brightness = Brightness.light,
     Color systemNavigationBarColor,
   }) {
     return SystemUiOverlayStyle(
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Colors.white,
+      statusBarBrightness: brightness,
+      statusBarIconBrightness: brightness,
+      systemNavigationBarColor: systemNavigationBarColor ?? Colors.transparent,
       statusBarColor: backgroundColor ?? Colors.transparent,
-      // systemNavigationBarDividerColor: Colors.white,
-      // systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarContrastEnforced: true,
+      systemNavigationBarDividerColor: Colors.grey,
+      systemStatusBarContrastEnforced: true,
+      systemNavigationBarIconBrightness: brightness,
     );
   }
 
@@ -95,6 +96,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool menu;
   final bool bottomNavBar;
   final Widget bottom;
+  final Brightness brightness;
   // final StorageType storageType;
   const MyAppBar({
     this.backgroundColor,
@@ -102,6 +104,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.menu,
     this.bottomNavBar = false,
     this.bottom,
+    this.brightness = Brightness.light,
   });
 
   @override
@@ -112,7 +115,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final color = backgroundColor ?? MyColors.darkGrey;
     return AppBar(
-      systemOverlayStyle: AppbarUtils.systemUiOverylay(),
+      systemOverlayStyle: AppbarUtils.systemUiOverylay(brightness: brightness),
       backgroundColor: color,
       leading: AppbarUtils.backIcon(context),
       elevation: 0.0,

@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import '../widgets/CustomDialog.dart';
 import 'dart:io';
 import '../sizeConfig.dart';
-import 'MyColors.dart';
 
 class OperationsUtils {
   static const Widget finishedIcon = Icon(Icons.check, color: Colors.white);
@@ -59,7 +58,7 @@ class OperationsUtils {
     );
   }
 
-  static bottomNavigation() {
+  static Widget bottomNavigation() {
     return Selector<OperationsProvider, bool>(
       selector: (_, value) => value.showBottomNavbar,
       builder: (context, value, child) {
@@ -94,7 +93,7 @@ class OperationsUtils {
     );
   }
 
-  static myDialog(
+  static Future<Widget> myDialog(
     BuildContext context, {
     FileSystemEntity item,
     @required String eventName,

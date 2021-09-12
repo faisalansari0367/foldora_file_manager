@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
@@ -27,15 +26,15 @@ class IconProvider extends ChangeNotifier {
   }
 
   Future<void> _init() async {
-    _initPrefs();
-    _getINstalledApplications();
+    await _initPrefs();
+    await _getINstalledApplications();
   }
 
   Future<void> _getINstalledApplications() async {
     SqfLite();
     await SqfLite.isReady;
-    final Database _localApps = SqfLite.localApps;
-    final Database _systemApps = SqfLite.systemApps;
+    final _localApps = SqfLite.localApps;
+    final _systemApps = SqfLite.systemApps;
 
     final _systemAppsData = await _systemApps.query(SqfLite.systemAppsTable);
     systemApps = await FileUtils.worker.doWork(SqfLite.fromMap, _systemAppsData);
@@ -49,7 +48,7 @@ class IconProvider extends ChangeNotifier {
   }
 
   Future<void> _initPrefs() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     _prefs = prefs;
     notifyListeners();
   }
@@ -82,7 +81,7 @@ class IconProvider extends ChangeNotifier {
     if (appsData.isEmpty) return result;
     final List<App> apps = await FileUtils.worker.doWork(App.fromList, appsData);
     await SqfLite.isReady;
-    SqfLite.localApps.insert(
+    await SqfLite.localApps.insert(
       SqfLite.localAppsTable,
       SqfLite.toMap(apps[0]),
       conflictAlgorithm: ConflictAlgorithm.ignore,
@@ -95,10 +94,10 @@ class IconProvider extends ChangeNotifier {
     try {
       filePath = await FileUtils.createThumbnail(path);
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
+      await Fluttertoast.showToast(msg: e.toString());
     }
     if (filePath != null) {
-      final File file = File(filePath);
+      final file = File(filePath);
       return Widgets.forImage(
         file,
         decoration: decoration,
@@ -139,13 +138,14 @@ class IconProvider extends ChangeNotifier {
 
   Widget switchCaseForIcons(FileSystemEntity data,
       {Color iconBgColor, Color iconColor, BoxDecoration decoration, double imageRadius}) {
-    if (data is Directory)
+    if (data is Directory) {
       return _showIcon(
         data.path,
         bgColor: iconBgColor,
         iconColor: iconColor,
         decoration: decoration,
       );
+    }
     switch (p.extension(data.path).toLowerCase()) {
       case '.mp3':
       case '.m4a':
@@ -225,7 +225,7 @@ class IconProvider extends ChangeNotifier {
     }
   }
 
-  video(data, {iconBgColor, iconColor, decoration, imageRadius}) {
+  Widget video(data, {iconBgColor, iconColor, decoration, imageRadius}) {
     final map = FileUtils.isVideoThumbnailExist(data.path);
     return map['isFileExist']
         ? Widgets.forImage(map['thumb'], decoration: decoration, radius: imageRadius)

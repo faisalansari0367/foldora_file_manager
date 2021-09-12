@@ -87,7 +87,7 @@ class StoragePathProvider extends ChangeNotifier {
   }
 
   Future<void> deletePhotos(List<FileSystemEntity> list) async {
-    for (final FileSystemEntity item in list) {
+    for (final item in list) {
       await item.delete();
     }
     notifyListeners();
@@ -111,7 +111,7 @@ class StoragePathProvider extends ChangeNotifier {
   /// end
 
   Future<void> photos() async {
-    final String imagesPath = await StoragePath.imagesPath;
+    final imagesPath = await StoragePath.imagesPath;
     // log(imagesPath);
     final images = await FileUtils.worker.doWork(FileUtils.imagesPath, imagesPath);
     // await FileUtils.imagesPath(imagesPath);

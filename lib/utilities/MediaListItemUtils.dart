@@ -17,14 +17,14 @@ class MediaUtils {
 
   static const backgroundColor = Color(0xFF2c2c3c);
   static String currentPath = '';
-  static redirectToPage(BuildContext context, {page}) {
+  static void redirectToPage(BuildContext context, {page}) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => page),
     );
   }
 
-  static ontap(BuildContext context, FileSystemEntity data) {
+  static void ontap(BuildContext context, FileSystemEntity data) {
     currentPath = data.path;
     if (data is File) {
       OpenFile.open(data.path);

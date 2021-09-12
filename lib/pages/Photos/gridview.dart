@@ -29,8 +29,8 @@ class _MyGridViewState extends State<MyGridView> {
       },
       staggeredTileBuilder: (int index) => StaggeredTile.count(
         1,
-        index.isEven ? 1.2 : 1.8,
-        // 1,
+        // index.isEven ? 1.2 : 1.8,
+        1,
       ),
     );
     return GestureDetector(
@@ -38,7 +38,10 @@ class _MyGridViewState extends State<MyGridView> {
         duration: const Duration(milliseconds: 375),
         child: SlideAnimation(
           child: FadeInAnimation(
-            child: grid,
+            child: Container(
+              // margin: EdgeInsets.only(left: 10, right: 10, top: 10),
+              child: grid,
+            ),
           ),
         ),
       ),

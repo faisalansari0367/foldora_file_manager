@@ -70,37 +70,30 @@ class _HomePageState extends State<HomePage> {
       ),
     ];
 
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: AppbarUtils.systemUiOverylay(
-        backgroundColor: Colors.transparent,
-        statusBarBrightness: Brightness.dark,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: Colors.transparent,
+    return Scaffold(
+      floatingActionButton: FAB(),
+      appBar: MyAppBar(
+        backgroundColor: Colors.white,
+        iconData: Icons.menu,
+        bottomNavBar: false,
+        brightness: Brightness.dark,
       ),
-      child: Scaffold(
-        floatingActionButton: FAB(),
-        appBar: MyAppBar(
-          backgroundColor: Colors.white,
-          iconData: Icons.menu,
-          bottomNavBar: false,
-        ),
-        body: Container(
-          color: Colors.white,
-          child: RefreshIndicator(
-            onRefresh: () => _onRefresh(context),
-            child: ListView(
-              physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-              children: AnimationConfiguration.toStaggeredList(
-                duration: const Duration(milliseconds: 400),
-                childAnimationBuilder: (widget) => SlideAnimation(
-                  horizontalOffset: 50.0,
-                  child: FadeInAnimation(
-                    delay: Duration(milliseconds: 80),
-                    child: widget,
-                  ),
+      body: Container(
+        color: Colors.white,
+        child: RefreshIndicator(
+          onRefresh: () => _onRefresh(context),
+          child: ListView(
+            physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            children: AnimationConfiguration.toStaggeredList(
+              duration: const Duration(milliseconds: 400),
+              childAnimationBuilder: (widget) => SlideAnimation(
+                horizontalOffset: 50.0,
+                child: FadeInAnimation(
+                  delay: Duration(milliseconds: 80),
+                  child: widget,
                 ),
-                children: children,
               ),
+              children: children,
             ),
           ),
         ),

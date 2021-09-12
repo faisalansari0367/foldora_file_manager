@@ -10,7 +10,7 @@ class ImageModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final data = <String, dynamic>{};
     data['files'] = files;
     data['folderName'] = folderName;
     return data;

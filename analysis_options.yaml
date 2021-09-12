@@ -1,3 +1,4 @@
+include: package:pedantic/analysis_options.yaml
 # # This is a copy (as of March 2021) of flutter/flutter's analysis_options file,
 # # with minimal changes for this repository. The goal is to move toward using a
 # # shared set of analysis options as much as possible, and eventually a shared

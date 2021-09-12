@@ -4,31 +4,35 @@ import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/provider/StoragePathProvider.dart';
 import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/scroll_provider.dart';
+import 'package:files/services/storage_service.dart';
 import 'package:files/sizeConfig.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'sizeConfig.dart';
+import 'widgets/MyAppBar.dart';
 import 'widgets/splash_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(AppbarUtils.systemUiOverylay());
+  StorageService();
   runApp(MyApp());
 }
 
 // This widget is the root of your application.
 
-void systemOverlay() {
-  SystemChrome.setEnabledSystemUIMode(
-      // overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
-      SystemUiMode.immersive);
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
-}
+// void systemOverlay() {
+//   SystemChrome.setEnabledSystemUIMode(
+//       // overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+//       SystemUiMode.immersive);
+//   SystemChrome.setPreferredOrientations([
+//     DeviceOrientation.portraitUp,
+//     DeviceOrientation.portraitDown,
+//   ]);
+// }
 
 class MyApp extends StatefulWidget {
   @override
@@ -37,8 +41,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Future<bool> setFirstTimeSeen() async {
-    final prefs = await SharedPreferences.getInstance();
-    final isSeen = prefs.getBool('firstSeen') ?? false;
+    final service = StorageService();
+    await service.isReady;
+    final isSeen = service.setFirstTimeSeen();
     return isSeen;
   }
 
@@ -93,3 +98,25 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+// class SplashScreen extends StatefulWidget {
+//   const SplashScreen({Key key}) : super(key: key);
+
+//   @override
+//   _SplashScreenState createState() => _SplashScreenState();
+// }
+
+// class _SplashScreenState extends State<SplashScreen> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       color: Colors.white,
+//       child: Center(
+//         child: Image.asset(
+//           // 'assets/icon/app_icon.png'
+//           'icon/app_icon.png',
+//         ),
+//       ),
+//     );
+//   }
+// }

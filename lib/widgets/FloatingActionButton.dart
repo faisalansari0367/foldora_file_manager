@@ -18,7 +18,7 @@ class _FABState extends State<FAB> {
   @override
   Widget build(BuildContext context) {
     final ontap = () => OperationsUtils.myDialog(context, eventName: 'Create', path: widget.path);
-    final Widget open = OperationsUtils.customFAB(addIcon, ontap: ontap);
+    final open = OperationsUtils.customFAB(addIcon, ontap: ontap);
 
     return Selector<OperationsProvider, bool>(
       selector: (_, value) => value.operationIsRunning,

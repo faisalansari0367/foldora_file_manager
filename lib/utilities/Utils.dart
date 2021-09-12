@@ -32,10 +32,10 @@ class FileUtils {
 
   static Future<String> checkFileType(FileSystemEntity data) async {
     if (data is Directory) {
-      String itemsCount = 'Directory';
+      var itemsCount = 'Directory';
       try {
         final List list = await data.list().toList();
-        final int length = list.length;
+        final length = list.length;
         itemsCount = length == 1 ? 'Directory | $length Item' : 'Directory | $length Items';
       } on FileSystemException catch (e) {
         print(e);
@@ -47,12 +47,12 @@ class FileUtils {
     }
   }
 
-  static isVideoThumbnailExist(path) {
+  static Map<String, dynamic> isVideoThumbnailExist(path) {
     final fileName = p.basenameWithoutExtension(path);
-    final File thumb = File('$apkIconPath/$fileName.png');
+    final thumb = File('$apkIconPath/$fileName.png');
 
     final isFileExist = thumb.existsSync();
-    final map = {};
+    final map = <String, dynamic>{};
     map['isFileExist'] = isFileExist;
     if (isFileExist) map['thumb'] = thumb;
     return map;
@@ -60,12 +60,12 @@ class FileUtils {
 
   // ignore: missing_return
   static Future<String> createThumbnail(path) async {
-    final Directory apkIconDir = Directory(apkIconPath);
+    final apkIconDir = Directory(apkIconPath);
     if (!apkIconDir.existsSync()) await apkIconDir.create();
     final map = isVideoThumbnailExist(path);
     try {
       if (!map['isFileExist']) {
-        final String filePath = await VideoThumbnail.thumbnailFile(
+        final filePath = await VideoThumbnail.thumbnailFile(
           thumbnailPath: apkIconPath,
           video: path,
           imageFormat: ImageFormat.PNG,
@@ -76,14 +76,14 @@ class FileUtils {
         return filePath;
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
-  static storagePathVideos(dynamic json) {
+  static Map<String, dynamic> storagePathVideos(dynamic json) {
     final result = VideoModel.jsonToVideo(json);
-    final List<Video> videos = [];
-    int size = 0;
+    final videos = <Video>[];
+    var size = 0;
 
     for (final item in result) {
       for (final i in item.videos) {
@@ -109,10 +109,10 @@ class FileUtils {
   //   return {"data": decodedJson, "size": size, "videos": videos};
   // }
 
-  static storagePathDocuments(json) async {
+  static Map<String, dynamic> storagePathDocuments(json) {
     final decodedJson = jsonDecode(json);
     final result = DocumentsModel.jsonToDocument(decodedJson);
-    int totalSize = 0;
+    var totalSize = 0;
     for (final i in result) {
       for (final e in i.document) {
         totalSize += e.size;
@@ -121,9 +121,9 @@ class FileUtils {
     return {'data': result, 'size': totalSize};
   }
 
-  static storagePathAudios(json) {
-    final List<Audio> audios = [];
-    int size = 0;
+  static Map<String, dynamic> storagePathAudios(json) {
+    final audios = <Audio>[];
+    var size = 0;
     final result = AudioModel.jsonToAudio(json);
     for (final item in result) {
       for (final i in item.audios) {
@@ -135,10 +135,10 @@ class FileUtils {
   }
 
   /// this function works for StoragePath.imagesPath
-  static imagesPath(String json) async {
-    final decodeJson = await jsonDecode(json);
-    int _size = 0;
-    final List<ImageModel> storePhotos = [];
+  static Future<Map<String, dynamic>> imagesPath(String json) async {
+    final decodeJson = jsonDecode(json);
+    var _size = 0;
+    final storePhotos = <ImageModel>[];
     for (final item in decodeJson) {
       final model = ImageModel.fromJson(item);
       storePhotos.add(model);
@@ -173,10 +173,10 @@ class FileUtils {
 
   // ignore: missing_return
   static Future<List<FileSystemEntity>> directoryList(Map args) async {
-    List<FileSystemEntity> sortedList = [];
-    final List<Directory> directories = [];
-    final List<File> files = [];
-    final List<FileSystemEntity> hiddenFiles = [];
+    var sortedList = <FileSystemEntity>[];
+    final directories = <Directory>[];
+    final files = <File>[];
+    final hiddenFiles = <FileSystemEntity>[];
 
     final String path = args['path'];
     final bool showHidden = args['showHidden'];

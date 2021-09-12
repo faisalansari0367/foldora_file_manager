@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:files/utilities/CopyUtils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import '../utilities/OperationsUtils.dart';
 
@@ -16,7 +17,7 @@ class OperationsProvider extends ChangeNotifier {
   String _srcSize = '0.0 KB';
   int selectedIndex = 5;
   bool showCopy = true;
-  List<FileSystemEntity> _selectedMediaItems = [];
+  final List<FileSystemEntity> _selectedMediaItems = [];
 
   String get totalSize => _srcSize;
   String get speed => _speed;
@@ -50,7 +51,7 @@ class OperationsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteFileOrFolder() async {
+  Future<void> deleteFileOrFolder(BuildContext context) async {
     if (_selectedMediaItems.isEmpty) return;
     try {
       for (final item in _selectedMediaItems) {
@@ -58,9 +59,18 @@ class OperationsProvider extends ChangeNotifier {
         print('item deleted $result');
       }
       _selectedMediaItems.clear();
-      notifyListeners();
+      // notifyListeners();
     } on FileSystemException catch (e) {
       print('item deletion failed : $e');
+      final snackBar = SnackBar(
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.all(8),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        content: Text(e.toString()),
+      );
+      ScaffoldMessenger.maybeOf(context).showSnackBar(snackBar);
+      _selectedMediaItems.clear();
+      // notifyListeners();
     }
     notifyListeners();
   }
@@ -71,7 +81,7 @@ class OperationsProvider extends ChangeNotifier {
     if (selectedMedia.isEmpty) return;
     operationIsRunning = true;
 
-    final Map args = {'items': selectedMedia, 'currentPath': currentPath};
+    final args = {'items': selectedMedia, 'currentPath': currentPath};
     final Stream<dynamic> stream = CopyUtils.copySelectedItems(args);
     // await FileUtils.worker.doOperation(CopyUtils.copySelectedItems, args);
 
@@ -92,7 +102,7 @@ class OperationsProvider extends ChangeNotifier {
   Future<void> move(String currentPath) async {
     operationIsRunning = true;
     final totalFiles = _selectedMediaItems.length;
-    int movedFiles = 0;
+    var movedFiles = 0;
     // final currentPath = MediaUtils.currentPath;
     for (final item in _selectedMediaItems) {
       movedFiles++;

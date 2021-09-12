@@ -20,7 +20,7 @@ class Data {
 
   static List<Data> storageToData(List<Storage> list) {
     return List.generate(list.length, (index) {
-      final Storage storage = list[index];
+      final storage = list[index];
       return Data(
         currentPath: storage.path,
         free: storage.free,

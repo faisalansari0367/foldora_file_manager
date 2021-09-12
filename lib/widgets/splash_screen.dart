@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final status = await provider.getPermission();
 
     if (status.isGranted) {
-      setFirstSeen();
+      await setFirstSeen();
       Future.delayed(
         duration,
         () {
@@ -78,7 +78,7 @@ class _SplashScreenState extends State<SplashScreen> {
           physics: NeverScrollableScrollPhysics(),
           children: [
             screen(iconPath, 'Allow Permission', _onpressed),
-            screen(iconPath2, 'Let"s Explore', redirectToHome)
+            screen(iconPath2, 'Let"s Explore', redirectToHome),
           ],
         ),
       ),

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:files/provider/StoragePathProvider.dart';
-import 'package:files/sizeConfig.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
@@ -20,19 +19,26 @@ class _ImageFoldersState extends State<ImageFolders> {
   @override
   Widget build(BuildContext context) {
     final images = Provider.of<StoragePathProvider>(context, listen: false).imagesPath;
-    // return Scaffold(
-    //   // appBar: MyAppBar(),
-    //   body: ListView(
-    //     children: [
-    return ListView(
-      children: [
-        for (var item in images)
-          FolderImage(
-            image: File(item.files[0]),
+    return GridView.builder(
+      itemCount: images.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 20,
+        crossAxisSpacing: 20,
+        childAspectRatio: 0.75,
+      ),
+      itemBuilder: (context, index) {
+        final item = images[index];
+        final image = File(item.files.first);
+        return Container(
+          margin: EdgeInsets.all(4),
+          child: FolderImage(
+            image: image,
             folderName: item.folderName,
-            index: images.indexOf(item),
-          )
-      ],
+            index: index,
+          ),
+        );
+      },
     );
   }
 }
@@ -46,90 +52,41 @@ class FolderImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final images = Provider.of<StoragePathProvider>(context, listen: false).imagesPath;
-
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      height: 200,
-      // decoration: BoxDecoration(
-      //   gradient: LinearGradient(colors: [Colors.red, Colors.transparent]),
-      // ),
-      // width: 200,
-      child: GestureDetector(
-        onTap: () {
-          final photos = images[index];
-          final list = [for (var item in photos.files) File(item)];
-          print(photos);
-          MediaUtils.redirectToPage(
-            context,
-            page: MyGridView(
-              photos: list,
-            ),
-          );
-        },
-        child: Stack(
-          fit: StackFit.expand,
-          alignment: Alignment.center,
-
-          children: [
-            ClipRRect(
+    final theme = Theme.of(context).textTheme;
+    return GestureDetector(
+      onTap: () {
+        final photos = images[index];
+        final list = [for (var item in photos.files) File(item)];
+        print(photos);
+        MediaUtils.redirectToPage(
+          context,
+          page: MyGridView(
+            photos: list,
+          ),
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.file(
                 image,
-                cacheWidth: 720,
+                // cacheWidth: 720,
+                width: 400,
                 fit: BoxFit.cover,
               ),
             ),
-            Positioned(
-              left: 0,
-              bottom: 0,
-              child: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.black54, Colors.transparent],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                  ),
-                ),
-                width: Responsive.width(100),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(folderName,
-                          // style: TextStyle(
-                          //   color: Colors.white,
-                          //   fontWeight: FontWeight.w500,
-                          //   fontSize: 20,
-                          // ),
-                          style: Theme.of(context).textTheme.headline5.copyWith(
-                                color: MyColors.whitish,
-                                fontWeight: FontWeight.w300,
-                              )),
-                    ),
-                    SizedBox(height: 5),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        // '43 Photos',
-                        images[index].files.length.toString(),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          // fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-          //     ),
-          //   ],
-          // ),
-        ),
+          ),
+          SizedBox(height: 10),
+          Text(folderName, style: theme.subtitle2.copyWith(color: MyColors.whitish)),
+          SizedBox(height: 5),
+          Text(
+            '${images[index].files.length} Items',
+            style: theme.caption.copyWith(color: MyColors.whitish),
+          ),
+        ],
       ),
     );
   }

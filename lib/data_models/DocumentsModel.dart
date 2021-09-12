@@ -24,7 +24,7 @@ class DocumentsModel {
     });
   }
 
-  static _listOfDocument(List files) {
+  static List<Document> _listOfDocument(List files) {
     return List.generate(files.length, (index) {
       final document = files[index];
       return Document(

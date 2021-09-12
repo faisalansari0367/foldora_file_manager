@@ -55,7 +55,10 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(
-      AppbarUtils.systemUiOverylay(backgroundColor: MyColors.darkGrey),
+      AppbarUtils.systemUiOverylay(
+        backgroundColor: MyColors.darkGrey,
+        brightness: Brightness.light,
+      ),
     );
     scrollProvider = Provider.of<ScrollProvider>(context, listen: false);
     provider = Provider.of<MyProvider>(context, listen: false);
@@ -104,10 +107,14 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
     ];
 
     return AnnotatedRegion(
-      value: AppbarUtils.systemUiOverylay(backgroundColor: MyColors.darkGrey),
+      value: AppbarUtils.systemUiOverylay(
+        backgroundColor: MyColors.darkGrey,
+        brightness: Brightness.light,
+        systemNavigationBarColor: Colors.white,
+      ),
       child: Scaffold(
         backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         bottomNavigationBar: OperationsUtils.bottomNavigation(),
         floatingActionButton: const FAB(),
         body: SafeArea(
@@ -122,6 +129,7 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                   onWillPop: () => provider.onGoBack(context),
                   child: Consumer<MyProvider>(
                     builder: (context, value, child) {
+                      final storage = value.data[value.currentPage];
                       if (storage.path == storage.currentPath) {
                         return ListView.builder(
                           shrinkWrap: true,
@@ -133,12 +141,10 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                           },
                         );
                       }
-                      // return listView;
                       final lister = DirectoryLister(
                         path: storage.currentPath,
                         scrollController: _listViewController,
                       );
-                      // return lister;
                       return AnimationConfiguration.synchronized(
                         key: UniqueKey(),
                         duration: const Duration(milliseconds: 375),
@@ -149,11 +155,6 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                           ),
                         ),
                       );
-                      // },
-                      // return DirectoryLister(
-                      //   path: storage.currentPath,
-                      //   scrollController: _listViewController,
-                      // );
                     },
                   ),
                 ),

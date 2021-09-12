@@ -1,4 +1,3 @@
-import 'package:files/widgets/BottomAnimation.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedButton extends StatefulWidget {
@@ -16,28 +15,14 @@ class AnimatedButton extends StatefulWidget {
 class _AnimatedButtonState extends State<AnimatedButton> with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _scale;
-  static const duration = Duration(milliseconds: 200);
+
+  static const duration = Duration(milliseconds: 300);
+
   @override
   void initState() {
     _controller = AnimationController(vsync: this, duration: duration);
-    // _scale = TweenSequence(
-    //   [
-    //     TweenSequenceItem<double>(
-    //       tween: Tween<double>(begin: 1.0, end: 0.95).chain(CurveTween(curve: Curves.ease)),
-    //       weight: 20.0,
-    //     ),
-    //     TweenSequenceItem<double>(
-    //       tween: Tween<double>(begin: 0.95, end: 1.0).chain(CurveTween(curve: Curves.ease)),
-    //       weight: 40.0,
-    //     ),
-    //   ],
-    // ).animate(_controller);
-
-    _scale = Tween<double>(begin: 1.0, end: 0.95)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.bounceInOut));
-
-    // _controller.forward();
-    // ..addListener(() => setState(() {}))
+    final animation = CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
+    _scale = Tween<double>(begin: 1.0, end: 0.95).animate(animation);
     super.initState();
   }
 
@@ -64,11 +49,6 @@ class _AnimatedButtonState extends State<AnimatedButton> with SingleTickerProvid
       onTap: widget.onTap,
       onTapUp: _onTapUp,
       onTapDown: _onTapDown,
-      // onTap: () {
-      //   _controller.forward();
-      //   // Future.delayed(duration, () => widget.onTap());
-      //   // widget.onTap();
-      // },
       child: AnimatedBuilder(
         animation: _controller,
         child: widget.child,
