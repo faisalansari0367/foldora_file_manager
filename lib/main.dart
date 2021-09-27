@@ -12,13 +12,17 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'sizeConfig.dart';
+import 'utilities/Utils.dart';
 import 'widgets/MyAppBar.dart';
 import 'widgets/splash_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FileUtils();
   SystemChrome.setSystemUIOverlayStyle(AppbarUtils.systemUiOverylay());
-  StorageService();
+  final service = StorageService();
+  await service.isReady;
+
   runApp(MyApp());
 }
 

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:files/provider/MyProvider.dart';
+import 'package:files/services/storage_service.dart';
 import 'package:files/utilities/SearchUtils.dart';
 import 'package:files/widgets/14_no_result_found.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'ListBuilder.dart';
 
 class Search extends SearchDelegate {
   static final double _splashRadius = 25.0;
+  // final storage = StorageService();
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -34,7 +36,7 @@ class Search extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     final provider = Provider.of<MyProvider>(context, listen: false);
-    SearchUtils.addSuggestions(provider.prefs, query);
+    SearchUtils.addSuggestions(StorageService.prefs, query);
     return StreamBuilder(
       stream: SearchUtils.searchDelegate(
         path: provider.data[provider.currentPage].path,
@@ -43,9 +45,7 @@ class Search extends SearchDelegate {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<FileSystemEntity> data = snapshot.data;
         if (snapshot.hasData) {
-          return snapshot.data.isNotEmpty
-              ? DirectoryListItem(data: data)
-              : NoResultFoundScreen();
+          return snapshot.data.isNotEmpty ? DirectoryListItem(data: data) : NoResultFoundScreen();
         } else if (snapshot.hasError) {
           return Center(child: Text(snapshot.error));
         } else {
@@ -57,17 +57,14 @@ class Search extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final provider = Provider.of<MyProvider>(context, listen: false);
-    final suggestions = provider.prefs.getStringList('suggestions') ?? [];
+    final suggestions = StorageService.prefs.getStringList('suggestions') ?? [];
     return ListView.builder(
       itemCount: suggestions.length,
       itemBuilder: (context, int index) {
         return ListTile(
           onTap: () async {
             await showSearch(
-                context: context,
-                delegate: Search(),
-                query: query = suggestions[index]);
+                context: context, delegate: Search(), query: query = suggestions[index]);
           },
           leading: Icon(Icons.history),
           title: Text(suggestions[index]),

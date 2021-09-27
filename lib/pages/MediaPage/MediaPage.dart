@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:files/pages/MediaPage/sliver_appbar.dart';
 import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/scroll_provider.dart';
@@ -131,14 +133,25 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                     builder: (context, value, child) {
                       final storage = value.data[value.currentPage];
                       if (storage.path == storage.currentPath) {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          controller: _listViewController,
-                          physics: BouncingScrollPhysics(),
-                          itemCount: children.length,
-                          itemBuilder: (context, index) {
-                            return children[index];
-                          },
+                        log('we have background color');
+                        return Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [MyColors.darkGrey, Colors.white],
+                              stops: [0.4, 0.41],
+                            ),
+                          ),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            controller: _listViewController,
+                            physics: BouncingScrollPhysics(),
+                            itemCount: children.length,
+                            itemBuilder: (context, index) {
+                              return children[index];
+                            },
+                          ),
                         );
                       }
                       final lister = DirectoryLister(

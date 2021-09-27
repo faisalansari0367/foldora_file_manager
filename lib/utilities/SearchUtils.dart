@@ -16,8 +16,7 @@ class SearchUtils {
 
   static const _excludedPath = '/storage/emulated/0/Android';
 
-  static Future<void> addSuggestions(
-      SharedPreferences prefs, String query) async {
+  static Future<void> addSuggestions(SharedPreferences prefs, String query) async {
     final suggestions = prefs.getStringList('suggestions') ?? [];
     if (suggestions.contains(query)) {
       final index = suggestions.indexOf(query);
@@ -30,8 +29,7 @@ class SearchUtils {
     }
   }
 
-  static Stream searchDelegate(
-      {String path, String query, bool withExt = false}) async* {
+  static Stream searchDelegate({String path, String query, bool withExt = false}) async* {
     final results = <FileSystemEntity>[];
     final dir = Directory(path);
 

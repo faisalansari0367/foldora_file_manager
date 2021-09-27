@@ -28,12 +28,8 @@ class Photos extends StatelessWidget {
       backgroundColor: Colors.black54,
       appBar: MyAppBar(
         backgroundColor: Colors.black54,
-        // bottom: MyTabController(),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: widget,
-      ),
+      body: widget,
     );
   }
 }

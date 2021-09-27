@@ -20,6 +20,7 @@ class _ImageFoldersState extends State<ImageFolders> {
   Widget build(BuildContext context) {
     final images = Provider.of<StoragePathProvider>(context, listen: false).imagesPath;
     return GridView.builder(
+      padding: const EdgeInsets.all(8),
       itemCount: images.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -30,13 +31,10 @@ class _ImageFoldersState extends State<ImageFolders> {
       itemBuilder: (context, index) {
         final item = images[index];
         final image = File(item.files.first);
-        return Container(
-          margin: EdgeInsets.all(4),
-          child: FolderImage(
-            image: image,
-            folderName: item.folderName,
-            index: index,
-          ),
+        return FolderImage(
+          image: image,
+          folderName: item.folderName,
+          index: index,
         );
       },
     );
@@ -73,7 +71,7 @@ class FolderImage extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: Image.file(
                 image,
-                // cacheWidth: 720,
+                cacheWidth: 480,
                 width: 400,
                 fit: BoxFit.cover,
               ),

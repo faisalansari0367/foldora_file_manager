@@ -12,15 +12,13 @@ class StorageService {
   static SharedPreferences prefs;
   static final _completer = Completer<void>();
   Future<void> get isReady async => await _completer.future;
-
-  // initialising the SharedPreferences only once
+  SharedPreferences get prefrences => prefs;
   StorageService() {
-    _init();
+    if (prefs == null) _init();
   }
 
   Future<void> _init() async {
     print('initialising storage service...');
-    if (prefs != null) return;
     final _prefs = await SharedPreferences.getInstance();
     prefs = _prefs;
     if (!_completer.isCompleted) _completer.complete();

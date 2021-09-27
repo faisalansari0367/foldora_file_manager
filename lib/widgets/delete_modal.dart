@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:files/provider/MyProvider.dart';
@@ -11,112 +12,144 @@ import 'package:path/path.dart' as p;
 import '../sizeConfig.dart';
 import 'LeadingIcon.dart';
 import 'MediaListItem.dart';
+import 'MyAppBar.dart';
 
-Future<void> deleteModal({
-  BuildContext context,
-  List<FileSystemEntity> list,
-  Function onPressed,
-}) async {
-  print(list);
-  return await showModalBottomSheet(
-    backgroundColor: Color(0xFF737373),
-    enableDrag: true,
-    elevation: 4,
-    context: context,
-    builder: (context) {
-      final operations = Provider.of<OperationsProvider>(context, listen: true);
-      final myProvider = Provider.of<MyProvider>(context, listen: false);
+class ModalSheet {
+  static Future<void> deleteModal({
+    BuildContext context,
+    List<FileSystemEntity> list,
+    void Function() onPressed,
+  }) async {
+    return showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        enableDrag: true,
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          final operations = Provider.of<OperationsProvider>(context, listen: true);
+          final myProvider = Provider.of<MyProvider>(context, listen: false);
 
-      return Container(
-        color: Color(0xFF737373),
-        width: double.infinity,
-        margin: EdgeInsets.all(Responsive.width(90.0)),
-        child: Container(
-          decoration: BoxDecoration(
-            color: MyColors.darkGrey,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(32),
-              topRight: const Radius.circular(32),
+          return AnnotatedRegion(
+            value: AppbarUtils.systemUiOverylay(
+              systemNavigationBarColor: MyColors.darkGrey,
             ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 40),
-              Row(
-                children: [
-                  SizedBox(width: 20),
-                  Text(
-                    'Delete files',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: MyColors.whitish,
-                      fontSize: 20,
+            child: DraggableScrollableSheet(
+              maxChildSize: 0.9,
+              initialChildSize: 0.7,
+              builder: (context, scrollController) {
+                log('rebuilding widget');
+                return Container(
+                  height: Responsive.height(100),
+                  color: Colors.transparent,
+                  width: double.infinity,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: Responsive.width(3)),
+                    decoration: BoxDecoration(
+                      color: MyColors.darkGrey,
+                      borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(25),
+                        topRight: const Radius.circular(25),
+                      ),
+                    ),
+                    child: Column(
+                      // mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 15),
+                        Container(
+                          // padding: EdgeInsets.only(top: 50),
+                          width: 40,
+                          height: 5,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          children: [
+                            SizedBox(width: 20),
+                            Text(
+                              'Are you sure want to delete these files',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: 18,
+                              ),
+                            ),
+                            Spacer(),
+                            SizedBox(width: 20),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Expanded(
+                          child: ListView.builder(
+                            controller: scrollController,
+                            itemCount: operations.selectedMedia.length,
+                            itemBuilder: (context, index) {
+                              final data = operations.selectedMedia[index];
+                              return MediaListItem(
+                                index: index,
+                                data: data,
+                                trailing: IconButton(
+                                  onPressed: () => operations.removeItem(data),
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Colors.grey[700],
+                                    size: Responsive.imageSize(5),
+                                  ),
+                                ),
+                                title: p.basename(data.path),
+                                currentPath: data.path,
+                                description:
+                                    MediaUtils.description(data, textColor: Colors.grey[600]),
+                                leading: LeadingIcon(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                                    color: Colors.white10,
+                                  ),
+                                  data: data,
+                                  iconColor: Colors.white38,
+                                ),
+                                selectedColor: MyColors.darkGrey,
+                                textColor: Colors.grey[400],
+                              );
+                            },
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            await operations.deleteFileOrFolder(context);
+                            await myProvider.diskSpace();
+                            Navigator.of(context).pop();
+                            myProvider.notify();
+                            print('notified');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 4,
+                            primary: MyColors.teal,
+                            shadowColor: MyColors.teal,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32.0),
+                              side: BorderSide(color: MyColors.teal),
+                            ),
+                            minimumSize: Size(Responsive.width(87), Responsive.height(6)),
+                          ),
+                          child: Text(
+                            'Delete Files',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: Responsive.height(1)),
+                      ],
                     ),
                   ),
-                  Spacer(),
-                  SizedBox(width: 20),
-                ],
-              ),
-              SizedBox(height: 30),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: list.length,
-                  itemBuilder: (context, index) {
-                    final data = list[index];
-                    return MediaListItem(
-                      index: index,
-                      data: data,
-                      // ontap: () => provider.ontap(data),
-                      trailing: IconButton(
-                        onPressed: () => operations.selectedMedia.remove(data),
-                        icon: Icon(
-                          Icons.clear,
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                      title: p.basename(data.path),
-                      currentPath: data.path,
-                      description: MediaUtils.description(data, textColor: Colors.grey[600]),
-                      leading: LeadingIcon(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                          color: Colors.white10,
-                        ),
-                        data: data,
-                        iconColor: Colors.white38,
-                      ),
-                      selectedColor: MyColors.darkGrey,
-                      textColor: Colors.grey[400],
-                    );
-                  },
-                ),
-              ),
-              ElevatedButton(
-                onPressed: onPressed ??
-                    () async {
-                      await operations.deleteFileOrFolder(context);
-                      Navigator.of(context).pop();
-                      // for notifing myProvider so user can we notified
-                      myProvider.notify();
-                    },
-                style: ElevatedButton.styleFrom(
-                  // padding: EdgeInsets.all(),
-                  elevation: 4,
-                  primary: MyColors.teal,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
-                    side: BorderSide(color: MyColors.teal),
-                  ),
-                  minimumSize: Size(Responsive.width(85), Responsive.height(6)),
-                ),
-                child: Text('Delete'),
-              ),
-              SizedBox(height: Responsive.height(1)),
-            ],
-          ),
-        ),
-      );
-    },
-  );
+                );
+              },
+            ),
+          );
+        });
+  }
 }

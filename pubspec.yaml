@@ -31,7 +31,7 @@ dependencies:
   mime_type: ^1.0.0
   open_file: ^3.0.3
   percent_indicator: ^3.0.1
-  permission_handler: ^8.1.4+2
+  permission_handler: ^8.1.6
   provider: ^5.0.0
   share: ^2.0.4
   shared_preferences: ^2.0.6
@@ -39,6 +39,22 @@ dependencies:
   storage_details: ^0.0.3
   storage_path: ^0.2.0
   video_thumbnail: ^0.4.3
+  google_sign_in: ^5.1.0
+  googleapis: ^5.0.1
+  firebase_auth: ^3.1.1
+  firebase_core: ^1.6.0
+  http: ^0.13.3
+  extension_google_sign_in_as_googleapis_auth: ^2.0.2
+  bezier_chart: ^1.0.17+1
+  fl_chart: ^0.36.1
+
+dependency_overrides:
+  # firebase_auth: ^3.1.1
+  # bezier_chart: ^1.0.17+1
+  intl: ^0.16.0
+
+  
+
 dev_dependencies:
   flutter_launcher_icons: ^0.9.0
   flutter_native_splash: ^1.2.1

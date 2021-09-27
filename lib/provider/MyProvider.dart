@@ -1,71 +1,53 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:files/utilities/DataModel.dart';
 import 'package:files/utilities/Utils.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:path/path.dart' as p;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:storage_details/storage_details.dart';
 
 class MyProvider extends ChangeNotifier {
-  MyProvider() {
-    init();
-    FileUtils();
-  }
+  Function scrollListener;
 
-  void init() async {
-    final timer = Stopwatch()..start();
-    await Future.wait([diskSpace(), initSharedPreferences()]);
-    log('future completes in ${timer.elapsed.inMilliseconds}');
-    timer.stop();
-  }
+  int currentPage = 0;
 
-  //   StorageDetails.watchFilesForChanges.listen((dynamic event) {
-  //     print(event);
-  //     notifyListeners();
-  //   });
   // }
 
-  Function scrollListener;
-  int currentPage = 0;
   List<Storage> spaceInfo = [];
   bool _showHidden = false;
-  SharedPreferences _prefs;
+  // SharedPreferences _prefs;
   List<Data> data = [];
+  MyProvider() {
+    init();
+    // StorageDetails.watchFilesForChanges.listen((dynamic event) {
+    //   print(event);
+    //   // notifyListeners();
+    // });
+  }
+  // SharedPreferences get prefs => _prefs;
 
   // getters to get the values
-  SharedPreferences get prefs => _prefs;
   bool get showHidden => _showHidden;
+  void addPath(String path) {
+    navigationAddOrRemove(data[currentPage].navItems, path);
+    notifyListeners();
+  }
 
   // to show and hide the navigation rail on opening new directory.
 
   // for setting the scroll listener.
-  void setScrollListener(Function listener) {
-    scrollListener = listener;
-  }
-
-  Future<void> initSharedPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    _prefs = prefs;
-    notifyListeners();
-  }
-
-  Future<List<FileSystemEntity>> files() async {
-    if (data.isEmpty) await diskSpace();
-    return await Directory(data[currentPage].path).list().toList();
-  }
-
-  Future<PermissionStatus> getPermission() async {
-    final storage = Permission.storage;
-    if (!await storage.request().isGranted) {
-      await storage.request();
-    }
-    return await storage.status;
+  /// Only use this function for CircleChartAndFilePercent..
+  String calculatePercent(int bytes, int decimals) {
+    if (data.isEmpty) return '0.0';
+    final _data = data[currentPage];
+    final percent = bytes / ((_data.total - _data.free)) * 100;
+    final result = percent.isNaN ? '0.0' : percent.toStringAsFixed(decimals);
+    return result;
   }
 
   Future<void> createFileSystemEntity(String path, String name) async {
@@ -84,34 +66,6 @@ class MyProvider extends ChangeNotifier {
     }
   }
 
-  void notify() => Future.delayed(Duration(milliseconds: 200), () => notifyListeners());
-
-  Future<void> rename(FileSystemEntity item, String name) async {
-    final newPath = item.path.replaceAll(p.basename(item.path), name);
-    await item.rename(newPath);
-    notifyListeners();
-  }
-
-  Future<void> diskSpace() async {
-    spaceInfo = await StorageDetails.getspace;
-    data = Data.storageToData(spaceInfo);
-    notifyListeners();
-  }
-
-  /// Only use this function for CircleChartAndFilePercent..
-  String calculatePercent(int bytes, int decimals) {
-    if (data.isEmpty) return '0.0';
-    final _data = data[currentPage];
-    final percent = bytes / ((_data.total - _data.free)) * 100;
-    final result = percent.isNaN ? '0.0' : percent.toStringAsFixed(decimals);
-    return result;
-  }
-
-  void toggleHidden() {
-    _showHidden = !_showHidden;
-    notifyListeners();
-  }
-
   Future<List<FileSystemEntity>> dirContents(String path, {isShowHidden = false}) async {
     final args = {'path': path, 'showHidden': isShowHidden};
     try {
@@ -120,6 +74,67 @@ class MyProvider extends ChangeNotifier {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> diskSpace() async {
+    spaceInfo = await StorageDetails.getspace;
+    data = Data.storageToData(spaceInfo);
+    notifyListeners();
+  }
+
+  Future<List<FileSystemEntity>> files() async {
+    if (data.isEmpty) await diskSpace();
+    return await Directory(data[currentPage].path).list().toList();
+  }
+
+  List<String> getListOfNavigation() {
+    return data[currentPage]?.navItems;
+  }
+
+  Future<PermissionStatus> getPermission() async {
+    try {
+      final storage = Permission.storage;
+      final statuses = await [Permission.storage].request();
+      return statuses[storage];
+    } catch (e) {
+      print('permission error $e');
+      rethrow;
+    }
+  }
+
+  Future<void> init() async {
+    final timer = Stopwatch()..start();
+    await diskSpace();
+    log('future completes in ${timer.elapsed.inMilliseconds}');
+    timer.stop();
+  }
+
+  void navigationAddOrRemove(List<String> list, String path) {
+    final parentDir = Directory(path).parent.path;
+    if (!list.contains(path)) {
+      if (list.last == parentDir) {
+        list.add(path);
+      } else if (Directory(list.last).parent.path == parentDir) {
+        list.removeLast();
+        list.add(path);
+      } else {
+        list.removeRange(1, list.length);
+        list.add(path);
+      }
+    }
+  }
+
+  void notify() => Future.delayed(Duration(milliseconds: 200), () => notifyListeners());
+
+  Future<bool> onGoBack(context) async {
+    final value = data[currentPage];
+    if (value.currentPath == value.path) {
+      Navigator.pop(context);
+    } else {
+      value.currentPath = Directory(value.currentPath).parent.path;
+    }
+    notifyListeners();
+    return false;
   }
 
   void onPageChanged(int value) {
@@ -138,39 +153,18 @@ class MyProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> onGoBack(context) async {
-    final value = data[currentPage];
-    if (value.currentPath == value.path) {
-      Navigator.pop(context);
-      return true;
-    } else {
-      value.currentPath = Directory(value.currentPath).parent.path;
-    }
-    notifyListeners();
-    return false;
-  }
-
-  List<String> getListOfNavigation() {
-    return data[currentPage]?.navItems;
-  }
-
-  void addPath(String path) {
-    navigationAddOrRemove(data[currentPage].navItems, path);
+  Future<void> rename(FileSystemEntity item, String name) async {
+    final newPath = item.path.replaceAll(p.basename(item.path), name);
+    await item.rename(newPath);
     notifyListeners();
   }
 
-  void navigationAddOrRemove(List<String> list, String path) {
-    final parentDir = Directory(path).parent.path;
-    if (!list.contains(path)) {
-      if (list.last == parentDir) {
-        list.add(path);
-      } else if (Directory(list.last).parent.path == parentDir) {
-        list.removeLast();
-        list.add(path);
-      } else {
-        list.removeRange(1, list.length);
-        list.add(path);
-      }
-    }
+  void setScrollListener(Function listener) {
+    scrollListener = listener;
+  }
+
+  void toggleHidden() {
+    _showHidden = !_showHidden;
+    notifyListeners();
   }
 }

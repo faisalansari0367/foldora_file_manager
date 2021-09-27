@@ -18,6 +18,7 @@ class _MyGridViewState extends State<MyGridView> {
   @override
   Widget build(BuildContext context) {
     final grid = StaggeredGridView.countBuilder(
+      padding: const EdgeInsets.all(8.0),
       crossAxisCount: _crossAxisCount,
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
@@ -38,10 +39,7 @@ class _MyGridViewState extends State<MyGridView> {
         duration: const Duration(milliseconds: 375),
         child: SlideAnimation(
           child: FadeInAnimation(
-            child: Container(
-              // margin: EdgeInsets.only(left: 10, right: 10, top: 10),
-              child: grid,
-            ),
+            child: grid,
           ),
         ),
       ),

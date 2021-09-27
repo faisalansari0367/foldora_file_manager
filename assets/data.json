@@ -1,0 +1,266 @@
+{
+    "id": 1,
+    "message": "Get Order List",
+    "status": "Passed",
+    "statusCode": 200,
+    "restraunt": {
+        "restaurantId": 1,
+        "restaurantName": "Planet",
+        "restaurantType": "Non veg",
+        "noOfTables": 200,
+        "section": [
+            {
+                "sectionId": 1,
+                "sectionDescription": "Section 1",
+                "status": "active",
+                "tableList": [
+                    {
+                        "tableID": 1,
+                        "tableNo": 12345,
+                        "orderList": [
+                            {
+                                "orderID": 1,
+                                "orderDate": "2021-09-16T10:34:08.000+00:00",
+                                "isRepeatOrder": "No",
+                                "orderNo": 1,
+                                "orderAmount": 182,
+                                "orderTransaction": [
+                                    {
+                                        "id": 1,
+                                        "qty": 1,
+                                        "additionalDescription": "",
+                                        "price": 50.0,
+                                        "note": "Spicy",
+                                        "amount": 86.0,
+                                        "isDineIn": "true",
+                                        "addons": [
+                                            {
+                                                "id": 1,
+                                                "addName": "Cheese",
+                                                "addPrice": 8,
+                                                "addQty": 2,
+                                                "addAmount": 16.0
+                                            },
+                                            {
+                                                "id": 2,
+                                                "addName": "Extra Patty",
+                                                "addPrice": 10,
+                                                "addQty": 2,
+                                                "addAmount": 20.0
+                                            }
+                                        ],
+                                        "status": "Closed",
+                                        "product": {
+                                            "productId": 1,
+                                            "productExternalName": "Beetroot Carpaccio",
+                                            "productInternalName": "Beetroot Carpaccio",
+                                            "sku": "1",
+                                            "unitPrice": 50.0,
+                                            "isAgeValidationRequired": "no",
+                                            "isDisplayRequired": "yes",
+                                            "currency": "dollar",
+                                            "image": [
+                                                {
+                                                    "imageId": 1,
+                                                    "imagePath": "http://103.7.64.58:8080/Oztap/Images/0201_210913124025825.jpeg",
+                                                    "status": "active"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": 2,
+                                        "qty": 1,
+                                        "additionalDescription": "",
+                                        "price": 60.0,
+                                        "note": "Spicy",
+                                        "amount": 96.0,
+                                        "isDineIn": "true",
+                                        "addons": [
+                                            {
+                                                "id": 3,
+                                                "addName": "Cheese",
+                                                "addPrice": 8,
+                                                "addQty": 2,
+                                                "addAmount": 16.0
+                                            },
+                                            {
+                                                "id": 4,
+                                                "addName": "Extra Patty",
+                                                "addPrice": 10,
+                                                "addQty": 2,
+                                                "addAmount": 20.0
+                                            }
+                                        ],
+                                        "status": "Closed",
+                                        "product": {
+                                            "productId": 2,
+                                            "productExternalName": "Chiken Wings",
+                                            "productInternalName": "Chiken Wings",
+                                            "sku": "2",
+                                            "unitPrice": 60.0,
+                                            "isAgeValidationRequired": "no",
+                                            "isDisplayRequired": "yes",
+                                            "currency": "dollar",
+                                            "image": [
+                                                {
+                                                    "imageId": 2,
+                                                    "imagePath": "http://103.7.64.58:8080/Oztap/Images/0202_210913124025825.jpeg",
+                                                    "status": "active"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "status": "Pending"
+                            },
+                            {
+                                "orderID": 2,
+                                "orderDate": "2021-09-16T10:37:00.000+00:00",
+                                "isRepeatOrder": "No",
+                                "orderNo": 1,
+                                "orderAmount": 96,
+                                "orderTransaction": [
+                                    {
+                                        "id": 3,
+                                        "qty": 1,
+                                        "additionalDescription": "",
+                                        "price": 60.0,
+                                        "note": "Spicy",
+                                        "amount": 96.0,
+                                        "isDineIn": "true",
+                                        "addons": [
+                                            {
+                                                "id": 5,
+                                                "addName": "Cheese",
+                                                "addPrice": 8,
+                                                "addQty": 2,
+                                                "addAmount": 16.0
+                                            },
+                                            {
+                                                "id": 6,
+                                                "addName": "Extra Patty",
+                                                "addPrice": 10,
+                                                "addQty": 2,
+                                                "addAmount": 20.0
+                                            }
+                                        ],
+                                        "status": "Active",
+                                        "product": {
+                                            "productId": 2,
+                                            "productExternalName": "Chiken Wings",
+                                            "productInternalName": "Chiken Wings",
+                                            "sku": "2",
+                                            "unitPrice": 60.0,
+                                            "isAgeValidationRequired": "no",
+                                            "isDisplayRequired": "yes",
+                                            "currency": "dollar",
+                                            "image": [
+                                                {
+                                                    "imageId": 2,
+                                                    "imagePath": "http://103.7.64.58:8080/Oztap/Images/0202_210913124025825.jpeg",
+                                                    "status": "active"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "status": "Pending"
+                            },
+                            {
+                                "orderID": 3,
+                                "orderDate": "2021-09-16T13:06:47.000+00:00",
+                                "isRepeatOrder": "No",
+                                "orderNo": 397424,
+                                "orderAmount": 120,
+                                "orderTransaction": [
+                                    {
+                                        "id": 4,
+                                        "qty": 1,
+                                        "additionalDescription": null,
+                                        "price": 50.0,
+                                        "note": null,
+                                        "amount": 50.0,
+                                        "isDineIn": "false",
+                                        "addons": [],
+                                        "status": "Closed",
+                                        "product": {
+                                            "productId": 1,
+                                            "productExternalName": "Beetroot Carpaccio",
+                                            "productInternalName": "Beetroot Carpaccio",
+                                            "sku": "1",
+                                            "unitPrice": 50.0,
+                                            "isAgeValidationRequired": "no",
+                                            "isDisplayRequired": "yes",
+                                            "currency": "dollar",
+                                            "image": [
+                                                {
+                                                    "imageId": 1,
+                                                    "imagePath": "http://103.7.64.58:8080/Oztap/Images/0201_210913124025825.jpeg",
+                                                    "status": "active"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": 5,
+                                        "qty": 1,
+                                        "additionalDescription": null,
+                                        "price": 70.0,
+                                        "note": null,
+                                        "amount": 70.0,
+                                        "isDineIn": "false",
+                                        "addons": [],
+                                        "status": "Closed",
+                                        "product": {
+                                            "productId": 3,
+                                            "productExternalName": "Harissa Prawns",
+                                            "productInternalName": "Harissa Prawns",
+                                            "sku": "3",
+                                            "unitPrice": 70.0,
+                                            "isAgeValidationRequired": "no",
+                                            "isDisplayRequired": "yes",
+                                            "currency": "dollar",
+                                            "image": [
+                                                {
+                                                    "imageId": 3,
+                                                    "imagePath": "http://103.7.64.58:8080/Oztap/Images/0203_210913124025825.jpeg",
+                                                    "status": "active"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "status": "Pending"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "sectionId": 2,
+                "sectionDescription": "Section 2",
+                "status": "active",
+                "tableList": [
+                    {
+                        "tableID": 2,
+                        "tableNo": 678910,
+                        "orderList": []
+                    }
+                ]
+            },
+            {
+                "sectionId": 3,
+                "sectionDescription": "Section 3",
+                "status": "active",
+                "tableList": [
+                    {
+                        "tableID": 3,
+                        "tableNo": 11234,
+                        "orderList": []
+                    }
+                ]
+            }
+        ]
+    }
+}

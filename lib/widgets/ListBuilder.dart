@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
+import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/MediaListItem.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:provider/provider.dart';
+
 import 'LeadingIcon.dart';
 
 const String message =
@@ -29,7 +31,7 @@ class DirectoryLister extends StatelessWidget {
           if (p.equals(path, provider.data[provider.currentPage].path)) {
             return Container();
           }
-          return MediaUtils.fileNotFound(message);
+          return MediaUtils.fileNotFound();
         } else if (snapshot.hasData && snapshot.data.isNotEmpty) {
           final widget = DirectoryListItem(
             data: snapshot.data,
@@ -46,7 +48,7 @@ class DirectoryLister extends StatelessWidget {
           //   ),
           // );
         } else if (snapshot.hasError) {
-          return MediaUtils.fileNotFound(snapshot.error.toString());
+          return MediaUtils.fileNotFound(message: snapshot.error.toString());
         } else {
           return Center(child: CircularProgressIndicator());
         }
@@ -95,61 +97,64 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
     print('listBuilder');
     final provider = Provider.of<MyProvider>(context, listen: false);
     final operations = Provider.of<OperationsProvider>(context, listen: false);
-    return ListView.builder(
-      physics: BouncingScrollPhysics(),
-      shrinkWrap: true,
-      controller: widget.scrollController ?? ScrollController(),
-      itemCount: widget.data.length,
-      itemBuilder: (context, index) {
-        final data = widget.data[index];
-        final mediaListItem = MediaListItem(
-          index: index,
-          data: data,
-          ontap: () => operations.selectedMedia.isNotEmpty
-              ? operations.onTapOfLeading(data)
-              : provider.ontap(data),
-          title: p.basename(data.path),
-          currentPath: data.path,
-          description: MediaUtils.description(data),
-          leading: LeadingIcon(data: data),
-          selectedColor: Colors.grey[200],
-        );
-        // return AnimationConfiguration.synchronized(
-        //   // duration: Duration(milliseconds: 100),
-        //   child: SlideAnimation(
-        //     // delay: Duration(milliseconds: 2000),
-        //     verticalOffset: 10.0,
-        //     curve: Curves.easeOutCubic,
-        //     child: FadeInAnimation(
-        //       // duration: Duration(milliseconds: index * 1000),
-        //       child: mediaListItem,
-        //     ),
-        //   ),
-        // );
+    return Container(
+      color: MyColors.white,
+      child: ListView.builder(
+        physics: BouncingScrollPhysics(),
+        shrinkWrap: true,
+        controller: widget.scrollController ?? ScrollController(),
+        itemCount: widget.data.length,
+        itemBuilder: (context, index) {
+          final data = widget.data[index];
+          final mediaListItem = MediaListItem(
+            index: index,
+            data: data,
+            ontap: () => operations.selectedMedia.isNotEmpty
+                ? operations.onTapOfLeading(data)
+                : provider.ontap(data),
+            title: p.basename(data.path),
+            currentPath: data.path,
+            description: MediaUtils.description(data),
+            leading: LeadingIcon(data: data),
+            selectedColor: Colors.grey[200],
+          );
+          // return AnimationConfiguration.synchronized(
+          //   // duration: Duration(milliseconds: 100),
+          //   child: SlideAnimation(
+          //     // delay: Duration(milliseconds: 2000),
+          //     verticalOffset: 10.0,
+          //     curve: Curves.easeOutCubic,
+          //     child: FadeInAnimation(
+          //       // duration: Duration(milliseconds: index * 1000),
+          //       child: mediaListItem,
+          //     ),
+          //   ),
+          // );
 
-        // return AnimatedBuilder(
-        //   animation: _controller,
-        //   child: mediaListItem,
-        //   builder: (BuildContext context, Widget child) {
-        //     final begin = index == 0 ? 0.0 : (index - 1) / widget.data.length;
-        //     final end = index / widget.data.length;
-        //     print('end: $end, begin: $begin');
-        //     return FadeTransition(
-        //       opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-        //         parent: _controller,
-        //         curve: Curves.easeInCubic,
-        //       )),
-        //       child: SlideTransition(
-        //         position: Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
-        //             .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInCubic)),
-        //         child: child,
-        //       ),
-        //     );
-        //   },
-        // );
+          // return AnimatedBuilder(
+          //   animation: _controller,
+          //   child: mediaListItem,
+          //   builder: (BuildContext context, Widget child) {
+          //     final begin = index == 0 ? 0.0 : (index - 1) / widget.data.length;
+          //     final end = index / widget.data.length;
+          //     print('end: $end, begin: $begin');
+          //     return FadeTransition(
+          //       opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+          //         parent: _controller,
+          //         curve: Curves.easeInCubic,
+          //       )),
+          //       child: SlideTransition(
+          //         position: Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
+          //             .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInCubic)),
+          //         child: child,
+          //       ),
+          //     );
+          //   },
+          // );
 
-        return mediaListItem;
-      },
+          return mediaListItem;
+        },
+      ),
     );
   }
 }

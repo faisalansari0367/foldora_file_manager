@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:files/pages/MediaPage/MediaPage.dart';
-
 import 'package:files/utilities/Utils.dart';
 import 'package:files/widgets/FileNotFoundScreen.dart';
 import 'package:files/widgets/animated_button.dart';
@@ -17,40 +16,6 @@ class MediaUtils {
 
   static const backgroundColor = Color(0xFF2c2c3c);
   static String currentPath = '';
-  static void redirectToPage(BuildContext context, {page}) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
-  }
-
-  static void ontap(BuildContext context, FileSystemEntity data) {
-    currentPath = data.path;
-    if (data is File) {
-      OpenFile.open(data.path);
-    } else {
-      redirectToPage(context, page: MediaPage());
-    }
-  }
-
-  static Widget tab({page, @required context, child}) {
-    return AnimatedButton(
-      onTap: () => MediaUtils.redirectToPage(context, page: page),
-      child: child,
-    );
-  }
-
-  static Widget fileNotFound(String message) {
-    return AnimationConfiguration.synchronized(
-      child: SlideAnimation(
-        child: FadeInAnimation(
-          curve: Curves.easeInOutExpo,
-          child: FileNotFoundScreen(message: message.toUpperCase()),
-        ),
-      ),
-    );
-  }
-
   static Widget description(FileSystemEntity data, {Color textColor}) {
     // var text = '';
     // if (data is File) text = FileUtils.formatBytes(data.statSync().size, 2);
@@ -82,6 +47,40 @@ class MediaUtils {
           ),
         );
       },
+    );
+  }
+
+  static Widget fileNotFound({String message}) {
+    return AnimationConfiguration.synchronized(
+      child: SlideAnimation(
+        child: FadeInAnimation(
+          curve: Curves.easeInOutExpo,
+          child: FileNotFoundScreen(message: message?.toUpperCase()),
+        ),
+      ),
+    );
+  }
+
+  static void ontap(BuildContext context, FileSystemEntity data) {
+    currentPath = data.path;
+    if (data is File) {
+      OpenFile.open(data.path);
+    } else {
+      redirectToPage(context, page: MediaPage());
+    }
+  }
+
+  static void redirectToPage(BuildContext context, {page}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => page),
+    );
+  }
+
+  static Widget tab({page, @required context, child}) {
+    return AnimatedButton(
+      onTap: () => MediaUtils.redirectToPage(context, page: page),
+      child: child,
     );
   }
 }

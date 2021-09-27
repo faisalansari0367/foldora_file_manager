@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "190466640356",
+    "project_id": "foldora-fca19",
+    "storage_bucket": "foldora-fca19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190466640356:android:776b45b08d02908d14dff1",
+        "android_client_info": {
+          "package_name": "com.faisal.foldora"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "190466640356-kkq1hs5cpon6st09n4lnve71qagh4b1v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.faisal.foldora",
+            "certificate_hash": "869ed48d1d0e64d2919e40fab1c3299674448331"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHxoNkBcPRcw3XKQOnTSBzEAaqQctWaRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

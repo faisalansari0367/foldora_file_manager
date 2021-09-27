@@ -16,8 +16,16 @@ class MySliverAppBar extends StatefulWidget {
   _MySliverAppBarState createState() => _MySliverAppBarState();
 }
 
-class _MySliverAppBarState extends State<MySliverAppBar> {
+class _MySliverAppBarState extends State<MySliverAppBar> with SingleTickerProviderStateMixin {
+  // AnimationController controller;
   static const duration = Duration(milliseconds: 500);
+  @override
+  void initState() {
+    super.initState();
+    // controller = AnimationController(vsync: this, duration: duration);
+  }
+
+  // static const duration = Duration(milliseconds: 500);
 
   final bottom = AnimationConfiguration.synchronized(
     duration: duration,
@@ -37,17 +45,17 @@ class _MySliverAppBarState extends State<MySliverAppBar> {
     return Selector<ScrollProvider, double>(
       selector: (context, value) => value.appbarSize,
       builder: (context, value, child) {
+        final _bottom = PreferredSize(
+          preferredSize: Size.fromHeight(value),
+          child: value != Responsive.height(6) ? SizedBox() : bottom,
+        );
         return SliverAppBar(
           systemOverlayStyle: AppbarUtils.systemUiOverylay(),
           pinned: true,
           backgroundColor: MyColors.darkGrey,
           leading: AppbarUtils.backIcon(context),
           actions: [AppbarUtils.searchIcon(context), MyDropDown()],
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(value),
-            // child: value != Responsive.height(6) ? SizedBox() : bottom,
-            child: value != Responsive.height(6) ? SizedBox() : bottom,
-          ),
+          bottom: _bottom,
         );
       },
     );

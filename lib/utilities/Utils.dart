@@ -42,15 +42,15 @@ class FileUtils {
       }
       return itemsCount;
     } else {
-      final size = data.statSync().size;
-      return FileUtils.formatBytes(size, 2);
+      final size = await data.stat();
+
+      return FileUtils.formatBytes(size.size, 2);
     }
   }
 
   static Map<String, dynamic> isVideoThumbnailExist(path) {
     final fileName = p.basenameWithoutExtension(path);
     final thumb = File('$apkIconPath/$fileName.png');
-
     final isFileExist = thumb.existsSync();
     final map = <String, dynamic>{};
     map['isFileExist'] = isFileExist;
@@ -200,7 +200,7 @@ class FileUtils {
       return sortedList;
     } catch (e) {
       // print('error from directory LIst: $e');
-      throw Exception(e);
+      rethrow;
     }
   }
 }

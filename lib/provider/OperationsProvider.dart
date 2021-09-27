@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:files/utilities/CopyUtils.dart';
+import 'package:files/utilities/storage_space.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
@@ -18,6 +19,7 @@ class OperationsProvider extends ChangeNotifier {
   int selectedIndex = 5;
   bool showCopy = true;
   final List<FileSystemEntity> _selectedMediaItems = [];
+  bool operationIsRunning = false;
 
   String get totalSize => _srcSize;
   String get speed => _speed;
@@ -69,13 +71,20 @@ class OperationsProvider extends ChangeNotifier {
         content: Text(e.toString()),
       );
       ScaffoldMessenger.maybeOf(context).showSnackBar(snackBar);
-      _selectedMediaItems.clear();
+      // _selectedMediaItems.clear();
+      final paths = sharePaths();
+      final result = await StorageSpace.deleteWhenError(paths);
+      final _snackBar = SnackBar(
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.all(8),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        content: Text(result.toString()),
+      );
+      ScaffoldMessenger.maybeOf(context).showSnackBar(_snackBar);
       // notifyListeners();
     }
     notifyListeners();
   }
-
-  bool operationIsRunning = false;
 
   Future<void> copySelectedItems(String currentPath) async {
     if (selectedMedia.isEmpty) return;
@@ -97,6 +106,11 @@ class OperationsProvider extends ChangeNotifier {
       _srcSize = event['srcSize'];
       notifyListeners();
     });
+  }
+
+  void removeItem(FileSystemEntity item) {
+    selectedMedia.contains(item) ? selectedMedia.remove(item) : null;
+    notifyListeners();
   }
 
   Future<void> move(String currentPath) async {
