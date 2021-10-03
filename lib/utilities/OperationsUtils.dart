@@ -65,30 +65,12 @@ class OperationsUtils {
         return AnimatedContainer(
           // color: MyColors.darkGrey,
           duration: AppbarUtils.duration,
+          curve: Curves.fastOutSlowIn,
           height: value ? Responsive.height(6) : 0,
-          child: Wrap(children: [BottomNavy()]),
+          child: Wrap(children: [
+            BottomNavy(),
+          ]),
         );
-        // return AnimatedSwitcher(
-        //   duration: Duration(milliseconds: 200),
-        //   child: value
-        //       ? Container(
-        //           child: BottomNavy(),
-        //           width: double.infinity,
-        //           key: UniqueKey(),
-        //         )
-        //       : SizedBox(
-        //           height: 0,
-        //           width: 0,
-        //           key: UniqueKey(),
-        //         ),
-        //   transitionBuilder: (child, animation) => SlideTransition(
-        //     position: Tween<Offset>(
-        //       begin: Offset(0.0, 1.0),
-        //       end: Offset(0.0, 0.0),
-        //     ).animate(animation),
-        //     child: child,
-        //   ),
-        // );
       },
     );
   }

@@ -2,6 +2,7 @@ import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
@@ -32,9 +33,9 @@ class _BottomNavyState extends State<BottomNavy> {
     const color = Colors.black;
 
     final _paste = () async {
-      await provider.copySelectedItems(currentPath);
+      await provider.copySelectedItems(currentPath, myProvider.notify);
       provider.ontapCopy();
-      myProvider.notify();
+      // myProvider.notify();
     };
 
     final copyPasteSwitcher = provider.showCopy
@@ -52,51 +53,65 @@ class _BottomNavyState extends State<BottomNavy> {
           );
 
     // final sizedBox = SizedBox(width: 0.2 * Responsive.widthMultiplier);
-
+    print('bottom navigation rebuilding');
     return Container(
       color: MyColors.white,
       child: Row(
+        key: UniqueKey(),
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         // mainAxisSize: MainAxisSize.min,
-        children: [
-          // sizedBox,
-          AnimatedSwitcher(
-            duration: Duration(milliseconds: 200),
-            child: copyPasteSwitcher,
-          ),
-          IconButton(
-            splashColor: Colors.red[300],
-            icon: Icon(Icons.delete, color: color),
-            onPressed: () => ModalSheet.deleteModal(
-              context: context,
-              list: provider.selectedMedia,
-              // onPressed: () => onPressedDeleteButton(context),
+        children: AnimationConfiguration.toStaggeredList(
+          delay: const Duration(milliseconds: 50),
+          duration: const Duration(milliseconds: 300),
+          childAnimationBuilder: (widget) => SlideAnimation(
+            curve: Curves.fastOutSlowIn,
+            verticalOffset: 50.0,
+            child: FadeInAnimation(
+              curve: Curves.fastOutSlowIn,
+              delay: Duration(milliseconds: 50),
+              child: widget,
             ),
           ),
-          IconButton(
-            icon: Icon(Icons.create, color: color),
-            onPressed: () async {
-              await provider.renameFSE(context);
-              myProvider.notify();
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.content_cut, color: color),
-            onPressed: () {
-              provider.move(currentPath);
-              myProvider.notify();
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.share, color: color),
-            onPressed: () => Share.shareFiles(provider.sharePaths()),
-          ),
-          IconButton(
-            icon: Icon(Icons.more_vert, color: color),
-            onPressed: () {},
-          ),
-          // sizedBox
-        ],
+          children: [
+            // sizedBox,
+            AnimatedSwitcher(
+              duration: Duration(milliseconds: 200),
+              child: copyPasteSwitcher,
+            ),
+            IconButton(
+              splashColor: Colors.red[300],
+              icon: Icon(Icons.delete, color: color),
+              onPressed: () => ModalSheet.deleteModal(
+                context: context,
+                list: provider.selectedMedia,
+                // onPressed: () => onPressedDeleteButton(context),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.create, color: color),
+              onPressed: () async {
+                await provider.renameFSE(context);
+                myProvider.notify();
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.content_cut, color: color),
+              onPressed: () {
+                provider.move(currentPath);
+                myProvider.notify();
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.share, color: color),
+              onPressed: () => Share.shareFiles(provider.sharePaths()),
+            ),
+            IconButton(
+              icon: Icon(Icons.more_vert, color: color),
+              onPressed: () {},
+            ),
+            // sizedBox
+          ],
+        ),
       ),
     );
   }

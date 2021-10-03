@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:files/pages/MediaPage/sliver_appbar.dart';
 import 'package:files/provider/MyProvider.dart';
@@ -6,6 +7,7 @@ import 'package:files/provider/scroll_provider.dart';
 import 'package:files/utilities/DataModel.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:files/utilities/OperationsUtils.dart';
+import 'package:files/utilities/Utils.dart';
 import 'package:files/widgets/FloatingActionButton.dart';
 import 'package:files/widgets/ListBuilder.dart';
 import 'package:files/widgets/MyAppBar.dart';
@@ -53,7 +55,14 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
   OperationsProvider operations;
   ScrollProvider scrollProvider;
   MyProvider provider;
-
+  static const decoration = BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [MyColors.darkGrey, Colors.white],
+      stops: [0.4, 0.41],
+    ),
+  );
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(
@@ -63,6 +72,8 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
       ),
     );
     scrollProvider = Provider.of<ScrollProvider>(context, listen: false);
+    operations = Provider.of<OperationsProvider>(context, listen: false);
+
     provider = Provider.of<MyProvider>(context, listen: false);
     provider.setScrollListener(scrollProvider.scrollListener);
     _scrollController = ScrollController();
@@ -125,7 +136,39 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
             scrollDirection: Axis.vertical,
             physics: NeverScrollableScrollPhysics(),
             slivers: [
-              MySliverAppBar(),
+              MySliverAppBar(
+                title: Consumer<OperationsProvider>(
+                  builder: (context, provider, child) {
+                    final value = provider.selectedMedia;
+                    final size = FileUtils.formatBytes(provider.selectedItemSizeBytes, 2);
+                    // final getData = operations.getFiles(value);
+                    if (value.isEmpty) return Container();
+                    final file = value.length > 1 ? 'files' : 'file';
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${value.length} $file selected',
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              .copyWith(color: MyColors.appbarActionsColor),
+                        ),
+                        if (provider.selectedItemSizeBytes != 0)
+                          Text(
+                            '$size',
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption
+                                .copyWith(color: MyColors.appbarActionsColor),
+                          ),
+                      ],
+                    );
+                  },
+                  // selector: (p0, p1) => p1.selectedMedia,
+                ),
+              ),
               SliverFillRemaining(
                 child: WillPopScope(
                   onWillPop: () => provider.onGoBack(context),
@@ -133,16 +176,8 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                     builder: (context, value, child) {
                       final storage = value.data[value.currentPage];
                       if (storage.path == storage.currentPath) {
-                        log('we have background color');
                         return Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [MyColors.darkGrey, Colors.white],
-                              stops: [0.4, 0.41],
-                            ),
-                          ),
+                          decoration: decoration,
                           child: ListView.builder(
                             shrinkWrap: true,
                             controller: _listViewController,
@@ -154,17 +189,16 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                           ),
                         );
                       }
-                      final lister = DirectoryLister(
-                        path: storage.currentPath,
-                        scrollController: _listViewController,
-                      );
                       return AnimationConfiguration.synchronized(
                         key: UniqueKey(),
                         duration: const Duration(milliseconds: 375),
                         child: SlideAnimation(
                           verticalOffset: 50.0,
                           child: FadeInAnimation(
-                            child: lister,
+                            child: DirectoryLister(
+                              path: storage.currentPath,
+                              scrollController: _listViewController,
+                            ),
                           ),
                         ),
                       );

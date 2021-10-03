@@ -20,8 +20,8 @@ class FileUtils {
 
   static const String apkIconPath = '/storage/emulated/0/.apkIcons';
 
-  static String formatBytes(bytes, decimals, {bool inGB = false}) {
-    if (bytes == 0 || bytes == -1) return '0 B';
+  static String formatBytes(int bytes, decimals, {bool inGB = false}) {
+    if (bytes == 0 || bytes.isNegative) return '0 B';
     var k = 1024,
         dm = decimals <= 0 ? 0 : decimals,
         sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],

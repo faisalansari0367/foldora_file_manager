@@ -1,14 +1,25 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
 
+import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as p;
 
 import 'Utils.dart';
 
 class CopyUtils {
+  final List<FileSystemEntity> filesToCopy;
+  final String pathWhereToCopy;
+  final SendPort sendPort;
   static int _totalItemsSize = 0;
   static int _copied = 0;
   static double _progress = 0.0;
+
+  CopyUtils({
+    this.sendPort,
+    @required this.filesToCopy,
+    @required this.pathWhereToCopy,
+  });
 
   static void clearFields() {
     _totalItemsSize = 0;
@@ -73,6 +84,109 @@ class CopyUtils {
       yield {
         'copied': _copied,
         'progress': _progress,
+        'srcName': _srcName,
+        'srcSize': _srcSize,
+      };
+    }
+    await destFile.close();
+  }
+
+  static Future<int> _getTotalSize(List<FileSystemEntity> _selectedMediaItems) async {
+    var totalSize = 0;
+    for (final item in _selectedMediaItems) {
+      if (item is Directory) {
+        totalSize += await _getDirectorySize(item);
+      } else if (item is File) {
+        final stat = await item.stat();
+        totalSize += stat.size;
+      }
+    }
+    return totalSize;
+  }
+
+  static Future<int> _getDirectorySize(Directory item) async {
+    var totalSize = 0;
+    await for (final dir in item.list()) {
+      if (dir is Directory) {
+        totalSize += await _getDirectorySize(dir);
+      } else if (dir is File) {
+        final stat = await dir.stat();
+        totalSize += stat.size;
+      }
+    }
+    return totalSize;
+  }
+}
+
+class IsolateCopyProgress {
+  final List<FileSystemEntity> filesToCopy;
+  final StreamController<Map<String, dynamic>> streamController;
+  final String pathWhereToCopy;
+  final SendPort sendPort;
+  static int _totalItemsSize = 0;
+  static int _copied = 0;
+  static double _progress = 0.0;
+
+  IsolateCopyProgress({
+    this.streamController,
+    this.sendPort,
+    @required this.filesToCopy,
+    @required this.pathWhereToCopy,
+  });
+
+  static void clearFields() {
+    _totalItemsSize = 0;
+    _copied = 0;
+    _progress = 0.0;
+  }
+
+  Stream<Map<String, dynamic>> copySelectedItems() async* {
+    final items = filesToCopy;
+    final path = pathWhereToCopy;
+    _totalItemsSize = await _getTotalSize(items);
+    for (final item in items) {
+      if (item is File) {
+        yield* _copyFileSystemEntity(item, path);
+      } else if (item is Directory) {
+        yield* _toCopyDirectories(item, path);
+      }
+    }
+    clearFields();
+  }
+
+  static Stream<Map<String, dynamic>> _toCopyDirectories(
+    Directory item,
+    String currentPath,
+  ) async* {
+    final copiedDir = Directory(p.join(currentPath, p.basename(item.path)));
+    await copiedDir.create();
+    final stream = item.list();
+    await for (final file in stream) {
+      if (file is Directory) {
+        yield* _toCopyDirectories(file, copiedDir.path);
+      } else if (file is File) {
+        yield* _copyFileSystemEntity(file, copiedDir.path);
+      }
+    }
+  }
+
+  static Stream<Map<String, dynamic>> _copyFileSystemEntity(
+    File file,
+    String folderDestPath,
+  ) async* {
+    final srcFile = file.openRead();
+    final srcFileLength = await file.length();
+    final _srcSize = FileUtils.formatBytes(srcFileLength, 2);
+    final _srcName = p.basename(file.path);
+    final destPath = p.join(folderDestPath, p.basename(file.path));
+    final destFile = File(destPath).openWrite(mode: FileMode.append);
+    await for (final event in srcFile) {
+      destFile.add(event);
+      _copied += event.length;
+      _progress = _copied / _totalItemsSize * 100;
+      yield {
+        'copied': _copied,
+        'progress': _progress.roundToDouble(),
         'srcName': _srcName,
         'srcSize': _srcSize,
       };

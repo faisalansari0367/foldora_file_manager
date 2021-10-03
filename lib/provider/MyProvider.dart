@@ -66,10 +66,12 @@ class MyProvider extends ChangeNotifier {
     }
   }
 
-  Future<List<FileSystemEntity>> dirContents(String path, {isShowHidden = false}) async {
+  Future<List<FileSystemEntity>> dirContents(String path,
+      {isShowHidden = false}) async {
     final args = {'path': path, 'showHidden': isShowHidden};
     try {
-      final result = await FileUtils.worker.doWork(FileUtils.directoryList, args);
+      final result =
+          await FileUtils.worker.doWork(FileUtils.directoryList, args);
       return result;
     } catch (e) {
       rethrow;
@@ -93,9 +95,13 @@ class MyProvider extends ChangeNotifier {
 
   Future<PermissionStatus> getPermission() async {
     try {
-      final storage = Permission.storage;
-      final statuses = await [Permission.storage].request();
-      return statuses[storage];
+      // final storage =await Permission.storage.status;
+      var statuses = await [
+        Permission.storage,
+        // Permission.manageExternalStorage,
+      ].request();
+      // final statuses = await Permission[storage].request();
+      return statuses[Permission.storage];
     } catch (e) {
       print('permission error $e');
       rethrow;
@@ -124,7 +130,8 @@ class MyProvider extends ChangeNotifier {
     }
   }
 
-  void notify() => Future.delayed(Duration(milliseconds: 200), () => notifyListeners());
+  void notify() =>
+      Future.delayed(Duration(milliseconds: 200), () => notifyListeners());
 
   Future<bool> onGoBack(context) async {
     final value = data[currentPage];

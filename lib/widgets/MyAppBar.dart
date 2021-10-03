@@ -4,6 +4,7 @@ import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../sizeConfig.dart';
 import 'MyDropDown.dart';
@@ -11,8 +12,45 @@ import 'Search.dart';
 import 'package:path/path.dart' as p;
 
 class AppbarUtils {
-  static const duration = Duration(milliseconds: 100);
+  static const duration = Duration(milliseconds: 300);
   static const splashRadius = 25.0;
+
+  static List<Widget> appbarActions(BuildContext context, bool showOther) {
+    final actionsOnSelectedMedia = [
+      IconButton(
+        icon: Icon(Icons.select_all),
+        onPressed: () {},
+      ),
+      IconButton(
+        icon: Icon(Icons.copy_all),
+        onPressed: () {},
+      )
+    ];
+    final currentActions = [
+      AnimatedSwitcher(
+        duration: AppbarUtils.duration,
+        child: showOther ? actionsOnSelectedMedia.first : AppbarUtils.searchIcon(context),
+      ),
+      AnimatedSwitcher(
+        duration: AppbarUtils.duration,
+        child: showOther ? actionsOnSelectedMedia.last : MyDropDown(),
+      ),
+      // MyDropDown()
+    ];
+
+    return AnimationConfiguration.toStaggeredList(
+      duration: const Duration(milliseconds: 400),
+      childAnimationBuilder: (widget) => FadeInAnimation(
+        key: UniqueKey(),
+        delay: Duration(milliseconds: 80),
+        child: widget,
+      ),
+      children: showOther ? actionsOnSelectedMedia : currentActions,
+    );
+
+    // ,
+    // return showOther ? actionsOnSelectedMedia : currentActions;
+  }
 
   static SystemUiOverlayStyle systemUiOverylay({
     Color backgroundColor,

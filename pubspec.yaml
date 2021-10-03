@@ -31,7 +31,7 @@ dependencies:
   mime_type: ^1.0.0
   open_file: ^3.0.3
   percent_indicator: ^3.0.1
-  permission_handler: ^8.1.6
+  permission_handler: 7.2.0
   provider: ^5.0.0
   share: ^2.0.4
   shared_preferences: ^2.0.6

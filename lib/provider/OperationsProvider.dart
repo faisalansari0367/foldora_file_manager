@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:files/utilities/CopyUtils.dart';
+import 'package:files/utilities/Utils.dart';
+import 'package:files/utilities/operations_isolate.dart';
 import 'package:files/utilities/storage_space.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,7 @@ class OperationsProvider extends ChangeNotifier {
   String get srcName => _srcName;
   double get progress => _progress;
   List<FileSystemEntity> get selectedMedia => _selectedMediaItems;
+  int selectedItemSizeBytes = 0;
 
   // for sharing the files
   List<String> sharePaths() {
@@ -46,11 +49,26 @@ class OperationsProvider extends ChangeNotifier {
 
   void onTapOfLeading(FileSystemEntity item) {
     final isExist = _selectedMediaItems.contains(item);
-    isExist ? _selectedMediaItems.remove(item) : _selectedMediaItems.add(item);
+    if (isExist) {
+      _selectedMediaItems.remove(item);
+      removeSelectedItemSize(item);
+    } else {
+      _selectedMediaItems.add(item);
+      addSelectedItemSize(item);
+    }
     // operations.selectItem(_selectedMediaItems, item);
     showBottomNavbar = _selectedMediaItems.isEmpty ? false : true;
-    print(_selectedMediaItems);
     notifyListeners();
+  }
+
+  void addSelectedItemSize(FileSystemEntity item) async {
+    final stat = await item.stat();
+    selectedItemSizeBytes += stat.size;
+  }
+
+  void removeSelectedItemSize(FileSystemEntity item) async {
+    final stat = await item.stat();
+    selectedItemSizeBytes -= stat.size;
   }
 
   Future<void> deleteFileOrFolder(BuildContext context) async {
@@ -61,7 +79,6 @@ class OperationsProvider extends ChangeNotifier {
         print('item deleted $result');
       }
       _selectedMediaItems.clear();
-      // notifyListeners();
     } on FileSystemException catch (e) {
       print('item deletion failed : $e');
       final snackBar = SnackBar(
@@ -86,15 +103,45 @@ class OperationsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> copySelectedItems(String currentPath) async {
+  Map<String, String> getFiles(List<FileSystemEntity> list) {
+    var files = 0;
+    var folders = 0;
+    for (var item in list) {
+      if (item is File) {
+        files++;
+      } else {
+        folders++;
+      }
+    }
+    return {
+      'files': files.toString(),
+      'folders': folders.toString(),
+    };
+  }
+
+  Future<void> copySelectedItems(String currentPath, void Function() notify) async {
     if (selectedMedia.isEmpty) return;
     operationIsRunning = true;
+    notifyListeners();
 
-    final args = {'items': selectedMedia, 'currentPath': currentPath};
-    final Stream<dynamic> stream = CopyUtils.copySelectedItems(args);
+    // final args = {'items': selectedMedia, 'currentPath': currentPath};
+    final isolate = OperationIsolate();
+    final util = IsolateCopyProgress(
+      filesToCopy: selectedMedia,
+      pathWhereToCopy: currentPath,
+    );
+
+    // final stream = await isolate.operationsIsolate(
+    //   filesToCopy: selectedMedia,
+    //   pathWhereToCopy: currentPath,
+    // );
+    // final Stream<dynamic> stream = CopyUtils.copySelectedItems(args);
+    final stream = util.copySelectedItems();
+
     // await FileUtils.worker.doOperation(CopyUtils.copySelectedItems, args);
 
     stream.listen((event) {
+      // print(event);
       if (event is String) {
         operationIsRunning = false;
         clearFields();
@@ -105,6 +152,12 @@ class OperationsProvider extends ChangeNotifier {
       _srcName = event['srcName'];
       _srcSize = event['srcSize'];
       notifyListeners();
+    }, onDone: () {
+      print('stream done');
+      operationIsRunning = false;
+      clearFields();
+      notify();
+      isolate.isolate.kill();
     });
   }
 

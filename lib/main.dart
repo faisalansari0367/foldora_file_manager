@@ -20,9 +20,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FileUtils();
   SystemChrome.setSystemUIOverlayStyle(AppbarUtils.systemUiOverylay());
-  final service = StorageService();
-  await service.isReady;
-
+  StorageService();
+  await StorageService().isReady;
   runApp(MyApp());
 }
 
@@ -46,8 +45,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Future<bool> setFirstTimeSeen() async {
     final service = StorageService();
-    await service.isReady;
-    final isSeen = service.setFirstTimeSeen();
+    final isSeen = service.setFirstTimeSeen() ?? false;
     return isSeen;
   }
 
@@ -90,7 +88,7 @@ class _MyAppState extends State<MyApp> {
               ],
               child: MaterialApp(
                 theme: MyColors.themeData,
-                showPerformanceOverlay: false,
+                // showPerformanceOverlay: true,
                 debugShowCheckedModeBanner: false,
                 title: 'Foldora',
                 home: futureBuilder,

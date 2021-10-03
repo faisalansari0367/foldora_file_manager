@@ -118,9 +118,9 @@ class ModalSheet {
                         ),
                         ElevatedButton(
                           onPressed: () async {
+                            Navigator.of(context).pop();
                             await operations.deleteFileOrFolder(context);
                             await myProvider.diskSpace();
-                            Navigator.of(context).pop();
                             myProvider.notify();
                             print('notified');
                           },

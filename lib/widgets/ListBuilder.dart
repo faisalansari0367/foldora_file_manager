@@ -109,14 +109,18 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
           final mediaListItem = MediaListItem(
             index: index,
             data: data,
-            ontap: () => operations.selectedMedia.isNotEmpty
-                ? operations.onTapOfLeading(data)
-                : provider.ontap(data),
+            ontap: () {
+              operations.selectedMedia.isNotEmpty
+                  ? !operations.showCopy
+                      ? provider.ontap(data)
+                      : operations.onTapOfLeading(data)
+                  : provider.ontap(data);
+            },
             title: p.basename(data.path),
             currentPath: data.path,
             description: MediaUtils.description(data),
             leading: LeadingIcon(data: data),
-            selectedColor: Colors.grey[200],
+            selectedColor: MyColors.darkGrey.withOpacity(0.1),
           );
           // return AnimationConfiguration.synchronized(
           //   // duration: Duration(milliseconds: 100),
