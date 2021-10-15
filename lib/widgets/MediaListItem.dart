@@ -38,7 +38,7 @@ class MediaListItem extends StatefulWidget {
 }
 
 class _MediaListItemState extends State<MediaListItem> {
-  static const duration = Duration(milliseconds: 500);
+  static const duration = Duration(milliseconds: 300);
   @override
   Widget build(BuildContext context) {
     final Widget padding = Padding(
@@ -66,8 +66,10 @@ class _MediaListItemState extends State<MediaListItem> {
         child: padding,
         builder: (context, provider, child) {
           final selectedMedia = provider.selectedMedia;
+          print('data added');
           final isSelected = selectedMedia.contains(widget.data);
           final color = isSelected ? widget.selectedColor : Colors.white;
+
           return AnimatedContainer(
             duration: duration,
             color: color,

@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:files/provider/MyProvider.dart';
+import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/utilities/MyColors.dart';
+import 'package:files/utilities/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
 
 import '../sizeConfig.dart';
 import 'MyDropDown.dart';
@@ -15,11 +19,24 @@ class AppbarUtils {
   static const duration = Duration(milliseconds: 300);
   static const splashRadius = 25.0;
 
+  static void selectAllFolders(context) async {
+    final myProvider = Provider.of<MyProvider>(context, listen: false);
+    final operations = Provider.of<OperationsProvider>(context, listen: false);
+
+    final path = myProvider.data[myProvider.currentPage].currentPath;
+    final list = await FileUtils.worker.doWork(FileUtils.directoryList, {'path': path});
+    for (var item in list) {
+      operations.onTapOfLeading(item);
+      // print(operations.selectedMedia.length);
+    }
+    myProvider.notify();
+  }
+
   static List<Widget> appbarActions(BuildContext context, bool showOther) {
     final actionsOnSelectedMedia = [
       IconButton(
         icon: Icon(Icons.select_all),
-        onPressed: () {},
+        onPressed: () => AppbarUtils.selectAllFolders(context),
       ),
       IconButton(
         icon: Icon(Icons.copy_all),

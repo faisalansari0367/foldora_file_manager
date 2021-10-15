@@ -120,7 +120,7 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
             currentPath: data.path,
             description: MediaUtils.description(data),
             leading: LeadingIcon(data: data),
-            selectedColor: MyColors.darkGrey.withOpacity(0.1),
+            selectedColor: MyColors.darkGrey.withOpacity(0.3),
           );
           // return AnimationConfiguration.synchronized(
           //   // duration: Duration(milliseconds: 100),

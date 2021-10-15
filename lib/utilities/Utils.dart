@@ -179,7 +179,7 @@ class FileUtils {
     final hiddenFiles = <FileSystemEntity>[];
 
     final String path = args['path'];
-    final bool showHidden = args['showHidden'];
+    final bool showHidden = args['showHidden'] ?? false;
 
     try {
       final list = Directory(path).list();
