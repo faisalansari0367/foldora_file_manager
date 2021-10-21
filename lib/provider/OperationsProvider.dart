@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:files/utilities/CopyUtils.dart';
-import 'package:files/utilities/Utils.dart';
 import 'package:files/utilities/operations_isolate.dart';
 import 'package:files/utilities/storage_space.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +19,7 @@ class OperationsProvider extends ChangeNotifier {
   String _srcSize = '0.0 KB';
   int selectedIndex = 5;
   bool showCopy = true;
-  final List<FileSystemEntity> _selectedMediaItems = [];
+  final _selectedMediaItems = <FileSystemEntity>[];
   bool operationIsRunning = false;
 
   String get totalSize => _srcSize;
@@ -46,6 +45,26 @@ class OperationsProvider extends ChangeNotifier {
 
   /// have to deal with it. it should not be in here.
   bool showBottomNavbar = false;
+
+  void selectAll(List<FileSystemEntity> list) {
+    _selectedMediaItems.clear();
+    // final selected = _selectedMediaItems.removeWhere((element) => list.contains(element));
+    _selectedMediaItems.addAll(list);
+    notifyListeners();
+  }
+
+  void selectInverse(List<FileSystemEntity> list) {
+    final mylist = [..._selectedMediaItems];
+    _selectedMediaItems.clear();
+    list.forEach((e) {
+      if (mylist.any((element) => element.path == e.path)) {
+        _selectedMediaItems.remove(e);
+      } else {
+        _selectedMediaItems.add(e);
+      }
+    });
+    notifyListeners();
+  }
 
   void onTapOfLeading(FileSystemEntity item) {
     final isExist = _selectedMediaItems.contains(item);

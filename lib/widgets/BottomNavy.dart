@@ -57,7 +57,7 @@ class _BottomNavyState extends State<BottomNavy> {
     return Container(
       color: MyColors.white,
       child: Row(
-        key: UniqueKey(),
+        // key: UniqueKey(),
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         // mainAxisSize: MainAxisSize.min,
         children: AnimationConfiguration.toStaggeredList(

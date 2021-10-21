@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 import 'FullScreenImage.dart';
 
 class Photo extends StatelessWidget {
-  final File file;
+  final List<File> files;
   final int index;
-  const Photo({this.file, this.index});
+  const Photo({this.files, this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,13 @@ class Photo extends StatelessWidget {
       },
       onTap: () {
         if (provider.selectedPhotos.isNotEmpty) return provider.addImage(index);
-        MediaUtils.redirectToPage(context, page: FullScreenImage(index: index, file: file));
+        MediaUtils.redirectToPage(
+          context,
+          page: FullScreenImage(
+            index: index,
+            files: files,
+          ),
+        );
         provider.updateIndex(index);
       },
       child: Stack(
@@ -31,7 +37,7 @@ class Photo extends StatelessWidget {
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(12)),
             child: Image.file(
-              file,
+              files[index],
               fit: BoxFit.cover,
               cacheWidth: 240,
             ),

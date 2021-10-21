@@ -9,6 +9,7 @@ class OperationIsolate {
   Isolate isolate;
   StreamController<Map<String, dynamic>> _streamController;
   Stream<Map<String, dynamic>> _stream;
+  // ignore: unused_field
   SendPort _toIsolate;
 
   Future<Stream<Map<String, dynamic>>> operationsIsolate({

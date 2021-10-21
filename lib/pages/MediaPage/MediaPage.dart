@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:files/pages/MediaPage/sliver_appbar.dart';
 import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/scroll_provider.dart';
@@ -155,13 +152,14 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                               .subtitle1
                               .copyWith(color: MyColors.appbarActionsColor),
                         ),
+                        SizedBox(height: 5),
                         if (provider.selectedItemSizeBytes != 0)
                           Text(
                             '$size',
                             style: Theme.of(context)
                                 .textTheme
                                 .caption
-                                .copyWith(color: MyColors.appbarActionsColor),
+                                .copyWith(color: MyColors.appbarActionsColor.withOpacity(.6)),
                           ),
                       ],
                     );

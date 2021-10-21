@@ -20,6 +20,7 @@ class MediaListItem extends StatefulWidget {
   final IconButton trailing;
 
   const MediaListItem({
+    Key key,
     this.index,
     this.title,
     this.description,
@@ -63,11 +64,20 @@ class _MediaListItemState extends State<MediaListItem> {
       onTap: widget.ontap,
       onLongPress: widget.onLongPress,
       child: Consumer<OperationsProvider>(
+        // key: UniqueKey(),
         child: padding,
         builder: (context, provider, child) {
-          final selectedMedia = provider.selectedMedia;
-          print('data added');
-          final isSelected = selectedMedia.contains(widget.data);
+          // print('data added');
+          var isSelected = false;
+          for (var item in provider.selectedMedia) {
+            if (widget.data.path == item.path) {
+              isSelected = true;
+              break;
+            } else {
+              isSelected = false;
+            }
+          }
+          // final isSelected = provider.selectedMedia.contains(widget.data);
           final color = isSelected ? widget.selectedColor : Colors.white;
 
           return AnimatedContainer(
@@ -96,11 +106,15 @@ class _Item extends StatelessWidget {
           children: <Widget>[
             Text(
               title,
-              style: TextStyle(
-                fontSize: 1.8 * Responsive.textMultiplier,
-                fontWeight: FontWeight.w500,
-                color: titleColor ?? Colors.grey[800],
-              ),
+              // style: TextStyle(
+              //   fontSize: 1.8 * Responsive.textMultiplier,
+              //   fontWeight: FontWeight.w500,
+              //   color: titleColor ?? Colors.grey[800],
+              // ),
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle1
+                  .copyWith(color: titleColor ?? Theme.of(context).textTheme.subtitle1.color),
             ),
             SizedBox(height: Responsive.height(0.5)),
             if (description != null) description,

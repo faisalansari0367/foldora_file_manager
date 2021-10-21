@@ -24,6 +24,7 @@ class MyProvider extends ChangeNotifier {
   List<Data> data = [];
   MyProvider() {
     init();
+    // streamListener();
     // StorageDetails.watchFilesForChanges.listen((dynamic event) {
     //   print(event);
     //   // notifyListeners();
@@ -66,16 +67,23 @@ class MyProvider extends ChangeNotifier {
     }
   }
 
-  Future<List<FileSystemEntity>> dirContents(String path,
-      {isShowHidden = false}) async {
+  StreamSubscription<FileSystemEvent> streamSubscription;
+  Future<List<FileSystemEntity>> dirContents(String path, {isShowHidden = false}) async {
     final args = {'path': path, 'showHidden': isShowHidden};
     try {
-      final result =
-          await FileUtils.worker.doWork(FileUtils.directoryList, args);
+      if (streamSubscription != null) await streamSubscription.cancel();
+      final dir = Directory(path).watch();
+      dir.listen(streamListener);
+      final result = await FileUtils.worker.doWork(FileUtils.directoryList, args);
       return result;
     } catch (e) {
       rethrow;
     }
+  }
+
+  void streamListener(event) {
+    log('event is $event');
+    notifyListeners();
   }
 
   Future<void> diskSpace() async {
@@ -130,8 +138,7 @@ class MyProvider extends ChangeNotifier {
     }
   }
 
-  void notify() =>
-      Future.delayed(Duration(milliseconds: 200), () => notifyListeners());
+  void notify() => Future.delayed(Duration(milliseconds: 200), () => notifyListeners());
 
   Future<bool> onGoBack(context) async {
     final value = data[currentPage];

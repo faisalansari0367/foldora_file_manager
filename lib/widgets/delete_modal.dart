@@ -29,12 +29,12 @@ class ModalSheet {
           final operations = Provider.of<OperationsProvider>(context, listen: true);
           final myProvider = Provider.of<MyProvider>(context, listen: false);
 
-          return AnnotatedRegion(
+          final child = AnnotatedRegion(
             value: AppbarUtils.systemUiOverylay(
               systemNavigationBarColor: MyColors.darkGrey,
             ),
             child: DraggableScrollableSheet(
-              maxChildSize: 0.9,
+              maxChildSize: 1.0,
               initialChildSize: 0.7,
               builder: (context, scrollController) {
                 log('rebuilding widget');
@@ -150,6 +150,8 @@ class ModalSheet {
               },
             ),
           );
+
+          return child;
         });
   }
 }

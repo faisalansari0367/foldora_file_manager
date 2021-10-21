@@ -24,7 +24,7 @@ class DirectoryLister extends StatelessWidget {
     final provider = Provider.of<MyProvider>(context, listen: true);
 
     return FutureBuilder(
-      key: UniqueKey(),
+      // key: UniqueKey(),
       future: provider.dirContents(path, isShowHidden: provider.showHidden),
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data.isEmpty) {
@@ -107,6 +107,7 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
         itemBuilder: (context, index) {
           final data = widget.data[index];
           final mediaListItem = MediaListItem(
+            key: UniqueKey(),
             index: index,
             data: data,
             ontap: () {
@@ -120,42 +121,8 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
             currentPath: data.path,
             description: MediaUtils.description(data),
             leading: LeadingIcon(data: data),
-            selectedColor: MyColors.darkGrey.withOpacity(0.3),
+            selectedColor: MyColors.darkGrey.withOpacity(0.2),
           );
-          // return AnimationConfiguration.synchronized(
-          //   // duration: Duration(milliseconds: 100),
-          //   child: SlideAnimation(
-          //     // delay: Duration(milliseconds: 2000),
-          //     verticalOffset: 10.0,
-          //     curve: Curves.easeOutCubic,
-          //     child: FadeInAnimation(
-          //       // duration: Duration(milliseconds: index * 1000),
-          //       child: mediaListItem,
-          //     ),
-          //   ),
-          // );
-
-          // return AnimatedBuilder(
-          //   animation: _controller,
-          //   child: mediaListItem,
-          //   builder: (BuildContext context, Widget child) {
-          //     final begin = index == 0 ? 0.0 : (index - 1) / widget.data.length;
-          //     final end = index / widget.data.length;
-          //     print('end: $end, begin: $begin');
-          //     return FadeTransition(
-          //       opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-          //         parent: _controller,
-          //         curve: Curves.easeInCubic,
-          //       )),
-          //       child: SlideTransition(
-          //         position: Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
-          //             .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInCubic)),
-          //         child: child,
-          //       ),
-          //     );
-          //   },
-          // );
-
           return mediaListItem;
         },
       ),

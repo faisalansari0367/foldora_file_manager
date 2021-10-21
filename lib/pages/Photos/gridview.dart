@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -5,7 +7,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'photo.dart';
 
 class MyGridView extends StatefulWidget {
-  final photos;
+  final List<File> photos;
   const MyGridView({this.photos});
 
   @override
@@ -26,7 +28,7 @@ class _MyGridViewState extends State<MyGridView> {
       itemCount: widget.photos.length,
       itemBuilder: (BuildContext context, int index) {
         final file = widget.photos[index];
-        return Photo(file: file, index: index);
+        return Photo(files: widget.photos, index: index);
       },
       staggeredTileBuilder: (int index) => StaggeredTile.count(
         1,

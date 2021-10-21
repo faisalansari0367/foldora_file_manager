@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:files/provider/StoragePathProvider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/MyColors.dart';
+import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,11 +56,16 @@ class FolderImage extends StatelessWidget {
       onTap: () {
         final photos = images[index];
         final list = [for (var item in photos.files) File(item)];
-        print(photos);
         MediaUtils.redirectToPage(
           context,
-          page: MyGridView(
-            photos: list,
+          page: Scaffold(
+            backgroundColor: Colors.black,
+            appBar: MyAppBar(
+              backgroundColor: Colors.black,
+            ),
+            body: MyGridView(
+              photos: list,
+            ),
           ),
         );
       },

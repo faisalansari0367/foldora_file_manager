@@ -106,7 +106,7 @@ class VideosPage extends StatelessWidget {
       bottomNavigationBar: ElevatedButton(
         child: Text('move all videos to a different folder'),
         onPressed: () async {
-          final dir = await Directory('/storage/emulated/0/AllVIdeos').create();
+          final dir = await Directory('/storage/emulated/0/AllVideos').create();
 
           final provider = Provider.of<OperationsProvider>(context, listen: false);
           for (var item in videos) {

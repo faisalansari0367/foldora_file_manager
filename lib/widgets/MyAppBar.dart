@@ -18,6 +18,13 @@ import 'package:path/path.dart' as p;
 class AppbarUtils {
   static const duration = Duration(milliseconds: 300);
   static const splashRadius = 25.0;
+  static void selectInverse(context) async {
+    final myProvider = Provider.of<MyProvider>(context, listen: false);
+    final operations = Provider.of<OperationsProvider>(context, listen: false);
+    final path = myProvider.data[myProvider.currentPage].currentPath;
+    final list = await FileUtils.worker.doWork(FileUtils.directoryList, {'path': path});
+    operations.selectInverse(list);
+  }
 
   static void selectAllFolders(context) async {
     final myProvider = Provider.of<MyProvider>(context, listen: false);
@@ -25,31 +32,33 @@ class AppbarUtils {
 
     final path = myProvider.data[myProvider.currentPage].currentPath;
     final list = await FileUtils.worker.doWork(FileUtils.directoryList, {'path': path});
-    for (var item in list) {
-      operations.onTapOfLeading(item);
-      // print(operations.selectedMedia.length);
-    }
-    myProvider.notify();
+    operations.selectAll(list);
+    // for (var item in list) {
+    //   operations.onTapOfLeading(item);
+    //   // print(operations.selectedMedia.length);
+    // }
+    // myProvider.notify();
   }
 
   static List<Widget> appbarActions(BuildContext context, bool showOther) {
     final actionsOnSelectedMedia = [
       IconButton(
         icon: Icon(Icons.select_all),
-        onPressed: () => AppbarUtils.selectAllFolders(context),
+        tooltip: 'Select All',
+        onPressed: () => selectAllFolders(context),
       ),
       IconButton(
         icon: Icon(Icons.copy_all),
-        onPressed: () {},
+        onPressed: () => selectInverse(context),
       )
     ];
     final currentActions = [
       AnimatedSwitcher(
-        duration: AppbarUtils.duration,
-        child: showOther ? actionsOnSelectedMedia.first : AppbarUtils.searchIcon(context),
+        duration: duration,
+        child: showOther ? actionsOnSelectedMedia.first : searchIcon(context),
       ),
       AnimatedSwitcher(
-        duration: AppbarUtils.duration,
+        duration: duration,
         child: showOther ? actionsOnSelectedMedia.last : MyDropDown(),
       ),
       // MyDropDown()
@@ -80,7 +89,7 @@ class AppbarUtils {
       systemNavigationBarColor: systemNavigationBarColor ?? Colors.transparent,
       statusBarColor: backgroundColor ?? Colors.transparent,
       systemNavigationBarContrastEnforced: true,
-      systemNavigationBarDividerColor: Colors.grey,
+      systemNavigationBarDividerColor: Colors.transparent,
       systemStatusBarContrastEnforced: true,
       systemNavigationBarIconBrightness: brightness,
     );

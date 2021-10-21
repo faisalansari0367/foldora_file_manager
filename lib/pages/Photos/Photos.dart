@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:files/provider/StoragePathProvider.dart';
 import 'package:files/widgets/FileNotFoundScreen.dart';
 import 'package:files/widgets/MyAppBar.dart';
@@ -14,22 +13,23 @@ class Photos extends StatelessWidget {
   Widget build(BuildContext context) {
     final Widget widget = Consumer<StoragePathProvider>(
       builder: (BuildContext context, value, child) {
-        final photos = [
-          for (var item in value.imagesPath)
-            for (var i in item.files) File(i),
-        ];
         final grid =
-            value.imagesPath.isNotEmpty ? MyGridView(photos: photos) : FileNotFoundScreen();
+            value.allPhotos.isNotEmpty ? MyGridView(photos: value.allPhotos) : FileNotFoundScreen();
         return PageView(children: [grid, ImageFolders()]);
       },
     );
-    return Scaffold(
-      // bottomNavigationBar: BottomSlideAnimation(),
-      backgroundColor: Colors.black54,
-      appBar: MyAppBar(
-        backgroundColor: Colors.black54,
+    return AnnotatedRegion(
+      value: AppbarUtils.systemUiOverylay(
+        systemNavigationBarColor: Colors.black,
       ),
-      body: widget,
+      child: Scaffold(
+        // bottomNavigationBar: BottomSlideAnimation(),
+        backgroundColor: Colors.black54,
+        appBar: MyAppBar(
+          backgroundColor: Colors.black54,
+        ),
+        body: widget,
+      ),
     );
   }
 }

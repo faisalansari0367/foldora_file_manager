@@ -34,12 +34,14 @@ class StoragePathProvider extends ChangeNotifier {
   List<int> selectedPhotos = [];
   List _audiosPath = [];
   List _documentsPath = [];
-  final List _rootDirectories = [];
+  // final List _rootDirectories = [];
   List<ImageModel> _photos = [];
   List<ImageModel> get imagesPath => _photos;
-  List get rootDirectory => _rootDirectories;
+  // List get rootDirectory => _rootDirectories;
   List get audiosPath => _audiosPath;
   List get documentsPath => _documentsPath;
+
+  var allPhotos = <File>[];
 
   StoragePathProvider() {
     init();
@@ -57,7 +59,7 @@ class StoragePathProvider extends ChangeNotifier {
   ///  these functions are used by photos they are not getting used here
   void updateIndex(int index) {
     photosIndex = index;
-    notifyListeners();
+    // notifyListeners();
   }
 
   /// this function updates the index to delete the photo in pageView
@@ -116,7 +118,13 @@ class StoragePathProvider extends ChangeNotifier {
     final images = await FileUtils.worker.doWork(FileUtils.imagesPath, imagesPath);
     // await FileUtils.imagesPath(imagesPath);
     _photos = images['data'];
+    for (var item in _photos) {
+      for (var i in item.files) {
+        allPhotos.add(File(i));
+      }
+    }
     _photosSize = images['size'];
+
     print('images length :${_photos.length}');
     notifyListeners();
   }
