@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "190466640356-kkq1hs5cpon6st09n4lnve71qagh4b1v.apps.googleusercontent.com",
+          "client_id": "190466640356-jltrheejr4f0vi1jrv3ap61vhch40p3u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.faisal.foldora",
-            "certificate_hash": "869ed48d1d0e64d2919e40fab1c3299674448331"
+            "certificate_hash": "7ad2a8b3ca1d58f779a4149051377543e69e4be6"
           }
         }
       ],

@@ -1,4 +1,4 @@
-import 'package:files/pages/Auth/sign_in_screen.dart';
+import 'package:files/pages/Drive/sign_in_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,6 +25,22 @@ import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sig
 // }
 
 class Auth {
+  static Future<void> signInToDrive() async {
+    try {
+      var firebase = await Firebase.initializeApp();
+      
+      print(firebase.toString());
+
+      final googleSignIn = GoogleSignIn.standard(scopes: [DriveApi.driveScope]);
+      
+      final account = await googleSignIn.signIn();
+      customSnackBar(content: account.toString());
+      print('User account $account');
+    } catch (e) {
+      print(e);
+    }
+  }
+
   static SnackBar customSnackBar({@required String content}) {
     return SnackBar(
       backgroundColor: Colors.black,
@@ -35,9 +51,7 @@ class Auth {
     );
   }
 
-  static Future<FirebaseApp> initializeFirebase({
-    @required BuildContext context,
-  }) async {
+  static Future<FirebaseApp> initializeFirebase({@required BuildContext context}) async {
     final firebaseApp = await Firebase.initializeApp();
 
     final user = FirebaseAuth.instance.currentUser;
@@ -60,7 +74,7 @@ class Auth {
 
   static Future<List<File>> driveApi() async {
     try {
-      // await signInWithGoogle();
+      // await GoogleSignIn(clientId: 'AIzaSyAHxoNkBcPRcw3XKQOnTSBzEAaqQctWaRA');
 
       final googleSignIn = GoogleSignIn.standard(scopes: [DriveApi.driveScope]);
       final result = await googleSignIn.signIn();

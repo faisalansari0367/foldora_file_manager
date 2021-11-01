@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:files/widgets/FileNotFoundScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -19,6 +20,8 @@ class _MyGridViewState extends State<MyGridView> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.photos.isEmpty) return FileNotFoundScreen();
+
     final grid = StaggeredGridView.countBuilder(
       padding: const EdgeInsets.all(8.0),
       crossAxisCount: _crossAxisCount,
@@ -27,21 +30,19 @@ class _MyGridViewState extends State<MyGridView> {
       physics: const BouncingScrollPhysics(),
       itemCount: widget.photos.length,
       itemBuilder: (BuildContext context, int index) {
-        final file = widget.photos[index];
         return Photo(files: widget.photos, index: index);
       },
-      staggeredTileBuilder: (int index) => StaggeredTile.count(
-        1,
-        // index.isEven ? 1.2 : 1.8,
-        1,
-      ),
+      staggeredTileBuilder: (int index) => StaggeredTile.count(1, index.isEven ? 1 : 1.25),
     );
     return GestureDetector(
       child: AnimationConfiguration.synchronized(
         duration: const Duration(milliseconds: 375),
         child: SlideAnimation(
           child: FadeInAnimation(
-            child: grid,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: grid,
+            ),
           ),
         ),
       ),

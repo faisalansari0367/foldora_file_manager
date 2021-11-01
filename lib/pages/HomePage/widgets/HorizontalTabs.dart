@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:files/pages/Auth/sign_in_screen.dart';
+import 'package:files/pages/Drive/sign_in_screen.dart';
 // import 'package:files/pages/Drive/sign_in_screen.dart';
 import 'package:files/pages/HomePage/widgets/MediaStack.dart';
 import 'package:files/pages/MediaPage/MediaPage.dart';

@@ -22,7 +22,9 @@ class _LiveLineState extends State<LiveLine> {
   var spots = <FlSpot>[];
   double _minX = 0;
   double _maxX = 60;
+  // ignore: prefer_final_fields
   double _minY = 0;
+  // ignore: prefer_final_fields
   double _maxY = 3000;
 
   @override

@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'dart:io';
 
 import 'package:files/provider/StoragePathProvider.dart';
@@ -48,7 +50,10 @@ class _FullScreenImageState extends State<FullScreenImage> {
         return true;
       },
       child: AnnotatedRegion(
-        value: SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []),
+        value: SystemChrome.setEnabledSystemUIMode(
+          SystemUiMode.edgeToEdge,
+          // overlays: [],
+        ),
         child: AnnotatedRegion(
           value: AppbarUtils.systemUiOverylay(),
           child: Scaffold(
@@ -98,8 +103,11 @@ class _FullScreenImageState extends State<FullScreenImage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        button(Icons.delete_outline_rounded,
-                            onPressed: () => deletePhoto(controller, widget.files)),
+                        button(Icons.delete_outline_rounded, onPressed: () {
+                          deletePhoto(controller, widget.files);
+                          // ignore: invalid_use_of_protected_member
+                          provider.notifyListeners();
+                        }),
                         button(Icons.share_rounded),
                         button(Icons.info_outline_rounded),
                       ],
@@ -144,44 +152,3 @@ IconButton button(IconData iconData, {onPressed}) {
     ),
   );
 }
-
-// class MyPageView extends StatefulWidget {
-//   final int index;
-//   final File file;
-//   const MyPageView({Key key, this.index, this.file}) : super(key: key);
-
-//   @override
-//   _MyPageViewState createState() => _MyPageViewState();
-// }
-
-// class _MyPageViewState extends State<MyPageView> {
-//   PageController pageController;
-//   @override
-//   void initState() {
-//     pageController = PageController(initialPage: widget.index);
-//     super.initState();
-//   }
-
-//   @override
-//   void dispose() {
-//     pageController.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final provider = Provider.of<StoragePathProvider>(context, listen: false);
-//     return PageView.builder(
-//       physics: BouncingScrollPhysics(),
-//       controller: pageController,
-//       onPageChanged: provider.updatePageViewCurrentIndex,
-//       itemBuilder: (context, index) {
-//         return Image.file(
-//           // provider.imagesPath[index],
-//           widget.file,
-//           cacheWidth: 1080,
-//         );
-//       },
-//     );
-//   }
-// }

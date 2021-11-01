@@ -55,7 +55,18 @@ class _BottomNavyState extends State<BottomNavy> {
     // final sizedBox = SizedBox(width: 0.2 * Responsive.widthMultiplier);
     print('bottom navigation rebuilding');
     return Container(
-      color: MyColors.white,
+      decoration: BoxDecoration(
+        // borderRadius: BorderRadius.only(
+        //   topLeft: Radius.circular(16),
+        //   topRight: Radius.circular(16),
+        // ),
+        color: MyColors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).shadowColor,
+          )
+        ],
+      ),
       child: Row(
         // key: UniqueKey(),
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

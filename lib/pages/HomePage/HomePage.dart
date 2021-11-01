@@ -24,13 +24,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // void systemOverlay() {
-    //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    //   final overlays = [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown];
-    //   SystemChrome.setPreferredOrientations(overlays);
-    // }
-
-    // systemOverlay();
   }
 
   @override

@@ -1,7 +1,7 @@
 import 'dart:io';
 
+import 'package:files/services/storage_service.dart';
 import 'package:path/path.dart' as p;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Utils.dart';
 
@@ -16,16 +16,17 @@ class SearchUtils {
 
   static const _excludedPath = '/storage/emulated/0/Android';
 
-  static Future<void> addSuggestions(SharedPreferences prefs, String query) async {
-    final suggestions = prefs.getStringList('suggestions') ?? [];
+  static Future<void> addSuggestions(String query) async {
+    final storage = StorageService();
+    final suggestions = storage.getSearchSuggestions;
     if (suggestions.contains(query)) {
       final index = suggestions.indexOf(query);
       suggestions.removeAt(index);
       suggestions.insert(0, query);
-      await prefs.setStringList('suggestions', suggestions);
+      await storage.setSearchSuggestions(suggestions);
     } else {
       if (query.isNotEmpty) suggestions.insert(0, query);
-      await prefs.setStringList('suggestions', suggestions);
+      await storage.setSearchSuggestions(suggestions);
     }
   }
 

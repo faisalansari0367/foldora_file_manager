@@ -36,7 +36,7 @@ class Search extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     final provider = Provider.of<MyProvider>(context, listen: false);
-    SearchUtils.addSuggestions(StorageService.prefs, query);
+    SearchUtils.addSuggestions(query);
     return StreamBuilder(
       stream: SearchUtils.searchDelegate(
         path: provider.data[provider.currentPage].path,
@@ -57,14 +57,13 @@ class Search extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestions = StorageService.prefs.getStringList('suggestions') ?? [];
+    final suggestions = StorageService().getSearchSuggestions;
     return ListView.builder(
       itemCount: suggestions.length,
       itemBuilder: (context, int index) {
         return ListTile(
           onTap: () async {
-            await showSearch(
-                context: context, delegate: Search(), query: query = suggestions[index]);
+            await showSearch(context: context, delegate: Search(), query: query = suggestions[index]);
           },
           leading: Icon(Icons.history),
           title: Text(suggestions[index]),

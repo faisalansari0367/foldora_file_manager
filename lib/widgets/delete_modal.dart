@@ -54,16 +54,16 @@ class ModalSheet {
                     child: Column(
                       // mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(height: 15),
-                        Container(
-                          // padding: EdgeInsets.only(top: 50),
-                          width: 40,
-                          height: 5,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(16)),
-                            color: Colors.grey[700],
-                          ),
-                        ),
+                        SizedBox(height: 30),
+                        // Container(
+                        //   // padding: EdgeInsets.only(top: 50),
+                        //   width: 40,
+                        //   height: 5,
+                        //   decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.all(Radius.circular(16)),
+                        //     color: Colors.grey[700],
+                        //   ),
+                        // ),
                         SizedBox(height: 20),
                         Row(
                           children: [

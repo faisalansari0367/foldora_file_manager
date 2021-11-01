@@ -103,13 +103,11 @@ class MyProvider extends ChangeNotifier {
 
   Future<PermissionStatus> getPermission() async {
     try {
-      // final storage =await Permission.storage.status;
-      var statuses = await [
-        Permission.storage,
-        // Permission.manageExternalStorage,
-      ].request();
-      // final statuses = await Permission[storage].request();
-      return statuses[Permission.storage];
+      // final storage =await Permission.storage.request();
+      await [Permission.storage, Permission.manageExternalStorage].request();
+      final status = await Permission.storage.status;
+
+      return status;
     } catch (e) {
       print('permission error $e');
       rethrow;

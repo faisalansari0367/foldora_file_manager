@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'sizeConfig.dart';
 import 'utilities/Utils.dart';
 import 'widgets/MyAppBar.dart';
-import 'widgets/splash_screen.dart';
+import 'pages/splash/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,25 +43,29 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Future<bool> setFirstTimeSeen() async {
-    final service = StorageService();
-    final isSeen = service.setFirstTimeSeen() ?? false;
-    return isSeen;
-  }
+  Widget child;
 
   final PageView pageView = PageView(
     children: [HomePage(), HomePage()],
   );
 
   @override
+  void initState() {
+    super.initState();
+    child = StorageService().getFirstTimeSeen ? pageView : SplashScreen();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final futureBuilder = FutureBuilder(
-      future: setFirstTimeSeen(),
-      initialData: false,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return snapshot.data ? pageView : SplashScreen();
-      },
-    );
+    // var widget = pageView;
+    // setFirstTimeSeen() ?
+    //  FutureBuilder(
+    //   future: setFirstTimeSeen(),
+    //   initialData: false,
+    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+    //     return snapshot.data ? pageView : SplashScreen();
+    //   },
+    // );
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -91,7 +95,7 @@ class _MyAppState extends State<MyApp> {
                 // showPerformanceOverlay: true,
                 debugShowCheckedModeBanner: false,
                 title: 'Foldora',
-                home: futureBuilder,
+                home: child,
               ),
             );
           },
