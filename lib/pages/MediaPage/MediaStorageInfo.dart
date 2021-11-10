@@ -5,39 +5,25 @@ import '../../sizeConfig.dart';
 import './ShowStorageDetails.dart';
 
 class MediaStorageInfo extends StatelessWidget {
-  final int index;
-  // static const backgroundColor = Color(0xFF2c2c3c);
-  const MediaStorageInfo({this.index});
+  final String path, storageName;
+  final int usedBytes, availableBytes, totalBytes;
 
-  static final pageDetails = Row(
-    children: <Widget>[
-      Padding(
-        padding: EdgeInsets.only(
-          right: 3 * Responsive.widthMultiplier,
-        ),
-        child: Image.asset(
-          'assets/video.png',
-          height: 3.4 * Responsive.textMultiplier,
-        ),
-      ),
-      Text(
-        'Media',
-        style: TextStyle(
-          fontSize: 3.3 * Responsive.textMultiplier,
-          color: Colors.white,
-        ),
-      ),
-      const Spacer(),
-    ],
-  );
+  // static const backgroundColor = Color(0xFF2c2c3c);
+  const MediaStorageInfo({
+    this.path = 'assets/video.png',
+    this.storageName = 'Media',
+    this.usedBytes = 0,
+    this.availableBytes = 0,
+    this.totalBytes = 0,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
       child: Container(
-        // color: MyColors.darkGrey,
-        height: 0.33 * MediaQuery.of(context).size.height,
+        height: Responsive.height(33),
+        padding: EdgeInsets.symmetric(horizontal: 6 * Responsive.imageSizeMultiplier),
         decoration: BoxDecoration(
           color: MyColors.darkGrey,
           borderRadius: BorderRadius.only(
@@ -47,26 +33,48 @@ class MediaStorageInfo extends StatelessWidget {
         ),
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(
-                right: 6 * Responsive.imageSizeMultiplier,
-                top: 6 * Responsive.imageSizeMultiplier,
-                left: 6 * Responsive.imageSizeMultiplier,
-              ),
-              child: MediaStorageInfo.pageDetails,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                right: 6 * Responsive.imageSizeMultiplier,
-                left: 6 * Responsive.imageSizeMultiplier,
-                top: 10 * Responsive.imageSizeMultiplier,
-              ),
-              child: ShowStorageDetails(),
-            ),
-            LinearPercentBar(),
+            SizedBox(height: Responsive.imageSize(6)),
+            StorageType(path: path, storageName: storageName),
+            SizedBox(height: Responsive.imageSize(10)),
+            ShowStorageDetails(availableBytes: availableBytes, usedBytes: usedBytes),
+            SizedBox(height: Responsive.imageSize(10)),
+            LinearPercentBar(totalBytes: totalBytes, usedBytes: usedBytes),
           ],
         ),
       ),
+    );
+  }
+}
+
+class StorageType extends StatelessWidget {
+  final String path, storageName;
+  const StorageType({
+    Key key,
+    @required this.path,
+    @required this.storageName,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(
+            right: 3 * Responsive.widthMultiplier,
+          ),
+          child: Image.asset(
+            path,
+            height: 3.4 * Responsive.textMultiplier,
+          ),
+        ),
+        Text(
+          storageName,
+          style: TextStyle(
+            fontSize: 3.3 * Responsive.textMultiplier,
+            color: Colors.white,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -28,12 +28,20 @@ class _PhotosState extends State<Photos> with SingleTickerProviderStateMixin {
     final tabbar = TabBar(
       indicatorColor: MyColors.teal,
       controller: tabController,
-      tabs: [Tab(child: Text('All Photos')), Tab(child: Text('Folders'))],
+      labelColor: MyColors.teal,
+      unselectedLabelColor: MyColors.white,
+      tabs: [
+        Tab(
+          text: ('All Photos'),
+        ),
+        Tab(
+          text: ('Folders'),
+        )
+      ],
     );
     final Widget widget = Consumer<StoragePathProvider>(
       builder: (BuildContext context, value, child) {
-        final grid =
-            value.allPhotos.isNotEmpty ? MyGridView(photos: value.allPhotos) : FileNotFoundScreen();
+        final grid = value.allPhotos.isNotEmpty ? MyGridView(photos: value.allPhotos) : FileNotFoundScreen();
         return TabBarView(
           controller: tabController,
           physics: BouncingScrollPhysics(),

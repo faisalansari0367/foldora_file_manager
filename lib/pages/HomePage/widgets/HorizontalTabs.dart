@@ -27,21 +27,21 @@ class HorizontalTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     print('horizontal tabs');
     final provider = Provider.of<MyProvider>(context, listen: true);
-    final list = provider.data;
+ 
     final pageView = PageView.builder(
       onPageChanged: (value) => provider.onPageChanged(value),
       // allowImplicitScrolling: true,
-      itemCount: list.length,
+      itemCount: provider.data.length,
       itemBuilder: (context, index) {
         return MediaPage(
-          storage: list[index],
+          storage:  provider.data[index],
           spaceInfoIndex: index,
         );
       },
     );
 
     final children = <Widget>[
-      sizedBox,
+      // sizedBox,
       MediaUtils.tab(child: _PhotosTab(), page: Photos(), context: context),
       sizedBox,
       MediaUtils.tab(
@@ -61,12 +61,13 @@ class HorizontalTabs extends StatelessWidget {
         child: _DriveTab(),
         page: SignInScreen(),
       ),
-      sizedBox,
+      // sizedBox,
     ];
 
     return Container(
       height: 40 * Responsive.heightMultiplier,
       child: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 5 * Responsive.widthMultiplier),
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
         children: children,

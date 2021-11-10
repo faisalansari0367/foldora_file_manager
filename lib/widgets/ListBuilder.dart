@@ -38,15 +38,7 @@ class DirectoryLister extends StatelessWidget {
             scrollController: scrollController,
           );
           return widget;
-          // return AnimationConfiguration.synchronized(
-          //   duration: const Duration(milliseconds: 500),
-          //   child: SlideAnimation(
-          //     verticalOffset: 50.0,
-          //     child: FadeInAnimation(
-          //       child: widget,
-          //     ),
-          //   ),
-          // );
+          
         } else if (snapshot.hasError) {
           return MediaUtils.fileNotFound(message: snapshot.error.toString());
         } else {
@@ -76,21 +68,7 @@ class DirectoryListItem extends StatefulWidget {
 }
 
 class _DirectoryListItemState extends State<DirectoryListItem> {
-  // AnimationController _controller;
-  // Animation<double> animation;
-  // @override
-  // void initState() {
-  //   _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
-  //   animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
-  //   _controller.forward();
-  //   super.initState();
-  // }
-
-  // @override
-  // void dispose() {
-  //   _controller.dispose();
-  //   super.dispose();
-  // }
+ 
 
   @override
   Widget build(BuildContext context) {

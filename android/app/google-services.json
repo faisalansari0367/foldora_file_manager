@@ -1,35 +1,44 @@
 {
   "project_info": {
-    "project_number": "190466640356",
-    "project_id": "foldora-fca19",
-    "storage_bucket": "foldora-fca19.appspot.com"
+    "project_number": "669069529605",
+    "project_id": "foldora-777f6",
+    "storage_bucket": "foldora-777f6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:190466640356:android:776b45b08d02908d14dff1",
+        "mobilesdk_app_id": "1:669069529605:android:b5341b67c5e9ad0788c26c",
         "android_client_info": {
           "package_name": "com.faisal.foldora"
         }
       },
       "oauth_client": [
         {
-          "client_id": "190466640356-jltrheejr4f0vi1jrv3ap61vhch40p3u.apps.googleusercontent.com",
+          "client_id": "669069529605-hg4ooe59u7g09re1ntgni837qq742pp4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.faisal.foldora",
             "certificate_hash": "7ad2a8b3ca1d58f779a4149051377543e69e4be6"
           }
+        },
+        {
+          "client_id": "669069529605-2tr61v2fc8m8ocnmrnvia7qsmsu4be5j.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAHxoNkBcPRcw3XKQOnTSBzEAaqQctWaRA"
+          "current_key": "AIzaSyCEv9RW6uim-q0JD0ZuAzTiZCWU_YgjsOc"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669069529605-2tr61v2fc8m8ocnmrnvia7qsmsu4be5j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

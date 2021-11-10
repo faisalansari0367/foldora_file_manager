@@ -54,7 +54,7 @@ class MyProvider extends ChangeNotifier {
   Future<void> createFileSystemEntity(String path, String name) async {
     final folderPath = p.join(path, name);
     try {
-      notifyListeners();
+      // notifyListeners();
       if (p.extension(folderPath) != '') {
         await File(folderPath).create();
       } else {

@@ -1,53 +1,44 @@
 import 'dart:async';
 
-import 'package:hive/hive.dart';
+import 'package:files/services/hive_implementation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-// abstract class _LocalStorage {}
-
-class HiveKeys {
+class StorageKeys {
+  static const String boxName = 'storage';
   static const String firstSeen = 'firstSeen';
   static const String showHidden = 'showHidden';
   static const String isDarkMode = 'isDarkMode';
   static const String suggestions = 'suggestions';
 }
 
-class StorageService {
-  // static SharedPreferences prefs;
-  static final _completer = Completer<void>();
-  Future<void> get isReady async => await _completer.future;
+class StorageService extends HiveImplementation {
   static Box box;
-  // ignore: prefer_final_fields
-  static bool _isInstantiated = false;
-
-  Box<E> getKey<E>(String key) => Hive.box(key);
+  static var _init = false;
 
   StorageService() {
-    if (!_isInstantiated) {
-      _isInstantiated = true;
-      _init();
-    }
+    if (_init) return;
+    _init = true;
+    initService();
   }
 
-  Future<void> _init() async {
-    print('initialising storage service...');
-    await Hive.initFlutter();
-    box = await Hive.openBox('storage');
-    if (!_completer.isCompleted) _completer.complete();
-    print('storage service initialised');
+  void initService() async {
+    final box = await init(StorageKeys.boxName);
+    StorageService.box = box;
+    await isReady;
   }
 
-  Future<void> setFirstTimeSeen() async => await box.put(HiveKeys.firstSeen, true);
+  Future<void> setFirstTimeSeen() async => await box.put(StorageKeys.firstSeen, true);
 
   List<String> get getSearchSuggestions {
-    final suggestion = box.get(HiveKeys.suggestions, defaultValue: <String>[]);
+    final suggestion = box.get(StorageKeys.suggestions, defaultValue: <String>[]);
     return suggestion;
   }
 
-   Future<void> setSearchSuggestions(List<String> suggestions) async => await box.put(HiveKeys.suggestions, suggestions);
+  Future<void> setSearchSuggestions(List<String> suggestions) async =>
+      await box.put(StorageKeys.suggestions, suggestions);
 
   bool get getFirstTimeSeen {
-    final isSeen = box.get(HiveKeys.firstSeen, defaultValue: false);
+    final isSeen = box.get(StorageKeys.firstSeen, defaultValue: false);
     return isSeen;
   }
 }

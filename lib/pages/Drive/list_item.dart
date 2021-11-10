@@ -1,25 +1,21 @@
-import 'dart:io';
-
-import 'package:files/provider/OperationsProvider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../sizeConfig.dart';
+import '../../sizeConfig.dart';
 
-bool getSelectedItem(List<FileSystemEntity> files, String path) {
-  var isSelected = false;
-  for (var item in files) {
-    if (path == item.path) {
-      isSelected = true;
-      break;
-    } else {
-      isSelected = false;
-    }
-  }
-  return isSelected;
-}
+// bool getSelectedItem(List<FileSystemEntity> files, String path) {
+//   var isSelected = false;
+//   for (var item in files) {
+//     if (path == item.path) {
+//       isSelected = true;
+//       break;
+//     } else {
+//       isSelected = false;
+//     }
+//   }
+//   return isSelected;
+// }
 
-class MediaListItem extends StatefulWidget {
+class DriveListItem extends StatefulWidget {
   final Color selectedColor;
   final String title;
   final Color textColor;
@@ -29,10 +25,10 @@ class MediaListItem extends StatefulWidget {
   final Function onLongPress;
   final Widget leading;
   final int index;
-  final FileSystemEntity data;
+  // final FileSystemEntity data;
   final IconButton trailing;
 
-  const MediaListItem({
+  const DriveListItem({
     Key key,
     this.index,
     this.title,
@@ -41,18 +37,18 @@ class MediaListItem extends StatefulWidget {
     this.ontap,
     this.onLongPress,
     this.leading,
-    this.data,
+    // this.data,
     this.selectedColor,
     this.textColor,
     this.trailing,
   });
 
   @override
-  _MediaListItemState createState() => _MediaListItemState();
+  _DriveListItemState createState() => _DriveListItemState();
 }
 
-class _MediaListItemState extends State<MediaListItem> {
-  static const duration = Duration(milliseconds: 300);
+class _DriveListItemState extends State<DriveListItem> {
+  // static const duration = Duration(milliseconds: 300);
   @override
   Widget build(BuildContext context) {
     final Widget padding = Padding(
@@ -76,18 +72,7 @@ class _MediaListItemState extends State<MediaListItem> {
     return InkWell(
       onTap: widget.ontap,
       onLongPress: widget.onLongPress,
-      child: Consumer<OperationsProvider>(
-        child: padding,
-        builder: (context, provider, child) {
-          final isSelected = getSelectedItem(provider.selectedMedia, widget.data.path);
-          final color = isSelected ? widget.selectedColor : Colors.white;
-          return AnimatedContainer(
-            duration: duration,
-            color: color,
-            child: child,
-          );
-        },
-      ),
+      child: padding,
     );
   }
 }
@@ -120,3 +105,4 @@ class _Item extends StatelessWidget {
     );
   }
 }
+

@@ -1,3 +1,4 @@
+import 'package:files/decoration/my_decoration.dart';
 import 'package:files/pages/MediaPage/sliver_appbar.dart';
 import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/scroll_provider.dart';
@@ -52,14 +53,7 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
   OperationsProvider operations;
   ScrollProvider scrollProvider;
   MyProvider provider;
-  static const decoration = BoxDecoration(
-    gradient: LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [MyColors.darkGrey, Colors.white],
-      stops: [0.4, 0.41],
-    ),
-  );
+  static const decoration = MyDecoration.showMediaStorageBackground;
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(
@@ -100,8 +94,15 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final storage = widget.storage;
     final children = <Widget>[
-      const MediaStorageInfo(),
-      const MediaFiles(),
+      MediaStorageInfo(
+        availableBytes: storage.free,
+        totalBytes: storage.total,
+        usedBytes: storage.used,
+        storageName: 'Media',
+      ),
+      const MediaFiles(
+        filesName: 'Internal Storage',
+      ),
       AnimationConfiguration.synchronized(
         duration: const Duration(milliseconds: 375),
         child: SlideAnimation(
@@ -147,10 +148,7 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                       children: [
                         Text(
                           '${value.length} $file selected',
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1
-                              .copyWith(color: MyColors.appbarActionsColor),
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(color: MyColors.appbarActionsColor),
                         ),
                         SizedBox(height: 5),
                         if (provider.selectedItemSizeBytes != 0)

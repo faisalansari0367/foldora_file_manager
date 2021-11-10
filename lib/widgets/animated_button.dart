@@ -16,7 +16,7 @@ class _AnimatedButtonState extends State<AnimatedButton> with SingleTickerProvid
   AnimationController _controller;
   Animation<double> _scale;
 
-  static const duration = Duration(milliseconds: 300);
+  static const duration = Duration(milliseconds: 500);
 
   @override
   void initState() {
@@ -53,8 +53,8 @@ class _AnimatedButtonState extends State<AnimatedButton> with SingleTickerProvid
         animation: _controller,
         child: widget.child,
         builder: (BuildContext context, Widget child) {
-          return Transform.scale(
-            scale: _scale.value,
+          return ScaleTransition(
+            scale: _scale,
             child: child,
           );
         },

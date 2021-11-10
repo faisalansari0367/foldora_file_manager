@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import '../../sizeConfig.dart';
 
 class MediaFiles extends StatelessWidget {
-  const MediaFiles({Key key}) : super(key: key);
+  final filesName;
+  const MediaFiles({Key key, this.filesName = 'Media Files'}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class MediaFiles extends StatelessWidget {
         children: <Widget>[
           SizedBox(height: 6 * Responsive.heightMultiplier),
           Text(
-            'Media Files',
+            filesName,
             style: TextStyle(
               fontSize: 3.4 * Responsive.textMultiplier,
             ),

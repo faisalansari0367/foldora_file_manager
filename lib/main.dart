@@ -1,14 +1,22 @@
+import 'dart:developer';
+
+import 'package:files/SizeConfigWidget.dart';
+import 'package:files/multi_providers.dart';
 import 'package:files/pages/HomePage/HomePage.dart';
 import 'package:files/provider/LeadingIconProvider.dart';
 import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/provider/StoragePathProvider.dart';
 import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/scroll_provider.dart';
+import 'package:files/services/gdrive/drive_storage.dart';
 import 'package:files/services/storage_service.dart';
 import 'package:files/sizeConfig.dart';
 import 'package:files/utilities/MyColors.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'sizeConfig.dart';
@@ -16,26 +24,24 @@ import 'utilities/Utils.dart';
 import 'widgets/MyAppBar.dart';
 import 'pages/splash/splash_screen.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  FileUtils();
-  SystemChrome.setSystemUIOverlayStyle(AppbarUtils.systemUiOverylay());
-  StorageService();
-  await StorageService().isReady;
-  runApp(MyApp());
+Future<void> init() async {
+  await Future.wait([
+    Firebase.initializeApp(),
+    StorageService().isReady,
+    DriveStorage().isReady,
+  ]);
 }
 
-// This widget is the root of your application.
-
-// void systemOverlay() {
-//   SystemChrome.setEnabledSystemUIMode(
-//       // overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
-//       SystemUiMode.immersive);
-//   SystemChrome.setPreferredOrientations([
-//     DeviceOrientation.portraitUp,
-//     DeviceOrientation.portraitDown,
-//   ]);
-// }
+void main() async {
+  final stopwatch = Stopwatch()..start();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await init();
+  FileUtils();
+  SystemChrome.setSystemUIOverlayStyle(AppbarUtils.systemUiOverylay());
+  log('App initialised in ' + stopwatch.elapsedMilliseconds.toString());
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -57,50 +63,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // var widget = pageView;
-    // setFirstTimeSeen() ?
-    //  FutureBuilder(
-    //   future: setFirstTimeSeen(),
-    //   initialData: false,
-    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-    //     return snapshot.data ? pageView : SplashScreen();
-    //   },
-    // );
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return OrientationBuilder(
-          builder: (context, orientation) {
-            Responsive().init(constraints, orientation);
-            return MultiProvider(
-              providers: [
-                ChangeNotifierProvider<MyProvider>(
-                  create: (context) => MyProvider(),
-                ),
-                ChangeNotifierProvider<StoragePathProvider>(
-                  create: (context) => StoragePathProvider(),
-                ),
-                ChangeNotifierProvider<IconProvider>(
-                  create: (context) => IconProvider(),
-                ),
-                ChangeNotifierProvider<OperationsProvider>(
-                  create: (context) => OperationsProvider(),
-                ),
-                ChangeNotifierProvider<ScrollProvider>(
-                  create: (context) => ScrollProvider(),
-                ),
-              ],
-              child: MaterialApp(
-                theme: MyColors.themeData,
-                // showPerformanceOverlay: true,
-                debugShowCheckedModeBanner: false,
-                title: 'Foldora',
-                home: child,
-              ),
-            );
-          },
-        );
-      },
+    return AddProviders(
+      child: SizeConfig(
+        child: MaterialApp(
+          theme: MyColors.themeData,
+          // showPerformanceOverlay: true,
+          debugShowCheckedModeBanner: false,
+          title: 'Foldora',
+          home: child,
+        ),
+      ),
     );
   }
 }
