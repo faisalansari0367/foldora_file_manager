@@ -7,6 +7,13 @@ I hope we can build something useful for our community by extending the features
 
 Some Screenshots references of the App
 
+<p float="left">
+  <img src="https://github.com/faisalansari0367/FILES_APP_LATEST/blob/master/screenshots/Screenshot_2021-11-24-17-03-50-361_com.faisal.foldora.jpg" width="100" />
+  <img src="https://github.com/faisalansari0367/FILES_APP_LATEST/blob/master/screenshots/Screenshot_2021-11-24-17-03-59-444_com.faisal.foldora.jpg" width="100" /> 
+  <img src="https://github.com/faisalansari0367/FILES_APP_LATEST/blob/master/screenshots/Screenshot_2021-11-24-17-04-10-138_com.faisal.foldora.jpg" width="100" />
+</p>
+
+<!-- 
 ![alt text](https://github.com/faisalansari0367/FILES_APP_LATEST/blob/master/screenshots/Screenshot_2021-11-24-17-03-50-361_com.faisal.foldora.jpg)
 
 
@@ -22,7 +29,7 @@ Some Screenshots references of the App
 
 ![alt text](https://github.com/faisalansari0367/FILES_APP_LATEST/blob/master/screenshots/Screenshot_2021-11-24-17-06-24-579_com.faisal.foldora.jpg)
 
-
+ -->
 
 A few resources to get you started if this is your first Flutter project:
 
