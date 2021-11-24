@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:files/services/gdrive/auth.dart';
 import 'package:files/services/gdrive/base_drive.dart';
@@ -12,6 +13,8 @@ class DriveProvider extends ChangeNotifier {
   AboutStorageQuota driveQuota;
   bool isLoading = false;
   BuildContext context;
+  
+  var driveFiles = <File>[];
 
   DriveProvider() {
     _init();
@@ -35,16 +38,25 @@ class DriveProvider extends ChangeNotifier {
   Future<void> _init() async {
     await getStorageQuota();
     _completer.complete();
+    // getDriveFiles();
   }
 
-  Future<List<File>> getDriveFiles() async {
+  Future<List<File>> getDriveFiles({fileId}) async {
     await isReady;
     try {
-      final data = await MyDrive.driveFiles();
+      print('file id is $fileId');
+      setLoading(true);
+      final data = await MyDrive.driveFiles(fileId: fileId);
+      driveFiles = data;
+      setLoading(false);
+
       return data;
     } catch (e) {
       MySnackBar.show(context, content: e.message);
+      log(e.message);
+      setLoading(false);
       return [];
+
     }
   }
 
