@@ -62,44 +62,7 @@ class _DriveScreenState extends State<DriveScreen> {
                   );
                 },
               ),
-              // const MediaStorageInfo(),
               const MediaFiles(filesName: 'Drive Files'),
-              // FutureBuilder(
-              //   future: driveProvider.getDriveFiles(),
-              //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-              //     if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
-              //     return Container(
-              //       color: Colors.white,
-              //       child: ListView.builder(
-              //         controller: ScrollController(),
-              //         // physics: BouncingScrollPhysics(),
-              //         shrinkWrap: true,
-              //         itemCount: snapshot.data.length,
-              //         itemBuilder: (context, index) {
-              //           final File file = snapshot.data[index];
-              //           return DriveListItem(
-              //             title: file.name,
-              //             leading: Container(
-              //               decoration: BoxDecoration(
-              //                 color: MyColors.darkGrey,
-              //                 borderRadius: BorderRadius.circular(25),
-              //               ),
-              //               child: Container(
-              //                 height: Responsive.imageSize(11),
-              //                 width: Responsive.imageSize(11),
-              //                 child: Icon(
-              //                   Icons.folder_open,
-              //                   size: Responsive.imageSize(5),
-              //                   color: Colors.white,
-              //                 ),
-              //               ),
-              //             ),
-              //           );
-              //         },
-              //       ),
-              //     );
-              //   },
-              // ),
               DriveFutureBuilder(),
             ],
           ),

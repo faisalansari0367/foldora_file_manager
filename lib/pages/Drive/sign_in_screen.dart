@@ -18,8 +18,10 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Auth.initializeFirebase(context: context);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
+      await Auth.initializeFirebase(context: context);
+      
+
     });
   }
 

@@ -8,6 +8,7 @@ import 'package:files/pages/Photos/Photos.dart';
 import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/provider/StoragePathProvider.dart';
+import 'package:files/provider/drive_provider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/Utils.dart';
 import 'package:files/widgets/LeadingIcon.dart';
@@ -27,14 +28,14 @@ class HorizontalTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     print('horizontal tabs');
     final provider = Provider.of<MyProvider>(context, listen: true);
- 
+
     final pageView = PageView.builder(
       onPageChanged: (value) => provider.onPageChanged(value),
       // allowImplicitScrolling: true,
       itemCount: provider.data.length,
       itemBuilder: (context, index) {
         return MediaPage(
-          storage:  provider.data[index],
+          storage: provider.data[index],
           spaceInfoIndex: index,
         );
       },
@@ -67,7 +68,8 @@ class HorizontalTabs extends StatelessWidget {
     return Container(
       height: 40 * Responsive.heightMultiplier,
       child: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 5 * Responsive.widthMultiplier),
+        padding:
+            EdgeInsets.symmetric(horizontal: 5 * Responsive.widthMultiplier),
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
         children: children,
@@ -109,7 +111,8 @@ class VideosPage extends StatelessWidget {
         onPressed: () async {
           final dir = await Directory('/storage/emulated/0/AllVideos').create();
 
-          final provider = Provider.of<OperationsProvider>(context, listen: false);
+          final provider =
+              Provider.of<OperationsProvider>(context, listen: false);
           for (var item in videos) {
             provider.onTapOfLeading(item.file);
           }
@@ -124,24 +127,44 @@ class VideosPage extends StatelessWidget {
   }
 }
 
-class _DriveTab extends StatelessWidget {
+class _DriveTab extends StatefulWidget {
+  @override
+  State<_DriveTab> createState() => _DriveTabState();
+}
+
+class _DriveTabState extends State<_DriveTab> {
+  int items = 0;
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      // final provider = Provider.of<DriveProvider>(context, listen: false);
+      // final list = await provider.getDriveFiles();
+      // items = list.length;
+      setState(() {});
+    });
+
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final provider = Provider.of<StoragePathProvider>(context, listen: true);
-    // final videosLength = provider.videosFiles.length;
+    // final provider = Provider.of<DriveProvider>(context, listen: true);
+    // final items = provider.driveFiles?.length ?? 0;
+    // final usedBytes = provider.driveQuota?.usageInDrive ?? 0;
     final color = Color(0xff00ae45);
     return MediaStack(
       image: 'assets/drive.png',
       color: color.withOpacity(0.2),
       media: 'Drive',
-      items: '',
+      items: '0 Items',
       privacy: 'Private Folder',
       shadow: color.withOpacity(0.1),
       lock: Icon(
         Icons.lock_outline,
         color: color,
       ),
-      size: '',
+      size: FileUtils.formatBytes(0, 2),
       // size: '0.0 GB',
     );
   }

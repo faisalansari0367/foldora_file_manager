@@ -3,7 +3,7 @@ import 'package:http/http.dart';
 
 class MyDrive {
   static DriveApi drive;
-
+  static const mimeTypeFolder = 'application/vnd.google-apps.folder';
   MyDrive(Client client) {
     final drive = DriveApi(client);
     MyDrive.drive = drive;
@@ -15,7 +15,8 @@ class MyDrive {
       if (fileId != null) {
         files = await drive.files.list(
           // driveId: fileId,
-          q: '$fileId in parents',
+          q: "'$fileId' in parents",
+          $fields: "*",
           supportsAllDrives: true,
           includeItemsFromAllDrives: true,
           // corpora: 'drive',
@@ -23,7 +24,10 @@ class MyDrive {
         );
         return files.files;
       }
-      files = await drive.files.list();
+      files = await drive.files.list(
+        q: "mimeType='application/vnd.google-apps.folder'",
+        $fields: '*',
+      );
       return files.files;
     } catch (e) {
       rethrow;
