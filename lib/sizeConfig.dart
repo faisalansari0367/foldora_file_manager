@@ -37,15 +37,34 @@ class Responsive {
     widthMultiplier = _blockSizeHorizontal;
   }
 
-  static double imageSize(double value) {
+  static double imageSize(num value) {
     return value * Responsive.imageSizeMultiplier;
   }
 
-  static double width(double value) {
+  static double width(num value) {
     return value * Responsive.widthMultiplier;
   }
 
-  static double height(double value) {
+  static double height(num value) {
     return value * Responsive.heightMultiplier;
   }
+   static double text(num value) {
+    return value * Responsive.textMultiplier;
+  }
+}
+
+extension ResponsiveDouble on double {
+  double get height => Responsive.height(this);
+  double get width => Responsive.width(this);
+  double get image => Responsive.imageSize(this);
+  double get padding => Responsive.imageSize(this);
+  double get text => Responsive.text(this);
+}
+
+extension ResponsiveInt on int {
+  double get height => Responsive.height(this);
+  double get width => Responsive.width(this);
+  double get image => Responsive.imageSize(this);
+  double get padding => Responsive.imageSize(this);
+  double get text => Responsive.text(this);
 }

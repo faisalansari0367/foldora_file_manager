@@ -23,5 +23,6 @@ class MyColors {
         size: appbarActionsSize,
       ),
     ),
+    colorScheme: ColorScheme.light().copyWith(primary: teal),
   );
 }

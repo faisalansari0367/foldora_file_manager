@@ -1,4 +1,5 @@
 import 'package:files/constants/assets/onboard.dart';
+import 'package:files/pages/Drive/drive_screen.dart';
 import 'package:files/pages/splash/screen.dart';
 // import 'package:files/services/auth/auth.dart';
 import 'package:files/services/gdrive/auth.dart';
@@ -18,10 +19,13 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
-      await Auth.initializeFirebase(context: context);
-      
-
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      // await Auth.initializeFirebase(context: context);
+      await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DriveScreen(),
+          ));
     });
   }
 

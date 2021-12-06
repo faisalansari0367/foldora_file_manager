@@ -67,6 +67,8 @@ class MyProvider extends ChangeNotifier {
     }
   }
 
+
+
   StreamSubscription<FileSystemEvent> streamSubscription;
   Future<List<FileSystemEntity>> dirContents(String path, {isShowHidden = false}) async {
     final args = {'path': path, 'showHidden': isShowHidden};
@@ -164,6 +166,17 @@ class MyProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  // void onTapForDrive(FileSystemEntity dir) {
+  //   if (dir is Directory) {
+  //     data[currentPage].currentPath = dir.path;
+  //     // addPath(dir.path);
+  //     // scrollListener(6.0);
+  //   } else {
+  //     OpenFile.open(dir.path);
+  //   }
+  //   notifyListeners();
+  // }
 
   Future<void> rename(FileSystemEntity item, String name) async {
     final newPath = item.path.replaceAll(p.basename(item.path), name);

@@ -11,9 +11,6 @@ import 'package:provider/provider.dart';
 
 import 'LeadingIcon.dart';
 
-const String message =
-    'This folder is empty. The file you are looking for is not here. Please search in different folder.';
-
 class DirectoryLister extends StatelessWidget {
   final String path;
   final ScrollController scrollController;
@@ -24,7 +21,6 @@ class DirectoryLister extends StatelessWidget {
     final provider = Provider.of<MyProvider>(context, listen: true);
 
     return FutureBuilder(
-      // key: UniqueKey(),
       future: provider.dirContents(path, isShowHidden: provider.showHidden),
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data.isEmpty) {
@@ -38,7 +34,6 @@ class DirectoryLister extends StatelessWidget {
             scrollController: scrollController,
           );
           return widget;
-          
         } else if (snapshot.hasError) {
           return MediaUtils.fileNotFound(message: snapshot.error.toString());
         } else {
@@ -68,8 +63,6 @@ class DirectoryListItem extends StatefulWidget {
 }
 
 class _DirectoryListItemState extends State<DirectoryListItem> {
- 
-
   @override
   Widget build(BuildContext context) {
     print('listBuilder');
@@ -88,13 +81,14 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
             key: UniqueKey(),
             index: index,
             data: data,
-            ontap: () {
-              operations.selectedMedia.isNotEmpty
-                  ? !operations.showCopy
-                      ? provider.ontap(data)
-                      : operations.onTapOfLeading(data)
-                  : provider.ontap(data);
-            },
+            // ontap: () {
+            //   operations.selectedMedia.isNotEmpty
+            //       ? !operations.showCopy
+            //           ? provider.ontap(data)
+            //           : operations.onTapOfLeading(data)
+            //       : provider.ontap(data);
+            // },
+            ontap: () => onTap(data),
             title: p.basename(data.path),
             currentPath: data.path,
             description: MediaUtils.description(data),
@@ -105,5 +99,15 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
         },
       ),
     );
+  }
+
+  void onTap(data) {
+    final provider = Provider.of<MyProvider>(context, listen: false);
+    final operations = Provider.of<OperationsProvider>(context, listen: false);
+    operations.selectedMedia.isNotEmpty
+        ? !operations.showCopy
+            ? provider.ontap(data)
+            : operations.onTapOfLeading(data)
+        : provider.ontap(data);
   }
 }

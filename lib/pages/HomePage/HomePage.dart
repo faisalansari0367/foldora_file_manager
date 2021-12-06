@@ -1,7 +1,7 @@
-import 'package:files/pages/HomePage/widgets/HorizontalTabs.dart';
+import 'package:files/pages/HomePage/widgets/horizontal_tabs/HorizontalTabs.dart';
 import 'package:files/pages/HomePage/widgets/circleChartAndFilePercent.dart';
 import 'package:files/provider/MyProvider.dart';
-import 'package:files/provider/StoragePathProvider.dart';
+import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/widgets/FloatingActionButton.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';

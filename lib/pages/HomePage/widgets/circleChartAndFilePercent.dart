@@ -1,5 +1,5 @@
 import 'package:files/pages/HomePage/widgets/CircleChart.dart';
-import 'package:files/provider/StoragePathProvider.dart';
+import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/provider/MyProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

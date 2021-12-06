@@ -1,5 +1,8 @@
 import 'package:googleapis/drive/v3.dart';
 import 'package:http/http.dart';
+import 'dart:async';
+import 'dart:io' as io;
+import 'package:path/path.dart' as path;
 
 class MyDrive {
   static DriveApi drive;
@@ -16,7 +19,7 @@ class MyDrive {
         files = await drive.files.list(
           // driveId: fileId,
           q: "'$fileId' in parents",
-          $fields: "*",
+          $fields: '*',
           supportsAllDrives: true,
           includeItemsFromAllDrives: true,
           // corpora: 'drive',
@@ -41,5 +44,50 @@ class MyDrive {
     } catch (e) {
       rethrow;
     }
+  }
+
+  static Future<Media> downloadGoogleDriveFile(
+      String fName, String gdID) async {
+    final Media file =
+        await drive.files.get(gdID, downloadOptions: DownloadOptions.fullMedia);
+    //  print(file.stream);
+
+    // final directory = await ExtStorage.getExternalStoragePublicDirectory(
+    //     ExtStorage.DIRECTORY_DOWNLOADS);
+    // print(directory);
+    // final saveFile = io.File('$directory/$fName');
+    // final dataStore = <int>[];
+    // file.
+
+    //  file.stream.listen((data) {
+    //    print("DataReceived: ${data.length}");
+    //    dataStore.insertAll(dataStore.length, data);
+    //  }, onDone: () {
+    //    print("Task Done");
+    //    saveFile.writeAsBytes(dataStore);
+    //    print("File saved at ${saveFile.path}");
+    //  }, onError: (error) {
+    //    print("Some Error");
+    //  });
+    return file;
+  }
+
+  static void uploadFileToGoogleDrive(io.File file) async {
+    var fileToUpload = File();
+    fileToUpload.name = path.basename(file.absolute.path);
+    var response = await drive.files.create(
+      fileToUpload,
+      uploadMedia: Media(file.openRead(), file.lengthSync()),
+    );
+
+    print(response);
+  }
+
+  static Future<File> createDir(io.Directory dir) async {
+    var file = File();
+    file.mimeType = mimeTypeFolder;
+    file.name = path.basename(dir.path);
+    final createdFile = await drive.files.create(file);
+    return createdFile;
   }
 }

@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:files/provider/StoragePathProvider.dart';
+import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/sizeConfig.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';

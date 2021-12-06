@@ -138,7 +138,8 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                 title: Consumer<OperationsProvider>(
                   builder: (context, provider, child) {
                     final value = provider.selectedMedia;
-                    final size = FileUtils.formatBytes(provider.selectedItemSizeBytes, 2);
+                    final size = FileUtils.formatBytes(
+                        provider.selectedItemSizeBytes, 2);
                     // final getData = operations.getFiles(value);
                     if (value.isEmpty) return Container();
                     final file = value.length > 1 ? 'files' : 'file';
@@ -148,16 +149,18 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                       children: [
                         Text(
                           '${value.length} $file selected',
-                          style: Theme.of(context).textTheme.subtitle1.copyWith(color: MyColors.appbarActionsColor),
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              .copyWith(color: MyColors.appbarActionsColor),
                         ),
                         SizedBox(height: 5),
                         if (provider.selectedItemSizeBytes != 0)
                           Text(
                             '$size',
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption
-                                .copyWith(color: MyColors.appbarActionsColor.withOpacity(.6)),
+                            style: Theme.of(context).textTheme.caption.copyWith(
+                                color: MyColors.appbarActionsColor
+                                    .withOpacity(.6)),
                           ),
                       ],
                     );

@@ -44,7 +44,7 @@ class FileUtils {
     } else {
       final size = await data.stat();
 
-      return FileUtils.formatBytes(size.size, 2);
+      return formatBytes(size.size, 2);
     }
   }
 

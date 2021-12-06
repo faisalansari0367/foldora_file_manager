@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:files/provider/StoragePathProvider.dart';
+import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/MyAppBar.dart';
@@ -19,7 +19,8 @@ class ImageFolders extends StatefulWidget {
 class _ImageFoldersState extends State<ImageFolders> {
   @override
   Widget build(BuildContext context) {
-    final images = Provider.of<StoragePathProvider>(context, listen: false).imagesPath;
+    final images =
+        Provider.of<StoragePathProvider>(context, listen: false).imagesPath;
     return GridView.builder(
       padding: const EdgeInsets.all(8),
       itemCount: images.length,
@@ -46,11 +47,13 @@ class FolderImage extends StatelessWidget {
   final File image;
   final String folderName;
   final int index;
-  const FolderImage({@required this.image, @required this.folderName, @required this.index});
+  const FolderImage(
+      {@required this.image, @required this.folderName, @required this.index});
 
   @override
   Widget build(BuildContext context) {
-    final images = Provider.of<StoragePathProvider>(context, listen: false).imagesPath;
+    final images =
+        Provider.of<StoragePathProvider>(context, listen: false).imagesPath;
     final theme = Theme.of(context).textTheme;
     return GestureDetector(
       onTap: () {
@@ -84,7 +87,10 @@ class FolderImage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10),
-          Text(folderName, style: theme.subtitle2.copyWith(color: MyColors.whitish)),
+          Text(
+            folderName,
+            style: theme.subtitle2.copyWith(color: MyColors.whitish),
+          ),
           SizedBox(height: 5),
           Text(
             '${images[index].files.length} Items',

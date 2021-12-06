@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:files/provider/StoragePathProvider.dart';
+import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';

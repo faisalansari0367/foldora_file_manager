@@ -17,7 +17,7 @@ import '../../sizeConfig.dart';
 
 class DriveListItem extends StatefulWidget {
   final Color selectedColor;
-  final String title;
+  final Widget title;
   final Color textColor;
   final Widget description;
   final String currentPath;
@@ -79,24 +79,24 @@ class _DriveListItemState extends State<DriveListItem> {
 
 class _Item extends StatelessWidget {
   final Widget description;
-  final String title;
+  final Widget title;
   final Color titleColor;
   const _Item({this.description, this.title, this.titleColor});
   @override
   Widget build(BuildContext context) {
-    final subtitle1 = Theme.of(context).textTheme.subtitle1;
     return Expanded(
       child: Padding(
         padding: EdgeInsets.only(left: Responsive.width(4.0)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              title,
-              style: subtitle1.copyWith(
-                color: titleColor ?? subtitle1.color,
-              ),
-            ),
+            // Text(
+            //   title,
+            //   style: subtitle1.copyWith(
+            //     color: titleColor ?? subtitle1.color,
+            //   ),
+            // ),
+            title,
             SizedBox(height: Responsive.height(0.5)),
             if (description != null) description,
           ],

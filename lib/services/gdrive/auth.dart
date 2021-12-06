@@ -1,6 +1,4 @@
-import 'package:files/pages/Drive/drive_screen.dart';
 import 'package:files/services/gdrive/base_drive.dart';
-import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/my_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -17,34 +15,76 @@ abstract class AuthImplementation {
 }
 
 class Auth {
-  static Future<void> initializeFirebase({@required BuildContext context}) async {
-    final user = FirebaseAuth.instance.currentUser;
-    FirebaseAuth.instance.authStateChanges().listen((event) async {
-      if (user != null) {
-        final client = DriveStorage().getClient();
-        MyDrive(client);
-        await Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DriveScreen(user: user),
-          ),
-        );
-      } else {
-        await signInWithGoogle(context: context);
-      }
-    });
+  static bool _isInit = false;
+
+  static Future<void> initializeFirebase({BuildContext context}) async {
+    if (_isInit) {
+      return;
+    }
+    _isInit = true;
+    final googleSignIn = GoogleSignIn(scopes: [DriveApi.driveScope]);
+    final isSignedIn = await googleSignIn.isSignedIn();
+    if (isSignedIn) {
+      var result;
+      result = await googleSignIn.signInSilently();
+      result ??= await googleSignIn.signIn();
+      final client = await getClient(result);
+      MyDrive(client);
+      // await Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => DriveScreen(),
+      //   ),
+      // );
+    } else {
+      await signInWithGoogle(googleSignIn);
+    }
+    print(isSignedIn);
+    // googleSignIn.onCurrentUserChanged
+    //     .listen((GoogleSignInAccount googleSignInAccount) async {
+    //   print(googleSignInAccount);
+    //   if (googleSignInAccount != null) {
+    //     final client = await getClient(googleSignInAccount);
+    //     MyDrive(client);
+    //     await Navigator.pushReplacement(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => DriveScreen(),
+    //       ),
+    //     );
+    //   } else {
+    //     await signInWithGoogle(googleSignIn, context: context);
+    //   }
+    //  });
+    // final user = FirebaseAuth.instance.currentUser;
+    // FirebaseAuth.instance.authStateChanges().listen((event) async {
+    //   if (user != null) {
+
+    //     final client = DriveStorage().getClient();
+    //     MyDrive(client);
+    //     await Navigator.pushReplacement(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => DriveScreen(user: user),
+    //       ),
+    //     );
+    //   } else {
+    //     await signInWithGoogle(context: context);
+    //   }
+    // });
   }
 
-  static Future<GoogleHttpClient> getClient(GoogleSignInAccount googleSignInAccount) async {
+  static Future<GoogleHttpClient> getClient(
+      GoogleSignInAccount googleSignInAccount) async {
     final drive = DriveStorage();
     final headers = await googleSignInAccount.authHeaders;
     await drive.saveClient(headers);
     return GoogleHttpClient(headers);
   }
 
-  static Future<GoogleSignInAccount> driveSignIn() async {
+  static Future<GoogleSignInAccount> driveSignIn(
+      GoogleSignIn googleSignIn) async {
     try {
-      final googleSignIn = GoogleSignIn(scopes: [DriveApi.driveScope]);
       final googleSignInAccount = await googleSignIn.signIn();
       return googleSignInAccount;
     } catch (e) {
@@ -52,11 +92,12 @@ class Auth {
     }
   }
 
-  static Future<User> signInWithGoogle({BuildContext context}) async {
+  static Future<User> signInWithGoogle(googleSignin,
+      {BuildContext context}) async {
     User user;
     final auth = FirebaseAuth.instance;
     try {
-      final googleSignInAccount = await driveSignIn();
+      final googleSignInAccount = await driveSignIn(googleSignin);
       assert(googleSignInAccount != null);
       await getClient(googleSignInAccount);
       final authentication = await googleSignInAccount.authentication;
@@ -67,7 +108,7 @@ class Auth {
       final userCredential = await auth.signInWithCredential(credential);
       user = userCredential.user;
     } on FirebaseAuthException catch (e) {
-      MySnackBar.show(context, content: e.toString());
+      if (context != null) MySnackBar.show(context, content: e.toString());
       rethrow;
     } catch (e) {
       rethrow;

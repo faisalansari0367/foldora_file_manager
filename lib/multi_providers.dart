@@ -1,10 +1,11 @@
 import 'package:files/provider/MyProvider.dart';
+import 'package:files/provider/drive_downloader_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'provider/LeadingIconProvider.dart';
 import 'provider/OperationsProvider.dart';
-import 'provider/StoragePathProvider.dart';
+import 'provider/storage_path_provider.dart';
 import 'provider/drive_provider.dart';
 import 'provider/scroll_provider.dart';
 
@@ -33,6 +34,9 @@ class AddProviders extends StatelessWidget {
         ),
         ChangeNotifierProvider<DriveProvider>(
           create: (context) => DriveProvider(),
+        ),
+        ChangeNotifierProvider<DriveDownloader>(
+          create: (context) => DriveDownloader(),
         ),
       ],
       child: child,

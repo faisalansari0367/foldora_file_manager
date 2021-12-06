@@ -26,7 +26,8 @@ class ModalSheet {
         isScrollControlled: true,
         context: context,
         builder: (context) {
-          final operations = Provider.of<OperationsProvider>(context, listen: true);
+          final operations =
+              Provider.of<OperationsProvider>(context, listen: true);
           final myProvider = Provider.of<MyProvider>(context, listen: false);
 
           final child = AnnotatedRegion(
@@ -34,7 +35,7 @@ class ModalSheet {
               systemNavigationBarColor: MyColors.darkGrey,
             ),
             child: DraggableScrollableSheet(
-              maxChildSize: 1.0,
+              maxChildSize: 0.9,
               initialChildSize: 0.7,
               builder: (context, scrollController) {
                 log('rebuilding widget');
@@ -43,7 +44,8 @@ class ModalSheet {
                   color: Colors.transparent,
                   width: double.infinity,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: Responsive.width(3)),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: Responsive.width(3)),
                     decoration: BoxDecoration(
                       color: MyColors.darkGrey,
                       borderRadius: BorderRadius.only(
@@ -100,11 +102,12 @@ class ModalSheet {
                                 ),
                                 title: p.basename(data.path),
                                 currentPath: data.path,
-                                description:
-                                    MediaUtils.description(data, textColor: Colors.grey[600]),
+                                description: MediaUtils.description(data,
+                                    textColor: Colors.grey[600]),
                                 leading: LeadingIcon(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12)),
                                     color: Colors.white10,
                                   ),
                                   data: data,
@@ -132,7 +135,8 @@ class ModalSheet {
                               borderRadius: BorderRadius.circular(32.0),
                               side: BorderSide(color: MyColors.teal),
                             ),
-                            minimumSize: Size(Responsive.width(87), Responsive.height(6)),
+                            minimumSize: Size(
+                                Responsive.width(87), Responsive.height(6)),
                           ),
                           child: Text(
                             'Delete Files',

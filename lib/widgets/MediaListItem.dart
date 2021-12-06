@@ -30,7 +30,7 @@ class MediaListItem extends StatefulWidget {
   final Widget leading;
   final int index;
   final FileSystemEntity data;
-  final IconButton trailing;
+  final Widget trailing;
 
   const MediaListItem({
     Key key,
@@ -79,8 +79,9 @@ class _MediaListItemState extends State<MediaListItem> {
       child: Consumer<OperationsProvider>(
         child: padding,
         builder: (context, provider, child) {
-          final isSelected = getSelectedItem(provider.selectedMedia, widget.data.path);
-          final color = isSelected ? widget.selectedColor : Colors.white;
+          final isSelected =
+              getSelectedItem(provider.selectedMedia, widget.data.path);
+          final color = isSelected ? widget.selectedColor : Colors.transparent;
           return AnimatedContainer(
             duration: duration,
             color: color,

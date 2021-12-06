@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import '../../sizeConfig.dart';
 
 class MediaFiles extends StatelessWidget {
-  final filesName;
-  const MediaFiles({Key key, this.filesName = 'Media Files'}) : super(key: key);
+  final String filesName;
+  final Widget menu;
+
+  const MediaFiles({Key key, this.filesName = 'Media Files', this.menu}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class MediaFiles extends StatelessWidget {
             ),
           ),
           Spacer(),
+          if(menu != null) menu,
         ],
       ),
     );
