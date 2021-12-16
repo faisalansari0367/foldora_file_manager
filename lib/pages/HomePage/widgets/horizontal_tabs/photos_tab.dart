@@ -1,4 +1,3 @@
-import 'package:files/pages/MediaPage/MediaPage.dart';
 import 'package:files/pages/Photos/Photos.dart';
 import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';

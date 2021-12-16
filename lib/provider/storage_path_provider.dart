@@ -7,7 +7,6 @@ import 'package:files/data_models/ImageModel.dart';
 import 'package:files/data_models/VideoModel.dart';
 import 'package:files/utilities/Utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:storage_path/storage_path.dart';

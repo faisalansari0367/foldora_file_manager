@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io' as io;
 
 import 'package:files/pages/Drive/drive_nav_rail_item.dart';
+import 'package:files/services/gdrive/auth.dart';
 import 'package:files/services/gdrive/base_drive.dart';
 import 'package:files/utilities/DataModel.dart';
 import 'package:files/utilities/my_snackbar.dart';
@@ -25,7 +26,12 @@ class DriveProvider extends ChangeNotifier {
   var driveFiles = <File>[];
 
   DriveProvider() {
-    _init();
+    // _init();
+  }
+
+  Future<void> initDrive(context) async {
+    await Auth.initializeFirebase(context: context);
+    await _init();
   }
 
   void setContext(context) {
@@ -106,19 +112,6 @@ class DriveProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // bool navRailContains(DriveNavRailItem navRailItem) {
-  //   var contains = false;
-  //   for (var item in navRail) {
-  //     if (item.id == navRailItem.id) {
-  //       contains = true;
-  //       break;
-  //     } else {
-  //       contains = false;
-  //     }
-  //   }
-  //   return contains;
-  // }
-
   void removeAllAfterFirstAndAdd(DriveNavRailItem item) {
     navRail.removeRange(1, navRail.length);
     navRail.add(item);
@@ -156,7 +149,6 @@ class DriveProvider extends ChangeNotifier {
       final data = await MyDrive.driveFiles(fileId: fileId);
       driveFiles = data;
       setLoading(false);
-
       return data;
     } catch (e) {
       MySnackBar.show(context, content: e.message);
@@ -174,10 +166,7 @@ class DriveProvider extends ChangeNotifier {
       notifyListeners();
     } on DetailedApiRequestError catch (e) {
       MySnackBar.show(context, content: e.message);
-      await renewClient();
-      // MySnackBar.show(context, content: 'Client renewed');
-
-      await getStorageQuota();
     }
+    setLoading(false);
   }
 }

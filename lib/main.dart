@@ -3,14 +3,12 @@ import 'dart:developer';
 import 'package:files/SizeConfigWidget.dart';
 import 'package:files/multi_providers.dart';
 import 'package:files/pages/HomePage/HomePage.dart';
-import 'package:files/services/gdrive/auth.dart';
 import 'package:files/services/gdrive/drive_storage.dart';
 import 'package:files/services/storage_service.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'utilities/Utils.dart';

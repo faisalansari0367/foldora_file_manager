@@ -1,17 +1,16 @@
 import 'package:files/pages/HomePage/widgets/horizontal_tabs/HorizontalTabs.dart';
 import 'package:files/pages/HomePage/widgets/circleChartAndFilePercent.dart';
 import 'package:files/provider/MyProvider.dart';
+import 'package:files/provider/drive_provider.dart';
 import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/widgets/FloatingActionButton.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import '../../sizeConfig.dart';
 
 class HomePage extends StatefulWidget {
-  // double sizing;
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -24,6 +23,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    final dp = Provider.of<DriveProvider>(context, listen: false);
+    dp.initDrive(context);
   }
 
   @override
@@ -76,7 +77,8 @@ class _HomePageState extends State<HomePage> {
         child: RefreshIndicator(
           onRefresh: () => _onRefresh(context),
           child: ListView(
-            physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            physics:
+                BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
             children: AnimationConfiguration.toStaggeredList(
               duration: const Duration(milliseconds: 400),
               childAnimationBuilder: (widget) => SlideAnimation(

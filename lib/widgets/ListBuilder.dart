@@ -66,8 +66,6 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
   @override
   Widget build(BuildContext context) {
     print('listBuilder');
-    final provider = Provider.of<MyProvider>(context, listen: false);
-    final operations = Provider.of<OperationsProvider>(context, listen: false);
     return Container(
       color: MyColors.white,
       child: ListView.builder(

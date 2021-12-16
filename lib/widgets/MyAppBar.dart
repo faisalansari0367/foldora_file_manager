@@ -5,7 +5,6 @@ import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:files/utilities/Utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';

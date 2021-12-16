@@ -1,15 +1,11 @@
-import 'package:files/pages/Drive/bottom_sheet_widget.dart';
 import 'package:files/pages/Drive/my_bottom_sheet.dart';
-import 'package:files/provider/MyProvider.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/my_annotated_region.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DrowdownOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final storage = Provider.of<MyProvider>(context, listen: false);
     return Container(
       height: 45,
       width: 45,

@@ -46,40 +46,20 @@ class MyDrive {
     }
   }
 
-  static Future<Media> downloadGoogleDriveFile(
-      String fName, String gdID) async {
-    final Media file =
-        await drive.files.get(gdID, downloadOptions: DownloadOptions.fullMedia);
-    //  print(file.stream);
+  static Future<Media> downloadGoogleDriveFile(String fName, String gdID) async {
+    final Media file = await drive.files.get(
+      gdID,
+      downloadOptions: DownloadOptions.fullMedia,
+    );
 
-    // final directory = await ExtStorage.getExternalStoragePublicDirectory(
-    //     ExtStorage.DIRECTORY_DOWNLOADS);
-    // print(directory);
-    // final saveFile = io.File('$directory/$fName');
-    // final dataStore = <int>[];
-    // file.
-
-    //  file.stream.listen((data) {
-    //    print("DataReceived: ${data.length}");
-    //    dataStore.insertAll(dataStore.length, data);
-    //  }, onDone: () {
-    //    print("Task Done");
-    //    saveFile.writeAsBytes(dataStore);
-    //    print("File saved at ${saveFile.path}");
-    //  }, onError: (error) {
-    //    print("Some Error");
-    //  });
     return file;
   }
 
   static void uploadFileToGoogleDrive(io.File file) async {
     var fileToUpload = File();
     fileToUpload.name = path.basename(file.absolute.path);
-    var response = await drive.files.create(
-      fileToUpload,
-      uploadMedia: Media(file.openRead(), file.lengthSync()),
-    );
-
+    final media = Media(file.openRead(), file.lengthSync());
+    var response = await drive.files.create(fileToUpload, uploadMedia: media);
     print(response);
   }
 

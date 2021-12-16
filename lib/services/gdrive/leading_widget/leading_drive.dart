@@ -1,3 +1,4 @@
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:files/decoration/my_decoration.dart';
 import 'package:files/provider/drive_downloader_provider.dart';
@@ -18,25 +19,6 @@ class LeadingDrive extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        // Selector<DriveDownloader, double>(
-        //   builder: (context, value, child) {
-        //     return CircularProgressIndicator(
-        //       color: MyColors.teal,
-        //       value: 100,
-        //       strokeWidth: 10,
-        //     );
-        //   },
-        //   selector: (_, value) => value.percent,
-        // ),
-        // Selector(
-        //   builder: (context) {
-        //     return CircularProgressIndicator(
-        //       color: MyColors.teal,
-
-        //       strokeWidth: 10,
-        //     );
-        //   }
-        // ),
         Container(
           height: Responsive.imageSize(10),
           width: Responsive.imageSize(10),
@@ -71,19 +53,22 @@ class LeadingDrive extends StatelessWidget {
               strokeWidth: 2,
             );
           },
-          selector: (_, value) {
-            var map;
-            for (var item in value.queue) {
-              if (item['id'] == id) {
-                map = item;
-                break;
-              }
-            }
-            if (map == null) return 0.0;
-            return map['percent'];
-          },
+          selector: selector,
         ),
       ],
     );
+  }
+
+  double selector(_, value) {
+    var map;
+    for (var item in value.queue) {
+      if (item['id'] == id) {
+        map = item;
+        break;
+      }
+    }
+    if (map == null) return 0.0;
+    final percent = map['percent'] == 0.0 ? null : map['percent'] /100;
+    return percent;
   }
 }

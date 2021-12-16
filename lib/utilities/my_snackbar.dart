@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'MyColors.dart';
 
@@ -12,7 +11,8 @@ class MySnackBar {
         style: TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
       ),
     );
-    final messenger = ScaffoldMessenger.of(context);
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    if (messenger == null) return;
     messenger
       ..removeCurrentSnackBar
       ..showSnackBar(snackBar);

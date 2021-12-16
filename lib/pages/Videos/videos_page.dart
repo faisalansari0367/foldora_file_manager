@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class VideosPage extends StatelessWidget {
+
+  
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<StoragePathProvider>(context);
@@ -36,7 +38,7 @@ class VideosPage extends StatelessWidget {
                     height: 70,
                     width: 100,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(8),
                       child: Image.file(
                         snapshot.data,
                         fit: BoxFit.cover,

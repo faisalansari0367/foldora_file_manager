@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:files/utilities/CopyUtils.dart';
 import 'package:files/utilities/operations_isolate.dart';
 import 'package:files/utilities/storage_space.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import '../utilities/OperationsUtils.dart';

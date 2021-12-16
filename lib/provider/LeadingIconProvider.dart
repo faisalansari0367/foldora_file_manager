@@ -4,8 +4,6 @@ import 'package:device_apps/app_utils.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:files/utilities/SqfLite.dart';
 import 'package:files/utilities/Utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart' as p;

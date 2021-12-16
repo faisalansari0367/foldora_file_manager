@@ -30,48 +30,9 @@ class Auth {
       result ??= await googleSignIn.signIn();
       final client = await getClient(result);
       MyDrive(client);
-      // await Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => DriveScreen(),
-      //   ),
-      // );
     } else {
       await signInWithGoogle(googleSignIn);
     }
-    print(isSignedIn);
-    // googleSignIn.onCurrentUserChanged
-    //     .listen((GoogleSignInAccount googleSignInAccount) async {
-    //   print(googleSignInAccount);
-    //   if (googleSignInAccount != null) {
-    //     final client = await getClient(googleSignInAccount);
-    //     MyDrive(client);
-    //     await Navigator.pushReplacement(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) => DriveScreen(),
-    //       ),
-    //     );
-    //   } else {
-    //     await signInWithGoogle(googleSignIn, context: context);
-    //   }
-    //  });
-    // final user = FirebaseAuth.instance.currentUser;
-    // FirebaseAuth.instance.authStateChanges().listen((event) async {
-    //   if (user != null) {
-
-    //     final client = DriveStorage().getClient();
-    //     MyDrive(client);
-    //     await Navigator.pushReplacement(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) => DriveScreen(user: user),
-    //       ),
-    //     );
-    //   } else {
-    //     await signInWithGoogle(context: context);
-    //   }
-    // });
   }
 
   static Future<GoogleHttpClient> getClient(

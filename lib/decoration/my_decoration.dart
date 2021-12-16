@@ -1,6 +1,8 @@
 import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
 
+import '../sizeConfig.dart';
+
 class MyDecoration {
   static const Radius circularRadius = Radius.circular(25);
   static const BorderRadius borderRadius = BorderRadius.all(circularRadius);
@@ -24,11 +26,24 @@ class MyDecoration {
   );
 
   static const inputBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(50)),
+    borderRadius: borderRadius,
     borderSide: BorderSide(color: Colors.transparent),
   );
 
+  static const roundedBorderShape = RoundedRectangleBorder(
+    borderRadius: borderRadius,
+    side: BorderSide(color: MyColors.teal),
+  );
+
   static const duration = Duration(milliseconds: 375);
+
+  static final elevatedButtonStyle = ElevatedButton.styleFrom(
+    elevation: 4,
+    primary: MyColors.teal,
+    shadowColor: MyColors.teal,
+    shape: roundedBorderShape,
+    minimumSize: Size(Responsive.width(87), Responsive.height(5)),
+  );
 
   static BoxDecoration decoration({Color color = Colors.white}) {
     return BoxDecoration(

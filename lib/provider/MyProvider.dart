@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:files/utilities/DataModel.dart';
 import 'package:files/utilities/Utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as p;

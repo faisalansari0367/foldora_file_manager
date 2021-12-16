@@ -1,6 +1,5 @@
 import 'package:files/pages/Drive/drive_screen.dart';
 import 'package:files/provider/drive_provider.dart';
-import 'package:files/services/gdrive/auth.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/Utils.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +19,10 @@ class _DriveTabState extends State<DriveTab> {
   void initState() {
     if (items != 0) return;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Auth.initializeFirebase(context: context);
+      // await Auth.initializeFirebase(context: context);
       final provider = Provider.of<DriveProvider>(context, listen: false);
-      final list = await provider.getDriveFiles();
       await provider.isReady;
+      final list = await provider.getDriveFiles();
       usedBytes = provider.driveQuota?.usageInDrive ?? '0';
       items = list.length;
       if (!mounted) return;
