@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:googleapis/drive/v3.dart';
 import 'package:http/http.dart';
 import 'dart:async';
@@ -9,10 +11,13 @@ class MyDrive {
   static const mimeTypeFolder = 'application/vnd.google-apps.folder';
   MyDrive(Client client) {
     final drive = DriveApi(client);
+    print('drive instantiated ' + client.toString());
     MyDrive.drive = drive;
   }
 
   static Future<List<File>> driveFiles({fileId, showAllFiles = false}) async {
+    log('getting drive files...');
+
     var files;
     final q = showAllFiles ? null : "'$fileId' in parents";
     try {
@@ -29,20 +34,25 @@ class MyDrive {
         return files.files;
       }
       files = await drive.files.list(
-        q: showAllFiles ? null:  "mimeType='application/vnd.google-apps.folder'",
+        q: showAllFiles ? null : "mimeType='application/vnd.google-apps.folder'",
         $fields: '*',
       );
       return files.files;
     } catch (e) {
+      log('getting drive files error: $e');
+
       rethrow;
     }
   }
 
   static Future<About> getDriveStorageQuota() async {
+    log('getting storage quota...');
+
     try {
       final about = await drive.about.get($fields: '*');
       return about;
     } catch (e) {
+      log('error during getting storage quota: $e');
       rethrow;
     }
   }

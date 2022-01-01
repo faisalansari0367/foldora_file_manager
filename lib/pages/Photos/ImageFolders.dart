@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:files/decoration/my_decoration.dart';
 import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/sizeConfig.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
@@ -23,6 +24,7 @@ class _ImageFoldersState extends State<ImageFolders> {
   Widget build(BuildContext context) {
     final images = Provider.of<StoragePathProvider>(context, listen: false).imagesPath;
     return GridView.builder(
+      physics: MyDecoration.physics,
       padding: const EdgeInsets.all(8),
       itemCount: images.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

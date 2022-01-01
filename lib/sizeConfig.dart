@@ -24,6 +24,9 @@ class Responsive {
     } else {
       _screenWidth = constraints.maxHeight;
       _screenHeight = constraints.maxWidth;
+
+      // _screenWidth = constraints.maxWidth;
+      // _screenHeight = constraints.maxHeight;
       isPortrait = false;
       isMobilePortrait = false;
     }
@@ -37,20 +40,10 @@ class Responsive {
     widthMultiplier = _blockSizeHorizontal;
   }
 
-  static double imageSize(num value) {
-    return value * Responsive.imageSizeMultiplier;
-  }
-
-  static double width(num value) {
-    return value * Responsive.widthMultiplier;
-  }
-
-  static double height(num value) {
-    return value * Responsive.heightMultiplier;
-  }
-   static double text(num value) {
-    return value * Responsive.textMultiplier;
-  }
+  static double imageSize(num value) => value * Responsive.imageSizeMultiplier;
+  static double width(num value) => value * Responsive.widthMultiplier;
+  static double height(num value) => value * Responsive.heightMultiplier;
+  static double text(num value) => value * Responsive.textMultiplier;
 }
 
 extension ResponsiveDouble on double {

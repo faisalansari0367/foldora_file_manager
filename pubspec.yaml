@@ -55,6 +55,8 @@ dependencies:
   # shimmer_animation: ^2.1.0+1
   shimmer: ^2.0.0
   tuple: ^2.0.0
+  wallpaper_manager_flutter: ^0.0.2
+  # wallpaper_manager: ^1.0.10
   # intl: ^0.16.1
 
 dependency_overrides:

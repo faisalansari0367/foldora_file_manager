@@ -2,12 +2,17 @@
 
 import 'dart:io';
 
+import 'package:files/decoration/my_decoration.dart';
+import 'package:files/helpers/date_format_helper.dart';
+import 'package:files/pages/Drive/my_bottom_sheet.dart';
+import 'package:files/pages/Photos/options_row.dart';
 import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/sizeConfig.dart';
-import 'package:files/widgets/MyAppBar.dart';
+import 'package:files/utilities/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as p;
 
 class FullScreenImage extends StatefulWidget {
   final int index;
@@ -38,8 +43,6 @@ class _FullScreenImageState extends State<FullScreenImage> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<StoragePathProvider>(context, listen: false);
-    // bool fullScreen = true;
-    // int index = 0;
     return WillPopScope(
       onWillPop: () async {
         await SystemChrome.setEnabledSystemUIMode(
@@ -51,76 +54,114 @@ class _FullScreenImageState extends State<FullScreenImage> {
       },
       child: AnnotatedRegion(
         value: SystemChrome.setEnabledSystemUIMode(
-          SystemUiMode.edgeToEdge,
-          // overlays: [],
+          SystemUiMode.immersive,
+          overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
         ),
-        child: AnnotatedRegion(
-          value: AppbarUtils.systemUiOverylay(),
-          child: Scaffold(
-            backgroundColor: Colors.black,
-            body: Stack(
-              children: [
-                PageView.builder(
-                  padEnds: true,
-                  physics: BouncingScrollPhysics(),
-                  controller: controller,
-                  itemCount: provider.allPhotos.length,
-                  onPageChanged: (int index) {
-                    controller.animateToPage(
-                      index,
-                      duration: duration,
-                      curve: curve,
-                    );
-                  },
-                  itemBuilder: (context, index) {
-                    final image = widget.files[index];
-                    print('index is $index');
-                    final interactive = InteractiveViewer(
-                      minScale: 1.0,
-                      maxScale: 100.0,
-                      child: Image.file(
-                        image,
-                        fit: BoxFit.contain,
-                        cacheWidth: 384,
-                      ),
-                    );
-
-                    return interactive;
-                  },
-                ),
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    width: Responsive.width(100),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.black26, Colors.transparent],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                      ),
+        child: Scaffold(
+          backgroundColor: Colors.black,
+          body: Stack(
+            children: [
+              PageView.builder(
+                padEnds: true,
+                physics: BouncingScrollPhysics(),
+                controller: controller,
+                itemCount: provider.allPhotos.length,
+                onPageChanged: (int index) {
+                  controller.animateToPage(
+                    index,
+                    duration: duration,
+                    curve: curve,
+                  );
+                },
+                itemBuilder: (context, index) {
+                  final image = widget.files[index];
+                  return InteractiveViewer(
+                    minScale: 1.0,
+                    maxScale: 100.0,
+                    child: Image.file(
+                      image,
+                      fit: BoxFit.contain,
+                      // cacheWidth: 384,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        button(Icons.delete_outline_rounded, onPressed: () {
-                          deletePhoto(controller, widget.files);
-                          // ignore: invalid_use_of_protected_member
-                          provider.notifyListeners();
-                        }),
-                        button(Icons.share_rounded),
-                        button(Icons.info_outline_rounded),
-                      ],
+                  );
+                },
+              ),
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(2.padding),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.black26, Colors.transparent],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
                     ),
                   ),
-                )
-              ],
-            ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      button(Icons.delete_outline_rounded, onPressed: () {
+                        deletePhoto(controller, widget.files);
+                        // ignore: invalid_use_of_protected_member
+                        provider.notifyListeners();
+                      }),
+                      button(Icons.share_rounded),
+                      button(Icons.info_outline_rounded,
+                          onPressed: () => showInfo(context, widget.files[controller.page.toInt()])),
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),
     );
   }
+}
+
+void showInfo(BuildContext context, File file) {
+  final name = p.basenameWithoutExtension(file.path);
+  final stat = file.statSync();
+  final themeData = ThemeData.dark();
+  MyBottomSheet.bottomSheet(
+    context,
+    child: Theme(
+      data: themeData,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          MyDecoration.bottomSheetTopIndicator(
+            heightFactor: 1.height,
+            color: Colors.grey,
+          ),
+          SizedBox(height: 1.height),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5.padding),
+            child: OptionsRow(file: file),
+          ),
+          SizedBox(height: 1.height),
+          Divider(),
+          ListTile(
+            leading: Icon(
+              Icons.image,
+              size: 10.image,
+            ),
+            title: Text(name),
+            subtitle: Text(FileUtils.formatBytes(file.statSync().size, 2)),
+          ),
+          SizedBox(height: 1.height),
+          ListTile(
+            title: Text(DateFormatter.formatDateInDMY(stat.modified)),
+          ),
+          SizedBox(height: 2.height),
+        ],
+      ),
+    ),
+  );
 }
 
 void deletePhoto(PageController controller, List<File> files) {
