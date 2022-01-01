@@ -4,18 +4,14 @@ import 'dart:io';
 
 import 'package:files/data_models/AudioModel.dart';
 import 'package:files/data_models/ImageModel.dart';
-import 'package:files/data_models/VideoModel.dart';
 import 'package:files/utilities/Utils.dart';
 import 'package:flutter/material.dart';
-import 'package:mime_type/mime_type.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:storage_path/storage_path.dart';
-import 'package:path/path.dart' as p;
 
 class StoragePathProvider extends ChangeNotifier {
   int _documentsSize = 0;
   int _audiosSize = 0;
-  int _videosSize = 0;
+  // int _videosSize = 0;
   int _photosSize = 0;
   int photosIndex = 0;
   int pageViewCurrentIndex = 0;
@@ -23,15 +19,15 @@ class StoragePathProvider extends ChangeNotifier {
 
   int get documentsSize => _documentsSize;
   int get audiosSize => _audiosSize;
-  int get videosSize => _videosSize;
+  // int get videosSize => _videosSize;
   int get photosSize => _photosSize;
-  int get mediaSize => _audiosSize + _videosSize ?? 0;
+  // int get mediaSize => _audiosSize + 0;
 
-  List<VideoModel> _videosPath = [];
-  List<VideoModel> get videosPath => _videosPath;
+  // List<VideoModel> _videosPath = [];
+  // List<VideoModel> get videosPath => _videosPath;
 
-  List<Video> _videos = [];
-  List<Video> get videosFiles => _videos;
+  // List<Video> _videos = [];
+  // List<Video> get videosFiles => _videos;
   List<int> selectedPhotos = [];
   List _audiosPath = [];
   List _documentsPath = [];
@@ -46,23 +42,23 @@ class StoragePathProvider extends ChangeNotifier {
 
   StoragePathProvider() {
     init();
-    watching();
+    // watching();
     // _imagesObserver();
   }
 
-  void watching() {
-    log('we are watching for any changes');
-    final dir = Directory('/storage/emulated/0');
-    dir.watch(recursive: true).listen((event) {
-      log('event received $event');
-      if (!event.isDirectory) {
-        final fileName = p.basename(event.path);
-        final mimeType = mime(fileName);
-        final type = mimeType.split('/').first == 'image';
-        if (type) photos();
-      }
-    });
-  }
+  // void watching() {
+  //   log('we are watching for any changes');
+  //   final dir = Directory('/storage/emulated/0');
+  //   dir.watch(recursive: true).listen((event) {
+  //     log('event received $event');
+  //     if (!event.isDirectory) {
+  //       final fileName = p.basename(event.path);
+  //       final mimeType = mime(fileName);
+  //       final type = mimeType.split('/')?.first == 'image';
+  //       if (type) photos();
+  //     }
+  //   });
+  // }
   // void _imagesObserver() {
   //   StorageDetails.watchImages.listen((event) {
   //     print(event);
@@ -168,18 +164,18 @@ class StoragePathProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> videos() async {
-    await Permission.storage.status;
-    final videosPath = await StoragePath.videoPath;
-    final videos = await FileUtils.worker.doWork(FileUtils.storagePathVideos, videosPath);
-    // await FileUtils.storagePathVideos(videosPath);
-    _videosPath = videos['videoModel'];
+  // Future<void> videos() async {
+  //   await Permission.storage.status;
+  //   final videosPath = await StoragePath.videoPath;
+  //   final videos = await FileUtils.worker.doWork(FileUtils.storagePathVideos, videosPath);
+  //   // await FileUtils.storagePathVideos(videosPath);
+  //   _videosPath = videos['videoModel'];
 
-    _videosSize = videos['size'];
-    _videos = videos['videos'];
-    print('_videosPath length :${_videosPath.length}');
-    notifyListeners();
-  }
+  //   _videosSize = videos['size'];
+  //   _videos = videos['videos'];
+  //   print('_videosPath length :${_videosPath.length}');
+  //   notifyListeners();
+  // }
 
   Future<void> audios() async {
     final audiosPath = await StoragePath.audioPath;
@@ -194,7 +190,7 @@ class StoragePathProvider extends ChangeNotifier {
 
   Future<void> init() async {
     final timer = Stopwatch()..start();
-    await Future.wait([photos(), videos(), audios(), documents()]);
+    await Future.wait([photos(), audios(), documents()]);
     log('future completes in ${timer.elapsed.inMilliseconds} ms');
     timer.stop();
   }

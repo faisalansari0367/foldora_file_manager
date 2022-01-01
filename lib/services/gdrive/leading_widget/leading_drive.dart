@@ -1,7 +1,6 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:files/decoration/my_decoration.dart';
-import 'package:files/provider/drive_downloader_provider.dart';
+import 'package:files/provider/drive_provider/drive_downloader_provider.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,9 +9,7 @@ import '../../../sizeConfig.dart';
 
 class LeadingDrive extends StatelessWidget {
   final String extension, iconLink, id;
-  const LeadingDrive(
-      {Key key, @required this.extension, this.iconLink, this.id})
-      : super(key: key);
+  const LeadingDrive({Key key, @required this.extension, this.iconLink, this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +65,7 @@ class LeadingDrive extends StatelessWidget {
       }
     }
     if (map == null) return 0.0;
-    final percent = map['percent'] == 0.0 ? null : map['percent'] /100;
+    final percent = map['percent'] == 0.0 ? null : map['percent'] / 100;
     return percent;
   }
 }

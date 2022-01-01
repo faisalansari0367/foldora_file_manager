@@ -15,14 +15,6 @@ class ListViewSwitcher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final loader = SizedBox(
-    //   height: 20.height,
-    //   child: Center(
-    //     child: CircularProgressIndicator(
-    //       color: MyColors.teal,
-    //     ),
-    //   ),
-    // );
     return AnimatedSwitcher(
       duration: MyDecoration.duration,
       layoutBuilder: (widget, children) {

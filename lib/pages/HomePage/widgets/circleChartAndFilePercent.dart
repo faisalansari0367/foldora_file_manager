@@ -1,6 +1,8 @@
+import 'package:files/helpers/provider_helpers.dart';
 import 'package:files/pages/HomePage/widgets/CircleChart.dart';
 import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/provider/MyProvider.dart';
+import 'package:files/provider/videos_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../sizeConfig.dart';
@@ -8,8 +10,7 @@ import 'FilePercent.dart';
 
 class CircleChartAndFilePercent extends StatefulWidget {
   @override
-  _CircleChartAndFilePercentState createState() =>
-      _CircleChartAndFilePercentState();
+  _CircleChartAndFilePercentState createState() => _CircleChartAndFilePercentState();
 }
 
 class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
@@ -49,10 +50,11 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
                 },
               ),
               Selector<StoragePathProvider, int>(
-                selector: (context, value) => value.mediaSize,
+                selector: (context, value) => value.audiosSize,
                 // shouldRebuild: (a, b) => a != b,
                 builder: (_, value, __) {
-                  final complete = storage.calculatePercent(value, 3);
+                  final videosSize = getProvider<VideosProvider>(context).videosSize;
+                  final complete = storage.calculatePercent(value + videosSize, 3);
                   _mediaPercent = double.parse(complete);
                   print('mediaSize: $_mediaPercent');
                   // print(_mediaPercent);
@@ -99,7 +101,7 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
                   },
                 ),
                 Selector<StoragePathProvider, int>(
-                  selector: (context, value) => value.mediaSize,
+                  selector: (context, value) => value.audiosSize,
                   builder: (_, value, __) {
                     return FilePercent(
                       name: 'Media',

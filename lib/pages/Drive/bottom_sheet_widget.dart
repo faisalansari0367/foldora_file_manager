@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:files/decoration/my_decoration.dart';
 import 'package:files/pages/Drive/drive_files_selector.dart';
 import 'package:files/provider/MyProvider.dart';
-import 'package:files/provider/drive_provider.dart';
+import 'package:files/provider/drive_provider/drive_provider.dart';
 import 'package:files/services/gdrive/base_drive.dart';
 import 'package:files/sizeConfig.dart';
 import 'package:files/utilities/MyColors.dart';
@@ -29,7 +29,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
       systemNavigationBarColor: MyColors.darkGrey,
       child: DraggableScrollableSheet(
         expand: false,
-        initialChildSize: 0.7,
+        initialChildSize: 0.90,
         maxChildSize: 0.9,
         builder: (context, scrollController) {
           return Column(
@@ -78,8 +78,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                   builder: (context, value, chlid) {
                     return FutureBuilder(
                       future: myProvider.dirContents(value.currentPath),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<FileSystemEntity>> snapshot) {
+                      builder: (BuildContext context, AsyncSnapshot<List<FileSystemEntity>> snapshot) {
                         return DriveFilesSelector(
                           controller: scrollController,
                           data: snapshot.data ?? [],

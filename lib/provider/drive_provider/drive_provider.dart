@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:storage_details/storage_details.dart';
 
+
 class DriveProvider extends ChangeNotifier {
   final _completer = Completer<void>();
   Future<void> get isReady async => await _completer.future;
@@ -22,6 +23,15 @@ class DriveProvider extends ChangeNotifier {
   List<Data> storageDetails;
   int selectedIndex = 0;
   String currentPath = '/storage/emulated/0';
+  bool showAllFiles = false;
+
+  void setShowAllFiles(bool value) {
+    showAllFiles = value;
+    notifyListeners();
+    if (selectedIndex == 0) {
+      getDriveFiles();
+    }
+  }
 
   var driveFiles = <File>[];
 
@@ -49,11 +59,23 @@ class DriveProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void onTapNavItem(DriveNavRailItem navItem) {
+    final index = navRail.indexOf(navItem);
+    setSelectedIndex(index);
+    getDriveFiles(fileId: navItem.id);
+  }
+
   Future<void> diskSpace() async {
     final spaceInfo = await StorageDetails.getspace;
     storageDetails = Data.storageToData(spaceInfo);
 
     notifyListeners();
+  }
+
+  Future<bool> onWillPop() {
+    if (selectedIndex == 0) return Future.value(true);
+    setSelectedIndex(selectedIndex - 1);
+    return Future.value(false);
   }
 
   void onTap(io.FileSystemEntity entity) {
@@ -70,6 +92,8 @@ class DriveProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // isFileAlreadyDownloaded(String fileName) {}
+
   bool isExist(List<io.FileSystemEntity> list, io.FileSystemEntity file) {
     var match = false;
     for (var item in list) {
@@ -84,7 +108,6 @@ class DriveProvider extends ChangeNotifier {
   void addToSelectedFiles(io.FileSystemEntity entity) {
     final isContainsFile = isExist(filesToUpload, entity);
     if (isContainsFile) {
-      // final index = filesToUpload.indexOf(entity);
       filesToUpload.removeWhere((element) => element.path == entity.path);
     } else {
       filesToUpload.add(entity);
@@ -93,18 +116,12 @@ class DriveProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> renewClient() async {
-    // final googleSignInAccount = await Auth.initializeFirebase();
-    // final client = await Auth.getClient(googleSignInAccount);
-    // MyDrive(client);
-  }
-
   Future<void> _init() async {
-    await getStorageQuota();
-
-    _completer.complete();
-    await diskSpace();
-    // getDriveFiles();
+    if (!_completer.isCompleted) {
+      await getStorageQuota();
+      _completer.complete();
+      await diskSpace();
+    }
   }
 
   void setSelectedIndex(int index) {
@@ -146,7 +163,7 @@ class DriveProvider extends ChangeNotifier {
     try {
       print('file id is $fileId');
       setLoading(true);
-      final data = await MyDrive.driveFiles(fileId: fileId);
+      final data = await MyDrive.driveFiles(fileId: fileId, showAllFiles: showAllFiles);
       driveFiles = data;
       setLoading(false);
       return data;

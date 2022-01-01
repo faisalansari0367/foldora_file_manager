@@ -139,34 +139,32 @@ class FileUtils {
     final decodeJson = jsonDecode(json);
     var _size = 0;
     final storePhotos = <ImageModel>[];
-    for (final item in decodeJson) {
-      final model = ImageModel.fromJson(item);
-      storePhotos.add(model);
+    for (final  item in decodeJson) {
+      var folderSize = 0;
+      // final model = ImageModel.fromJson(item);
       for (final i in item['files']) {
         final file = File(i);
         // storePhotos.add(file);
         final fileStat = await file.stat();
-        _size += fileStat.size;
+        folderSize += fileStat.size;
       }
+      item.addAll({'folderSize': folderSize});
+      final model = ImageModel.fromJson(item);
+      _size += folderSize;
+      storePhotos.add(model);
     }
     return {'data': storePhotos, 'size': _size};
   }
 
   static List<FileSystemEntity> sortListAlphabetically(List<FileSystemEntity> list) {
-    final sort =
-        (a, b) => p.basename(a.path).toLowerCase().compareTo(p.basename(b.path).toLowerCase());
+    final sort = (a, b) => p.basename(a.path).toLowerCase().compareTo(p.basename(b.path).toLowerCase());
     list.sort(sort);
     return list;
   }
 
   ///This function returns all the apk files stored on the device.
   static Future<List<String>> getAllLocalApps() async {
-    final args = {
-      'path': '/storage/emulated/0',
-      'query': '.apk',
-      'wantOnlyPath': true,
-      'withExt': true
-    };
+    final args = {'path': '/storage/emulated/0', 'query': '.apk', 'wantOnlyPath': true, 'withExt': true};
     final apksPaths = await worker.doWork(SearchUtils.doSearching, args);
     return apksPaths;
   }

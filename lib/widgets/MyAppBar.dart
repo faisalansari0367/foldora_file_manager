@@ -158,8 +158,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final IconData iconData;
   final bool menu;
   final bool bottomNavBar;
-  final Widget bottom;
+  final Widget bottom, title;
   final Brightness brightness;
+  final List<Widget> actions;
   // final StorageType storageType;
   const MyAppBar({
     this.backgroundColor,
@@ -168,11 +169,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottomNavBar = false,
     this.bottom,
     this.brightness = Brightness.light,
+    this.actions,
+    this.title,
   });
 
   @override
-  Size get preferredSize =>
-      Size.fromHeight((bottomNavBar ? 12.36 : 6.36) * Responsive.heightMultiplier);
+  Size get preferredSize => Size.fromHeight((bottomNavBar ? 12.36 : 6.36) * Responsive.heightMultiplier);
 
   @override
   Widget build(BuildContext context) {
@@ -182,8 +184,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: color,
       leading: AppbarUtils.backIcon(context),
       elevation: 0.0,
-      actions: [AppbarUtils.searchIcon(context), MyDropDown()],
+      actions: actions ?? [AppbarUtils.searchIcon(context), MyDropDown()],
       bottom: bottom,
+      title: title,
       // bottom: bottomNavBar ? MyBottomAppBar() : null,
     );
   }

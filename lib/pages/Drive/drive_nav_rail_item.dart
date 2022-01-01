@@ -5,13 +5,15 @@ class DriveNavRailItem {
 
   @override
   bool operator ==(Object other) {
-    if (other is DriveNavRailItem &&
-        runtimeType == other.runtimeType &&
-        name == other.name &&
-        id == other.id) {
+    if (other is DriveNavRailItem && runtimeType == other.runtimeType && name == other.name && id == other.id) {
       return true;
     } else {
       return false;
     }
+  }
+
+  @override
+  String toString() {
+    return 'DriveNavRailItem(id: $id, name: $name)';
   }
 }

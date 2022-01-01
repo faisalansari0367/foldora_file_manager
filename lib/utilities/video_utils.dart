@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -19,6 +20,7 @@ class VideoUtil {
     final apkIconDir = Directory(thumbnailDir);
     if (!apkIconDir.existsSync()) await apkIconDir.create();
     final map = isVideoThumbnailExist(path);
+    
     try {
       if (!map['isFileExist']) {
         final filePath = await VideoThumbnail.thumbnailFile(
@@ -33,7 +35,7 @@ class VideoUtil {
       }
       return map['thumb'];
     } catch (e) {
-      rethrow;
+      log(e.toString());
     }
   }
 }

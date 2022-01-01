@@ -12,13 +12,14 @@ class MyDrive {
     MyDrive.drive = drive;
   }
 
-  static Future<List<File>> driveFiles({fileId}) async {
+  static Future<List<File>> driveFiles({fileId, showAllFiles = false}) async {
     var files;
+    final q = showAllFiles ? null : "'$fileId' in parents";
     try {
       if (fileId != null) {
         files = await drive.files.list(
           // driveId: fileId,
-          q: "'$fileId' in parents",
+          q: q,
           $fields: '*',
           supportsAllDrives: true,
           includeItemsFromAllDrives: true,
@@ -28,7 +29,7 @@ class MyDrive {
         return files.files;
       }
       files = await drive.files.list(
-        q: "mimeType='application/vnd.google-apps.folder'",
+        q: showAllFiles ? null:  "mimeType='application/vnd.google-apps.folder'",
         $fields: '*',
       );
       return files.files;

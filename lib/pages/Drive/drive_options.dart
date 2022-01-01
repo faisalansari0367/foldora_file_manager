@@ -1,49 +1,26 @@
-import 'package:files/pages/Drive/my_bottom_sheet.dart';
-import 'package:files/utilities/MyColors.dart';
-import 'package:files/widgets/my_annotated_region.dart';
+import 'package:files/provider/drive_provider/drive_provider.dart';
+import 'package:files/widgets/menu_options/option_item.dart';
+import 'package:files/widgets/menu_options/options_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class DrowdownOptions extends StatelessWidget {
+class DriveMenuOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 45,
-      width: 45,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: IconButton(
-        splashRadius: 25,
-        icon: Icon(Icons.more_vert),
-        color: Colors.grey[500],
-        onPressed: () => MyBottomSheet.bottomSheet(
-          context,
-          child: MyAnnotatedRegion(
-            systemNavigationBarColor: MyColors.darkGrey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  onTap: () {},
-                  leading: Checkbox(value: false, onChanged: (value) {}),
-                  title: Text(
-                    'Show All files',
-                    style: TextStyle(color: Colors.grey[300]),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: Checkbox(value: false, onChanged: (value) {}),
-                  title: Text(
-                    'Only show folders',
-                    style: TextStyle(color: Colors.grey[300]),
-                  ),
-                ),
-              ],
-            ),
-          ),
+    final provider = Provider.of<DriveProvider>(context, listen: false);
+    return DropdownOptions(
+      children: [
+        Selector<DriveProvider, bool>(
+          selector: (p0, p1) => p1.showAllFiles,
+          builder: (context, value, child) {
+            return OptionItem(
+              onChanged: provider.setShowAllFiles,
+              title: 'Show All Files',
+              value: provider.showAllFiles,
+            );
+          },
         ),
-      ),
+      ],
     );
   }
 }

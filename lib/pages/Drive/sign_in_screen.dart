@@ -19,14 +19,16 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      // await Auth.initializeFirebase(context: context);
-      await Navigator.pushReplacement(
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async {
+        await Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => DriveScreen(),
-          ));
-    });
+          ),
+        );
+      },
+    );
   }
 
   @override

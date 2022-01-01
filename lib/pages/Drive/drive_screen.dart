@@ -3,7 +3,7 @@ import 'package:files/pages/Drive/future_builder.dart';
 import 'package:files/pages/Drive/my_bottom_sheet.dart';
 import 'package:files/pages/MediaPage/MediaFiles.dart';
 import 'package:files/pages/MediaPage/MediaStorageInfo.dart';
-import 'package:files/provider/drive_provider.dart';
+import 'package:files/provider/drive_provider/drive_provider.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:files/widgets/my_annotated_region.dart';
@@ -31,8 +31,13 @@ class _DriveScreenState extends State<DriveScreen> {
   void initState() {
     super.initState();
     controller = ScrollController();
+    init();
+  }
+
+  Future<void> init() async {
     final driveProvider = Provider.of<DriveProvider>(context, listen: false);
-    driveProvider.getDriveFiles();
+    await driveProvider.initDrive(context);
+    await driveProvider.getDriveFiles();
   }
 
   @override
@@ -48,10 +53,13 @@ class _DriveScreenState extends State<DriveScreen> {
     return MyAnnotatedRegion(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            MyBottomSheet.bottomSheet(context, child: BottomSheetWidget());
-          },
           backgroundColor: MyColors.teal,
+          onPressed: () {
+            MyBottomSheet.bottomSheet(
+              context,
+              child: BottomSheetWidget(),
+            );
+          },
           child: Icon(
             Icons.add,
             color: Colors.white,
@@ -61,14 +69,16 @@ class _DriveScreenState extends State<DriveScreen> {
         appBar: MyAppBar(
           bottomNavBar: true,
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(Responsive.height(12)),
-            child: Consumer<DriveProvider>(builder: (context, value, child) {
-              return NavRail(
-                data: value.navRail,
-                selectedIndex: driveProvider.selectedIndex,
-                onTap: value.getDriveFiles,
-              );
-            }),
+            preferredSize: Size.fromHeight(12.height),
+            child: Consumer<DriveProvider>(
+              builder: (context, value, child) {
+                return NavRail(
+                  data: value.navRail,
+                  selectedIndex: driveProvider.selectedIndex,
+                  onTap: value.onTapNavItem,
+                );
+              },
+            ),
           ),
           // b
         ),
@@ -76,21 +86,15 @@ class _DriveScreenState extends State<DriveScreen> {
           decoration: MyDecoration.showMediaStorageBackground,
           child: SingleChildScrollView(
             controller: controller,
-            physics: BouncingScrollPhysics(),
+            physics: MyDecoration.physics,
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
                 Selector<DriveProvider, AboutStorageQuota>(
                   selector: (p0, p1) => p1.driveQuota,
                   builder: (context, quota, child) {
-                    if (quota == null) {
-                      return MediaStorageInfo(
-                        storageName: 'Drive',
-                        path: 'assets/drive.png',
-                      );
-                    }
-                    final total = int.parse(quota.limit);
-                    final usage = int.parse(quota.usageInDrive);
+                    final total = int.parse(quota?.limit ?? '0');
+                    final usage = int.parse(quota?.usageInDrive ?? '0');
                     final available = total - usage;
                     return MediaStorageInfo(
                       availableBytes: available,
@@ -101,8 +105,24 @@ class _DriveScreenState extends State<DriveScreen> {
                     );
                   },
                 ),
-                MediaFiles(filesName: 'Drive Files', menu: DrowdownOptions()),
-                DriveFutureBuilder(controller: controller),
+                MediaFiles(filesName: 'Drive Files', menu: DriveMenuOptions()),
+                Container(
+                  color: MyColors.white,
+                  child: Selector<DriveProvider, int>(
+                    selector: (p0, p1) => p1.selectedIndex,
+                    builder: (context, value, child) {
+                      final fileId = driveProvider.navRail[value].id;
+                      return WillPopScope(
+                        onWillPop: driveProvider.onWillPop,
+                        child: DriveFutureBuilder(
+                          key: UniqueKey(),
+                          controller: controller,
+                          fileId: fileId,
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),

@@ -22,6 +22,14 @@ class VideoModel {
     });
   }
 
+  static int _getTotalSize(List<Video> videos) {
+    var size = 0;
+    for (var item in videos) {
+      size += item.size;
+    }
+    return size;
+  }
+
   static List<VideoModel> jsonToVideo(json) {
     final source = jsonDecode(json);
     return List.generate(source.length, (index) {
@@ -30,6 +38,7 @@ class VideoModel {
       return VideoModel(
         videos: videos,
         folderName: value['folderName'],
+        totalSize: _getTotalSize(videos),
       );
     });
   }

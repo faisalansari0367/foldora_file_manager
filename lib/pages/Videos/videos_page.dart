@@ -1,78 +1,73 @@
-import 'package:files/provider/storage_path_provider.dart';
-import 'package:files/utilities/MediaListItemUtils.dart';
-import 'package:files/utilities/video_utils.dart';
-import 'package:files/widgets/MediaListItem.dart';
+import 'package:files/data_models/VideoModel.dart';
+import 'package:files/decoration/my_decoration.dart';
+import 'package:files/helpers/provider_helpers.dart';
+import 'package:files/pages/MediaPage/MediaFiles.dart';
+import 'package:files/pages/MediaPage/MediaStorageInfo.dart';
+import 'package:files/pages/Videos/videos_in_folders.dart';
+import 'package:files/pages/Videos/videos_listview.dart';
+import 'package:files/provider/MyProvider.dart';
+import 'package:files/provider/videos_provider.dart';
 import 'package:files/widgets/MyAppBar.dart';
+import 'package:files/widgets/animated_widgets/my_slide_animation.dart';
 import 'package:files/widgets/my_annotated_region.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tuple/tuple.dart';
+
+import 'video_menu_options.dart';
 
 class VideosPage extends StatelessWidget {
-
-  
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<StoragePathProvider>(context);
-    final videos = provider.videosFiles;
+    final provider = getProvider<VideosProvider>(context);
+    // final myProvider = getProvider<MyProvider>(context);
+
+    // final videos = provider.videosFiles;
     return MyAnnotatedRegion(
       child: Scaffold(
-        appBar: MyAppBar(),
-        body: ListView.builder(
-          itemCount: videos.length,
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (context, index) {
-            final video = videos[index];
-            return MediaListItem(
-              currentPath: video.file.path,
-              data: video.file,
-              index: index,
-              description: MediaUtils.description(video.file),
-              onLongPress: null,
-              ontap: () => MediaUtils.ontap(context, video.file),
-              title: video.displayName,
-              leading: FutureBuilder(
-                future: VideoUtil.createThumbnail(video.file.path),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
-                  return SizedBox(
-                    height: 70,
-                    width: 100,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.file(
-                        snapshot.data,
-                        fit: BoxFit.cover,
-                        // height: 200,
-                        // width: 100,
-                      ),
-                    ),
-                  );
-                },
+        appBar: MyAppBar(actions: [VideoMenuOptions()]),
+        body: Column(
+          children: [
+            // MediaStorageInfo(
+            //   availableBytes: myProvider.spaceInfo.first.total - myProvider.spaceInfo.first.used,
+            //   totalBytes: myProvider.spaceInfo.first.total,
+            //   usedBytes: provider.videosSize,
+            //   storageName: 'Videos',
+            // ),
+            // MediaFiles(
+            //   filesName: 'Video Files',
+            // ),
+            Expanded(
+              child: WillPopScope(
+                onWillPop: () => provider.onGoBack(),
+                child: Selector<VideosProvider, Tuple2<VideoModel, bool>>(
+                  selector: (p0, p1) => Tuple2(p1.selectedVideoFolder, p1.showInFolders),
+                  builder: (context, data, child) {
+                    var widget;
+                    if (data.item2 && data.item1 == null) {
+                      widget = VideosListview(
+                        videos: provider.videosFiles,
+                      );
+                    } else if (data.item1 == null) {
+                      widget = VideosInFolders(
+                        videoFolders: provider.videosPath,
+                        onTap: (VideoModel videoModel) => provider.onTap(videoModel),
+                      );
+                    } else {
+                      widget = VideosListview(
+                        videos: data.item1.videos,
+                      );
+                    }
+                    return MySlideAnimation(
+                      key: UniqueKey(),
+                      child: widget,
+                    );
+                  },
+                ),
               ),
-            );
-          },
+            ),
+          ],
         ),
-        // bottomNavigationBar: Padding(
-        //   padding: const EdgeInsets.all(8.0),
-        //   child: MyElevatedButton(
-        //     text: ('move all videos to a different folder'),
-        //     onPressed: () async {
-        //       final dir =
-        //           await Directory('/storage/emulated/0/AllVideos').create();
-
-        //       final provider =
-        //           Provider.of<OperationsProvider>(context, listen: false);
-        //       for (var item in videos) {
-        //         provider.onTapOfLeading(item.file);
-        //       }
-
-        //       for (var item in provider.selectedMedia) {
-        //         await provider.move(dir.path);
-        //         print('item is moving $item');
-        //       }
-        //     },
-        //   ),
-        // ),
       ),
     );
   }

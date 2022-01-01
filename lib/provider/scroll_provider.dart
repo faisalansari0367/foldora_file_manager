@@ -9,7 +9,7 @@ class ScrollProvider extends ChangeNotifier {
   bool navRail = false;
 
   void scrollListener(double size) {
-    appbarSize = size * Responsive.heightMultiplier;
+    appbarSize = size.height;
     notifyListeners();
   }
 

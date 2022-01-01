@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:files/decoration/my_decoration.dart';
-import 'package:files/provider/drive_provider.dart';
+import 'package:files/provider/drive_provider/drive_provider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/LeadingIcon.dart';

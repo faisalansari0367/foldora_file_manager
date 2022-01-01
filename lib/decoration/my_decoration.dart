@@ -32,7 +32,7 @@ class MyDecoration {
 
   static const roundedBorderShape = RoundedRectangleBorder(
     borderRadius: borderRadius,
-    side: BorderSide(color: MyColors.teal),
+    side: BorderSide(color: Colors.transparent),
   );
 
   static const duration = Duration(milliseconds: 375);

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:files/services/gdrive/base_drive.dart';
 import 'package:files/utilities/my_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,12 +20,11 @@ class Auth {
   static bool _isInit = false;
 
   static Future<void> initializeFirebase({BuildContext context}) async {
-    if (_isInit) {
-      return;
-    }
+    if (_isInit) return;
     _isInit = true;
     final googleSignIn = GoogleSignIn(scopes: [DriveApi.driveScope]);
     final isSignedIn = await googleSignIn.isSignedIn();
+    log('isSigned : $isSignedIn');
     if (isSignedIn) {
       var result;
       result = await googleSignIn.signInSilently();
@@ -35,16 +36,14 @@ class Auth {
     }
   }
 
-  static Future<GoogleHttpClient> getClient(
-      GoogleSignInAccount googleSignInAccount) async {
+  static Future<GoogleHttpClient> getClient(GoogleSignInAccount googleSignInAccount) async {
     final drive = DriveStorage();
     final headers = await googleSignInAccount.authHeaders;
     await drive.saveClient(headers);
     return GoogleHttpClient(headers);
   }
 
-  static Future<GoogleSignInAccount> driveSignIn(
-      GoogleSignIn googleSignIn) async {
+  static Future<GoogleSignInAccount> driveSignIn(GoogleSignIn googleSignIn) async {
     try {
       final googleSignInAccount = await googleSignIn.signIn();
       return googleSignInAccount;
@@ -53,8 +52,7 @@ class Auth {
     }
   }
 
-  static Future<User> signInWithGoogle(googleSignin,
-      {BuildContext context}) async {
+  static Future<User> signInWithGoogle(googleSignin, {BuildContext context}) async {
     User user;
     final auth = FirebaseAuth.instance;
     try {

@@ -66,14 +66,12 @@ class MyProvider extends ChangeNotifier {
     }
   }
 
-
-
   StreamSubscription<FileSystemEvent> streamSubscription;
   Future<List<FileSystemEntity>> dirContents(String path, {isShowHidden = false}) async {
     final args = {'path': path, 'showHidden': isShowHidden};
     try {
       if (streamSubscription != null) await streamSubscription.cancel();
-      final dir = Directory(path).watch();
+      final dir = Directory(path).watch(recursive: true);
       dir.listen(streamListener);
       final result = await FileUtils.worker.doWork(FileUtils.directoryList, args);
       return result;

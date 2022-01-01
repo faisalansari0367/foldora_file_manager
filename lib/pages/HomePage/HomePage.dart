@@ -1,10 +1,9 @@
 import 'package:files/pages/HomePage/widgets/horizontal_tabs/HorizontalTabs.dart';
 import 'package:files/pages/HomePage/widgets/circleChartAndFilePercent.dart';
-import 'package:files/provider/MyProvider.dart';
-import 'package:files/provider/drive_provider.dart';
 import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/widgets/FloatingActionButton.dart';
 import 'package:files/widgets/MyAppBar.dart';
+import 'package:files/widgets/my_annotated_region.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
@@ -20,17 +19,9 @@ class _HomePageState extends State<HomePage> {
     await Provider.of<StoragePathProvider>(context, listen: false).onRefresh();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    final dp = Provider.of<DriveProvider>(context, listen: false);
-    dp.initDrive(context);
-  }
-
+  var sizedBox = SizedBox(height: 4.height);
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<MyProvider>(context, listen: false);
-    print(provider.data.toString());
     final children = <Widget>[
       Padding(
         padding: EdgeInsets.only(
@@ -44,11 +35,11 @@ class _HomePageState extends State<HomePage> {
           // iconName: Icons.more_horiz,
         ),
       ),
-      SizedBox(height: 4 * Responsive.heightMultiplier),
+      sizedBox,
       CircleChartAndFilePercent(),
-      SizedBox(height: 4 * Responsive.heightMultiplier),
+      sizedBox,
       HorizontalTabs(),
-      SizedBox(height: 4 * Responsive.heightMultiplier),
+      sizedBox,
       Padding(
         padding: EdgeInsets.only(
           right: Responsive.width(6),
@@ -64,31 +55,34 @@ class _HomePageState extends State<HomePage> {
       ),
     ];
 
-    return Scaffold(
-      floatingActionButton: FAB(),
-      appBar: MyAppBar(
-        backgroundColor: Colors.white,
-        iconData: Icons.menu,
-        bottomNavBar: false,
-        brightness: Brightness.dark,
-      ),
-      body: Container(
-        color: Colors.white,
-        child: RefreshIndicator(
-          onRefresh: () => _onRefresh(context),
-          child: ListView(
-            physics:
-                BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-            children: AnimationConfiguration.toStaggeredList(
-              duration: const Duration(milliseconds: 400),
-              childAnimationBuilder: (widget) => SlideAnimation(
-                horizontalOffset: 50.0,
-                child: FadeInAnimation(
-                  delay: Duration(milliseconds: 80),
-                  child: widget,
+    return MyAnnotatedRegion(
+      systemNavigationBarColor: Colors.white,
+      statusBarColor: Colors.white,
+      child: Scaffold(
+        floatingActionButton: FAB(),
+        appBar: MyAppBar(
+          backgroundColor: Colors.white,
+          iconData: Icons.menu,
+          bottomNavBar: false,
+          brightness: Brightness.dark,
+        ),
+        body: Container(
+          color: Colors.white,
+          child: RefreshIndicator(
+            onRefresh: () => _onRefresh(context),
+            child: ListView(
+              physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+              children: AnimationConfiguration.toStaggeredList(
+                duration: const Duration(milliseconds: 400),
+                childAnimationBuilder: (widget) => SlideAnimation(
+                  horizontalOffset: 50.0,
+                  child: FadeInAnimation(
+                    delay: Duration(milliseconds: 80),
+                    child: widget,
+                  ),
                 ),
+                children: children,
               ),
-              children: children,
             ),
           ),
         ),

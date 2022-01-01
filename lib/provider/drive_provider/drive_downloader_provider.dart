@@ -1,21 +1,35 @@
 import 'package:ext_storage/ext_storage.dart';
 import 'package:files/services/gdrive/base_drive.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:open_file/open_file.dart';
 import 'dart:io' as io;
+import 'package:path/path.dart' as p;
 
 class DriveDownloader extends ChangeNotifier {
   bool isDownloading = false;
   double percent = 0.0;
   final queue = [];
   String downloadsDirectory;
+  List<io.FileSystemEntity> downloads = [];
 
   DriveDownloader() {
     _initDownloadDir();
   }
 
   Future<void> _initDownloadDir() async {
-    downloadsDirectory = await ExtStorage.getExternalStoragePublicDirectory(
-        ExtStorage.DIRECTORY_DOWNLOADS);
+    downloadsDirectory = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
+    final downloadDir = io.Directory(downloadsDirectory);
+    downloads = await downloadDir.list().toList();
+    downloadDir.watch(recursive: true).listen((event) {
+      if (event.isDirectory) {
+        final dir = io.Directory(event.path);
+        downloads.add(dir);
+      } else {
+        final dir = io.File(event.path);
+        downloads.add(dir);
+      }
+      notifyListeners();
+    });
   }
 
   void setIsDownloading(bool value) {
@@ -45,17 +59,18 @@ class DriveDownloader extends ChangeNotifier {
     await saveFile.create();
     final totalSize = file.length ?? int.parse(fileSize);
     var percent = 0.0;
-
+    var dataStore = <int>[];
     file.stream.listen(
       (data) async {
         percent += calculatePercent(data.length, totalSize);
         final index = queue.indexOf(map);
         queue.elementAt(index)['percent'] = percent;
-        await saveFile.writeAsBytes(data, mode: io.FileMode.append);
+        dataStore.addAll(data);
         notifyListeners();
       },
-      onDone: () {
+      onDone: () async {
         print('File saved at ${saveFile.path}');
+        await saveFile.writeAsBytes(dataStore);
         final index = queue.indexOf(map);
         queue.removeAt(index);
         setIsDownloading(false);
@@ -70,5 +85,18 @@ class DriveDownloader extends ChangeNotifier {
     }
     final percent = size / totalSize * 100;
     return percent;
+  }
+
+  bool isFileAlreadyDownloaded(String fileName) {
+    var result = false;
+    for (var item in downloads) {
+      final itemFileName = p.basename(item.path);
+      if (itemFileName.contains(fileName)) {
+        OpenFile.open(item.path);
+        result = true;
+        break;
+      }
+    }
+    return result;
   }
 }

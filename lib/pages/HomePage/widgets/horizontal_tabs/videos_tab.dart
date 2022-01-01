@@ -1,5 +1,6 @@
 import 'package:files/pages/Videos/videos_page.dart';
 import 'package:files/provider/storage_path_provider.dart';
+import 'package:files/provider/videos_provider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/Utils.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,7 @@ import '../MediaStack.dart';
 class VideosTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<StoragePathProvider>(context, listen: true);
+    final provider = Provider.of<VideosProvider>(context, listen: true);
     final videosLength = provider.videosFiles.length;
     return MediaStack(
       onTap: () => MediaUtils.redirectToPage(context, page: VideosPage()),

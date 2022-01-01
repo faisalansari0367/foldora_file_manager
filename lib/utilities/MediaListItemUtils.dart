@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:files/pages/MediaPage/MediaPage.dart';
 import 'package:files/utilities/Utils.dart';
 import 'package:files/widgets/FileNotFoundScreen.dart';
-import 'package:files/widgets/animated_button.dart';
+import 'package:files/widgets/animated_widgets/animated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:open_file/open_file.dart';

@@ -5,6 +5,7 @@ import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/MyColors.dart';
+import 'package:files/widgets/my_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
@@ -26,8 +27,7 @@ class ModalSheet {
         isScrollControlled: true,
         context: context,
         builder: (context) {
-          final operations =
-              Provider.of<OperationsProvider>(context, listen: true);
+          final operations = Provider.of<OperationsProvider>(context, listen: true);
           final myProvider = Provider.of<MyProvider>(context, listen: false);
 
           final child = AnnotatedRegion(
@@ -44,8 +44,7 @@ class ModalSheet {
                   color: Colors.transparent,
                   width: double.infinity,
                   child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: Responsive.width(3)),
+                    padding: EdgeInsets.symmetric(horizontal: Responsive.width(3)),
                     decoration: BoxDecoration(
                       color: MyColors.darkGrey,
                       borderRadius: BorderRadius.only(
@@ -102,12 +101,10 @@ class ModalSheet {
                                 ),
                                 title: p.basename(data.path),
                                 currentPath: data.path,
-                                description: MediaUtils.description(data,
-                                    textColor: Colors.grey[600]),
+                                description: MediaUtils.description(data, textColor: Colors.grey[600]),
                                 leading: LeadingIcon(
                                   decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(12)),
+                                    borderRadius: BorderRadius.all(Radius.circular(12)),
                                     color: Colors.white10,
                                   ),
                                   data: data,
@@ -119,7 +116,7 @@ class ModalSheet {
                             },
                           ),
                         ),
-                        ElevatedButton(
+                        MyElevatedButton(
                           onPressed: () async {
                             Navigator.of(context).pop();
                             await operations.deleteFileOrFolder(context);
@@ -127,24 +124,7 @@ class ModalSheet {
                             myProvider.notify();
                             print('notified');
                           },
-                          style: ElevatedButton.styleFrom(
-                            elevation: 4,
-                            primary: MyColors.teal,
-                            shadowColor: MyColors.teal,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32.0),
-                              side: BorderSide(color: MyColors.teal),
-                            ),
-                            minimumSize: Size(
-                                Responsive.width(87), Responsive.height(6)),
-                          ),
-                          child: Text(
-                            'Delete Files',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                            ),
-                          ),
+                          text: 'Delete Files',
                         ),
                         SizedBox(height: Responsive.height(1)),
                       ],

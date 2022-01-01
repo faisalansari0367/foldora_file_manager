@@ -1,18 +1,8 @@
 import 'package:files/decoration/my_decoration.dart';
 import 'package:files/sizeConfig.dart';
-import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
 
-final style = ElevatedButton.styleFrom(
-  elevation: 4,
-  primary: MyColors.teal,
-  shadowColor: MyColors.teal,
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(32.0),
-    side: BorderSide(color: MyColors.teal),
-  ),
-  // minimumSize: Size(Responsive.width(87), Responsive.height(6)),
-);
+
 
 class MyElevatedButton extends StatelessWidget {
   final Function onPressed;
@@ -30,7 +20,7 @@ class MyElevatedButton extends StatelessWidget {
       style: MyDecoration.elevatedButtonStyle,
       child: Text(
         text,
-        style: TextStyle(fontSize: Responsive.textMultiplier * 1.7),
+        style: TextStyle(fontSize: 1.7.text),
       ),
     );
   }

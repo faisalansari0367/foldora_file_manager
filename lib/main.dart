@@ -30,7 +30,7 @@ void main() async {
   await init();
   FileUtils();
   // await Auth.initializeFirebase();
-  SystemChrome.setSystemUIOverlayStyle(AppbarUtils.systemUiOverylay());
+  // SystemChrome.setSystemUIOverlayStyle(AppbarUtils.systemUiOverylay());
   log('App initialised in ' + stopwatch.elapsedMilliseconds.toString());
   runApp(MyApp());
 }
