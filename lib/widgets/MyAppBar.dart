@@ -154,7 +154,7 @@ class AppbarUtils {
 }
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Color backgroundColor;
+  final Color backgroundColor, systemNavbarColor;
   final IconData iconData;
   final bool menu;
   final bool bottomNavBar;
@@ -171,6 +171,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.brightness = Brightness.light,
     this.actions,
     this.title,
+    this.systemNavbarColor = Colors.transparent,
   });
 
   @override
@@ -180,7 +181,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final color = backgroundColor ?? MyColors.darkGrey;
     return AppBar(
-      systemOverlayStyle: AppbarUtils.systemUiOverylay(brightness: brightness),
+      systemOverlayStyle:
+          AppbarUtils.systemUiOverylay(brightness: brightness, systemNavigationBarColor: systemNavbarColor),
       backgroundColor: color,
       leading: AppbarUtils.backIcon(context),
       elevation: 0.0,

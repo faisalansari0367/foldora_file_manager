@@ -56,7 +56,7 @@ class _Option extends StatelessWidget {
       children: [
         IconButton(
           onPressed: onPressed,
-          icon: Icon(Icons.wallpaper),
+          icon: Icon(iconData),
         ),
         Text(
           title,

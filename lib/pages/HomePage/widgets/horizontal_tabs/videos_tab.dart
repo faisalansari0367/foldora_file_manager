@@ -1,5 +1,4 @@
 import 'package:files/pages/Videos/videos_page.dart';
-import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/provider/videos_provider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/Utils.dart';

@@ -1,4 +1,4 @@
-import 'package:files/data_models/VideoModel.dart';
+import 'package:files/pages/Videos/models/video_file.dart';
 import 'package:files/sizeConfig.dart';
 import 'package:files/utilities/video_utils.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ class LeadingVIdeo extends StatelessWidget {
     @required this.video,
   }) : super(key: key);
 
-  final Video video;
+  final VideoFile video;
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,7 @@
 import 'package:files/decoration/my_decoration.dart';
-import 'package:files/pages/Drive/future_builder.dart';
-import 'package:files/pages/Drive/my_bottom_sheet.dart';
+import 'package:files/helpers/provider_helpers.dart';
+import 'package:files/pages/Drive/drive_fab.dart';
+import 'package:files/pages/Drive/drive_listview_builder.dart';
 import 'package:files/pages/MediaPage/MediaFiles.dart';
 import 'package:files/pages/MediaPage/MediaStorageInfo.dart';
 import 'package:files/provider/drive_provider/drive_provider.dart';
@@ -12,9 +13,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:googleapis/drive/v3.dart' show AboutStorageQuota;
 import 'package:provider/provider.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../sizeConfig.dart';
-import 'bottom_sheet_widget.dart';
 import 'drive_options.dart';
 
 class DriveScreen extends StatefulWidget {
@@ -24,47 +25,44 @@ class DriveScreen extends StatefulWidget {
   _DriveScreenState createState() => _DriveScreenState();
 }
 
-class _DriveScreenState extends State<DriveScreen> {
+class _DriveScreenState extends State<DriveScreen> with SingleTickerProviderStateMixin {
   ScrollController controller;
+  // AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
+    // final curve = CurvedAnimation(curve: Curves.bounceIn, parent: _animationController);
+    // _animationController = AnimationController(
+    //   vsync: this,
+    //   duration: const Duration(milliseconds: 500),
+    //   upperBound: 0.9,
+    //   lowerBound: 0.0,
+    // );
     controller = ScrollController();
     init();
   }
 
   Future<void> init() async {
-    final driveProvider = Provider.of<DriveProvider>(context, listen: false);
-    await driveProvider.initDrive(context);
+    final driveProvider = getProvider<DriveProvider>(context);
     await driveProvider.getDriveFiles();
   }
 
   @override
   void dispose() {
+    // _animationController.dispose();
     controller.dispose();
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
-    final driveProvider = Provider.of<DriveProvider>(context, listen: false);
+    final driveProvider = getProvider<DriveProvider>(context);
     driveProvider.setContext(context);
     return MyAnnotatedRegion(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: MyColors.teal,
-          onPressed: () {
-            MyBottomSheet.bottomSheet(
-              context,
-              child: BottomSheetWidget(),
-            );
-          },
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-        ),
+        floatingActionButton: DriveFab(),
         backgroundColor: MyColors.white,
         appBar: MyAppBar(
           bottomNavBar: true,
@@ -108,9 +106,10 @@ class _DriveScreenState extends State<DriveScreen> {
                 MediaFiles(filesName: 'Drive Files', menu: DriveMenuOptions()),
                 Container(
                   color: MyColors.white,
-                  child: Selector<DriveProvider, int>(
-                    selector: (p0, p1) => p1.selectedIndex,
-                    builder: (context, value, child) {
+                  child: Selector<DriveProvider, Tuple2<int, bool>>(
+                    selector: (p0, p1) => Tuple2(p1.selectedIndex, p1.showAllFiles),
+                    builder: (context, data, child) {
+                      final value = data.item1;
                       final fileId = driveProvider.navRail[value].id;
                       return WillPopScope(
                         onWillPop: driveProvider.onWillPop,
@@ -118,6 +117,7 @@ class _DriveScreenState extends State<DriveScreen> {
                           key: UniqueKey(),
                           controller: controller,
                           fileId: fileId,
+                          showAllFiles: data.item2,
                         ),
                       );
                     },

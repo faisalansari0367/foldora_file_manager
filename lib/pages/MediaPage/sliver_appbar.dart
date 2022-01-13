@@ -1,4 +1,3 @@
-
 import 'package:files/provider/OperationsProvider.dart';
 import 'package:files/provider/scroll_provider.dart';
 import 'package:files/utilities/MyColors.dart';
@@ -49,7 +48,9 @@ class _MySliverAppBarState extends State<MySliverAppBar> with SingleTickerProvid
               child: value != Responsive.height(6) ? SizedBox() : bottom,
             );
             return SliverAppBar(
-              systemOverlayStyle: AppbarUtils.systemUiOverylay(),
+              systemOverlayStyle: AppbarUtils.systemUiOverylay(
+                backgroundColor: MyColors.darkGrey,
+              ),
               pinned: true,
               backgroundColor: MyColors.darkGrey,
               title: widget.title,

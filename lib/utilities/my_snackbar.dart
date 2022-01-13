@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'MyColors.dart';
 
 class MySnackBar {
-  static void show(BuildContext context, {@required String content}) {
+  static final myMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  static void show({@required String content}) {
     final snackBar = SnackBar(
-      backgroundColor: MyColors.darkGrey,
+      backgroundColor: Colors.black,
       content: Text(
         content,
-        style: TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
+        style: ThemeData.dark().textTheme.bodyText2,
       ),
     );
-    final messenger = ScaffoldMessenger.maybeOf(context);
-    if (messenger == null) return;
-    messenger
-      ..removeCurrentSnackBar
+    myMessengerKey.currentState
+      ..removeCurrentSnackBar()
       ..showSnackBar(snackBar);
   }
 }

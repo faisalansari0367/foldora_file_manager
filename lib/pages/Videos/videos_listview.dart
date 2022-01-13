@@ -1,4 +1,4 @@
-import 'package:files/data_models/VideoModel.dart';
+import 'package:files/pages/Videos/models/video_file.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/widgets/MediaListItem.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'video_leading.dart';
 
 class VideosListview extends StatelessWidget {
-  final List<Video> videos;
+  final List<VideoFile> videos;
   const VideosListview({Key key, this.videos = const []}) : super(key: key);
 
   @override

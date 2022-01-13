@@ -1,6 +1,5 @@
-import 'package:files/pages/Drive/my_bottom_sheet.dart';
+import 'package:files/decoration/my_bottom_sheet.dart';
 import 'package:files/utilities/MyColors.dart';
-import 'package:files/widgets/menu_options/option_item.dart';
 import 'package:flutter/material.dart';
 
 import '../my_annotated_region.dart';

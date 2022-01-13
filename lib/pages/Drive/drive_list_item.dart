@@ -2,19 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../sizeConfig.dart';
 
-// bool getSelectedItem(List<FileSystemEntity> files, String path) {
-//   var isSelected = false;
-//   for (var item in files) {
-//     if (path == item.path) {
-//       isSelected = true;
-//       break;
-//     } else {
-//       isSelected = false;
-//     }
-//   }
-//   return isSelected;
-// }
-
 class DriveListItem extends StatefulWidget {
   final Color selectedColor;
   final Widget title;
@@ -90,12 +77,6 @@ class _Item extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // Text(
-            //   title,
-            //   style: subtitle1.copyWith(
-            //     color: titleColor ?? subtitle1.color,
-            //   ),
-            // ),
             title,
             SizedBox(height: Responsive.height(0.5)),
             if (description != null) description,

@@ -1,7 +1,6 @@
 import 'package:files/decoration/my_decoration.dart';
 import 'package:files/pages/Drive/drive_nav_rail_item.dart';
 import 'package:files/utilities/MyColors.dart';
-import 'package:files/widgets/animated_widgets/my_slide_animation.dart';
 import 'package:files/widgets/nav_rail/nav_rail_widget.dart';
 import 'package:flutter/material.dart';
 

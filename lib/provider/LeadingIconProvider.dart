@@ -232,12 +232,12 @@ class IconProvider extends ChangeNotifier {
   }
 
   Widget video(data, {iconBgColor, iconColor, decoration, imageRadius}) {
-    final map = FileUtils.isVideoThumbnailExist(data.path);
+    final map = FileUtils.isVideoThumbnailExist(data.file);
     return map['isFileExist']
         ? Widgets.forImage(map['thumb'],
             decoration: decoration, radius: imageRadius)
         : forQueryingDatabase(
-            future: _createVideoThumbnail(data.path,
+            future: _createVideoThumbnail(data.file,
                 decoration: decoration, radius: imageRadius),
             initialData: Widgets.folderIcons(Icons.videocam,
                 bgColor: iconBgColor,
@@ -252,12 +252,12 @@ class IconProvider extends ChangeNotifier {
         bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
 
     for (final item in localApps) {
-      if (item.filePath == data.path) {
+      if (item.filePath == data.file) {
         widget = Widgets.forImage(item.icon, radius: 10);
       }
     }
     widget ??= forQueryingDatabase(
-      future: _toShowApkIcon(data.path),
+      future: _toShowApkIcon(data.file),
       initialData: result,
     );
     return widget;

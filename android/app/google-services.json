@@ -7,18 +7,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:669069529605:android:b5341b67c5e9ad0788c26c",
+        "mobilesdk_app_id": "1:669069529605:android:1ec349c4c20db95e88c26c",
         "android_client_info": {
           "package_name": "com.faisal.foldora"
         }
       },
       "oauth_client": [
         {
-          "client_id": "669069529605-hg4ooe59u7g09re1ntgni837qq742pp4.apps.googleusercontent.com",
+          "client_id": "669069529605-2ftfoav75d01crtlpm3mk1k9ndhug2je.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.faisal.foldora",
-            "certificate_hash": "7ad2a8b3ca1d58f779a4149051377543e69e4be6"
+            "certificate_hash": "38487dc1db9a397e630d9dfed624028d266b4cf4"
           }
         },
         {

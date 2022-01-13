@@ -23,7 +23,8 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final driveProvider = Provider.of<DriveProvider>(context, listen: true);
+    final driveProvider = Provider.of<DriveProvider>(context, listen: false);
+
     final myProvider = Provider.of<MyProvider>(context, listen: false);
     return MyAnnotatedRegion(
       systemNavigationBarColor: MyColors.darkGrey,
@@ -40,9 +41,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 3.height,
-                    ),
+                    SizedBox(height: 3.height),
                     TextField(
                       cursorColor: MyColors.appbarActionsColor,
                       cursorRadius: MyDecoration.circularRadius,
@@ -67,9 +66,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                         color: MyColors.appbarActionsColor,
                       ),
                     ),
-                    SizedBox(
-                      height: 2.height,
-                    ),
+                    SizedBox(height: 2.height),
                   ],
                 ),
               ),
@@ -93,19 +90,31 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                   },
                 ),
               ),
-              SizedBox(height: 2.height),
+              SizedBox(height: 1.height),
               Center(
-                child: MyElevatedButton(
-                  text: 'Upload files',
-                  onPressed: () {
-                    driveProvider.filesToUpload.forEach(
-                      (element) {
-                        MyDrive.uploadFileToGoogleDrive(element);
-                      },
-                    );
-                  },
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 5.padding,
+                        color: MyColors.darkGrey,
+                        spreadRadius: 5.padding,
+                      ),
+                    ],
+                  ),
+                  child: MyElevatedButton(
+                    text: 'Upload files',
+                    onPressed: () {
+                      driveProvider.filesToUpload.forEach(
+                        (element) {
+                          MyDrive.uploadFileToGoogleDrive(element);
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
+              SizedBox(height: 1.height),
             ],
           );
         },

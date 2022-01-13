@@ -55,10 +55,10 @@ class _MediaListItemState extends State<MediaListItem> {
   static const duration = Duration(milliseconds: 300);
   @override
   Widget build(BuildContext context) {
-    final Widget padding = Padding(
+    final padding = Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: Responsive.width(4),
-        vertical: Responsive.height(0.6),
+        horizontal: 4.width,
+        vertical: 0.6.height,
       ),
       child: Row(
         children: <Widget>[
@@ -79,8 +79,7 @@ class _MediaListItemState extends State<MediaListItem> {
       child: Consumer<OperationsProvider>(
         child: padding,
         builder: (context, provider, child) {
-          final isSelected =
-              getSelectedItem(provider.selectedMedia, widget.data.path);
+          final isSelected = getSelectedItem(provider.selectedMedia, widget.data.path);
           final color = isSelected ? widget.selectedColor : Colors.transparent;
           return AnimatedContainer(
             duration: duration,

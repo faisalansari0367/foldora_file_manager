@@ -1,5 +1,7 @@
 import 'package:files/pages/Drive/drive_screen.dart';
+import 'package:files/pages/Drive/sign_in_screen.dart';
 import 'package:files/provider/drive_provider/drive_provider.dart';
+import 'package:files/services/gdrive/base_drive.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/Utils.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,8 @@ class _DriveTabState extends State<DriveTab> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       // await Auth.initializeFirebase(context: context);
       final provider = Provider.of<DriveProvider>(context, listen: false);
+      // await Auth.initDrive();
+      await provider.init();
       await provider.isReady;
       final list = await provider.getDriveFiles();
       usedBytes = provider.driveQuota?.usageInDrive ?? '0';
@@ -35,7 +39,7 @@ class _DriveTabState extends State<DriveTab> {
   Widget build(BuildContext context) {
     final color = Color(0xff00ae45);
     return MediaStack(
-      onTap: () => MediaUtils.redirectToPage(context, page: DriveScreen()),
+      onTap: () => MediaUtils.redirectToPage(context, page: MyDrive.isReady ? DriveScreen() : DriveSignInScreen()),
       image: 'assets/drive.png',
       color: color.withOpacity(0.2),
       media: 'Drive',

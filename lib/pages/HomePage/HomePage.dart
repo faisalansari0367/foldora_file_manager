@@ -1,9 +1,8 @@
-import 'package:files/pages/HomePage/widgets/horizontal_tabs/HorizontalTabs.dart';
+import 'package:files/pages/HomePage/widgets/horizontal_tabs/horizontal_tabs.dart';
 import 'package:files/pages/HomePage/widgets/circleChartAndFilePercent.dart';
 import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/widgets/FloatingActionButton.dart';
 import 'package:files/widgets/MyAppBar.dart';
-import 'package:files/widgets/my_annotated_region.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
@@ -55,34 +54,31 @@ class _HomePageState extends State<HomePage> {
       ),
     ];
 
-    return MyAnnotatedRegion(
-      systemNavigationBarColor: Colors.white,
-      statusBarColor: Colors.white,
-      child: Scaffold(
-        floatingActionButton: FAB(),
-        appBar: MyAppBar(
-          backgroundColor: Colors.white,
-          iconData: Icons.menu,
-          bottomNavBar: false,
-          brightness: Brightness.dark,
-        ),
-        body: Container(
-          color: Colors.white,
-          child: RefreshIndicator(
-            onRefresh: () => _onRefresh(context),
-            child: ListView(
-              physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-              children: AnimationConfiguration.toStaggeredList(
-                duration: const Duration(milliseconds: 400),
-                childAnimationBuilder: (widget) => SlideAnimation(
-                  horizontalOffset: 50.0,
-                  child: FadeInAnimation(
-                    delay: Duration(milliseconds: 80),
-                    child: widget,
-                  ),
+    return Scaffold(
+      floatingActionButton: FAB(),
+      appBar: MyAppBar(
+        backgroundColor: Colors.white,
+        systemNavbarColor: Colors.white,
+        iconData: Icons.menu,
+        bottomNavBar: false,
+        brightness: Brightness.dark,
+      ),
+      body: Container(
+        color: Colors.white,
+        child: RefreshIndicator(
+          onRefresh: () => _onRefresh(context),
+          child: ListView(
+            physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            children: AnimationConfiguration.toStaggeredList(
+              duration: const Duration(milliseconds: 400),
+              childAnimationBuilder: (widget) => SlideAnimation(
+                horizontalOffset: 50.0,
+                child: FadeInAnimation(
+                  delay: Duration(milliseconds: 80),
+                  child: widget,
                 ),
-                children: children,
               ),
+              children: children,
             ),
           ),
         ),

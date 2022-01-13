@@ -10,7 +10,7 @@ class MediaTab extends StatelessWidget {
   const MediaTab({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final storage = Provider.of<MyProvider>(context, listen: false);
+    final storage = Provider.of<MyProvider>(context, listen: true);
     final pageView = PageView.builder(
       onPageChanged: (value) => storage.onPageChanged(value),
       itemCount: storage.data.length,

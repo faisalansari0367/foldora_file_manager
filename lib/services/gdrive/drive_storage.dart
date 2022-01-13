@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:files/services/gdrive/http_client.dart';
+import 'package:files/utilities/my_snackbar.dart';
 import 'package:hive/hive.dart';
 
 import '../hive_implementation.dart';
@@ -33,5 +36,24 @@ class DriveStorage extends HiveImplementation {
     if (headers == null) return null;
     final client = GoogleHttpClient(headers);
     return client;
+  }
+
+  Future<void> saveDriveFiles(String id, List data) async {
+    try {
+      await box.put(id, data);
+    } catch (e) {
+      print('error occured during saving data: $e');
+    }
+  }
+
+  Future<List<dynamic>> getDriveFiles(String id) async {
+    try {
+      final data = await box.get(id);
+      return data;
+    } catch (e) {
+      log('error occured during getting data: $e');
+      MySnackBar.show(content: 'error occured during getting data: $e');
+      return [];
+    }
   }
 }

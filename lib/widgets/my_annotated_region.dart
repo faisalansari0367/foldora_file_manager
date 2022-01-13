@@ -19,8 +19,7 @@ class MyAnnotatedRegion extends StatelessWidget {
       value: SystemUiOverlayStyle(
         statusBarBrightness: brightness,
         statusBarIconBrightness: brightness,
-        systemNavigationBarColor:
-            systemNavigationBarColor ?? Colors.transparent,
+        systemNavigationBarColor: systemNavigationBarColor ?? Colors.transparent,
         statusBarColor: statusBarColor ?? Colors.transparent,
         systemNavigationBarContrastEnforced: true,
         systemNavigationBarDividerColor: Colors.transparent,

@@ -7,6 +7,26 @@ import 'package:files/utilities/Utils.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+// abstract class AppsInterface {
+//   Future<Apps> localApps();
+//   Future<Apps> systemApps();
+// }
+
+// class AppsDb extends AppsInterface {
+//   @override
+//   Future<Apps> localApps() {
+//     throw UnimplementedError();
+//   }
+
+//   @override
+//   Future<Apps> systemApps() {
+//     throw UnimplementedError();
+//   }
+
+// }
+
+  
+
 class SqfLite {
   SqfLite() {
     _init();
@@ -28,8 +48,7 @@ class SqfLite {
   static Future<void> get isReady => _isReady.future;
 
   Future<void> _init() async {
-    if (await databaseExists(systemAppsDatabase) &&
-        await databaseExists(localAppsDatabase)) {
+    if (await databaseExists(systemAppsDatabase) && await databaseExists(localAppsDatabase)) {
       systemApps = await openDatabase(systemAppsDatabase);
       localApps = await openDatabase(localAppsDatabase);
       _isReady.complete();
@@ -52,8 +71,7 @@ class SqfLite {
     }
   }
 
-  static Future<Database> createDatabase(
-      {String tableName, String databaseName}) async {
+  static Future<Database> createDatabase({String tableName, String databaseName}) async {
     final dbDataPath = await getDatabasesPath();
     final path = join(dbDataPath, databaseName);
     final createTable =
@@ -62,8 +80,7 @@ class SqfLite {
       return await openDatabase(
         path,
         version: 1,
-        onCreate: (Database db, int version) async =>
-            await db.execute(createTable),
+        onCreate: (Database db, int version) async => await db.execute(createTable),
       );
     } catch (e) {
       throw Exception(e);
@@ -104,8 +121,7 @@ class SqfLite {
       includeSystemApps: true,
       // onlyAppsWithLaunchIntent: true,
     );
-    final List<App> systemApps =
-        await FileUtils.worker.doWork(App.fromList, _systemApps);
+    final List<App> systemApps = await FileUtils.worker.doWork(App.fromList, _systemApps);
     try {
       final batch = db.batch();
       for (final item in systemApps) {

@@ -16,6 +16,7 @@ class Photo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<StoragePathProvider>(context, listen: true);
+
     return GestureDetector(
       onLongPress: () {
         provider.onLongPress(index);
@@ -31,6 +32,7 @@ class Photo extends StatelessWidget {
         );
         provider.updateIndex(index);
       },
+      // onTap: action,
       child: Stack(
         fit: StackFit.expand,
         children: [

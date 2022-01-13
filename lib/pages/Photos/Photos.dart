@@ -30,14 +30,7 @@ class _PhotosState extends State<Photos> with SingleTickerProviderStateMixin {
       controller: tabController,
       labelColor: MyColors.teal,
       unselectedLabelColor: MyColors.white,
-      tabs: [
-        Tab(
-          text: ('All Photos'),
-        ),
-        Tab(
-          text: ('Folders'),
-        )
-      ],
+      tabs: [Tab(text: ('All Photos')), Tab(text: ('Folders'))],
     );
     final Widget widget = Consumer<StoragePathProvider>(
       builder: (BuildContext context, value, child) {
@@ -52,7 +45,6 @@ class _PhotosState extends State<Photos> with SingleTickerProviderStateMixin {
     return AnnotatedRegion(
       value: AppbarUtils.systemUiOverylay(systemNavigationBarColor: Colors.black),
       child: Scaffold(
-        // bottomNavigationBar: BottomSlideAnimation(),
         backgroundColor: Colors.black54,
         appBar: MyAppBar(
           bottomNavBar: true,

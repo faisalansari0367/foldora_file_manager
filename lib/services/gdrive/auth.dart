@@ -17,23 +17,27 @@ abstract class AuthImplementation {
 }
 
 class Auth {
-  static bool _isInit = false;
+  static final googleSignIn = GoogleSignIn(scopes: [DriveApi.driveScope]);
 
   static Future<void> initializeFirebase({BuildContext context}) async {
-    if (_isInit) return;
-    _isInit = true;
-    final googleSignIn = GoogleSignIn(scopes: [DriveApi.driveScope]);
-    final isSignedIn = await googleSignIn.isSignedIn();
-    log('isSigned : $isSignedIn');
-    if (isSignedIn) {
-      var result;
-      result = await googleSignIn.signInSilently();
-      result ??= await googleSignIn.signIn();
-      final client = await getClient(result);
-      MyDrive(client);
-    } else {
-      await signInWithGoogle(googleSignIn);
+    try {
+      if (await googleSignIn.isSignedIn()) {
+        await initDrive();
+      } else {
+        await signInWithGoogle(googleSignIn);
+      }
+    } catch (e) {
+      MySnackBar.show(content: e.message);
     }
+  }
+
+  static Future<void> initDrive() async {
+    var result;
+    result = await googleSignIn.signInSilently();
+    result ??= await googleSignIn.signIn();
+    final client = await getClient(result);
+    await signInWithGoogle(googleSignIn);
+    MyDrive(client);
   }
 
   static Future<GoogleHttpClient> getClient(GoogleSignInAccount googleSignInAccount) async {
@@ -44,12 +48,8 @@ class Auth {
   }
 
   static Future<GoogleSignInAccount> driveSignIn(GoogleSignIn googleSignIn) async {
-    try {
-      final googleSignInAccount = await googleSignIn.signIn();
-      return googleSignInAccount;
-    } catch (e) {
-      rethrow;
-    }
+    final googleSignInAccount = await googleSignIn.signIn();
+    return googleSignInAccount;
   }
 
   static Future<User> signInWithGoogle(googleSignin, {BuildContext context}) async {
@@ -67,9 +67,12 @@ class Auth {
       final userCredential = await auth.signInWithCredential(credential);
       user = userCredential.user;
     } on FirebaseAuthException catch (e) {
-      if (context != null) MySnackBar.show(context, content: e.toString());
+      log(e.toString());
+
+      if (context != null) MySnackBar.show(content: e.toString());
       rethrow;
     } catch (e) {
+      log(e.toString());
       rethrow;
     }
 
@@ -81,7 +84,6 @@ class Auth {
       await FirebaseAuth.instance.signOut();
     } catch (e) {
       MySnackBar.show(
-        context,
         content: 'Error signing out. Try again.',
       );
     }

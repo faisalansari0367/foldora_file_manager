@@ -3,14 +3,12 @@ import 'dart:developer';
 import 'dart:io' as io;
 
 import 'package:files/pages/Drive/drive_nav_rail_item.dart';
-import 'package:files/services/gdrive/auth.dart';
 import 'package:files/services/gdrive/base_drive.dart';
 import 'package:files/utilities/DataModel.dart';
 import 'package:files/utilities/my_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:storage_details/storage_details.dart';
-
 
 class DriveProvider extends ChangeNotifier {
   final _completer = Completer<void>();
@@ -36,13 +34,13 @@ class DriveProvider extends ChangeNotifier {
   var driveFiles = <File>[];
 
   DriveProvider() {
-    // _init();
+    // init();
   }
 
-  Future<void> initDrive(context) async {
-    await Auth.initializeFirebase(context: context);
-    await _init();
-  }
+  // Future<void> initDrive(context) async {
+  //   await Auth.initializeFirebase(context: context);
+  //   await _init();
+  // }
 
   void setContext(context) {
     this.context = context;
@@ -116,7 +114,8 @@ class DriveProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _init() async {
+  Future<void> init() async {
+    if (!MyDrive.isReady) return;
     if (!_completer.isCompleted) {
       await getStorageQuota();
       _completer.complete();
@@ -158,6 +157,11 @@ class DriveProvider extends ChangeNotifier {
     await MyDrive.downloadGoogleDriveFile(fileName, fileId);
   }
 
+  Future<void> createDriveDir(io.Directory dir) async {
+    final createDir = await MyDrive.createDir(dir);
+    print(createDir);
+  }
+
   Future<List<File>> getDriveFiles({fileId}) async {
     await isReady;
     try {
@@ -168,7 +172,7 @@ class DriveProvider extends ChangeNotifier {
       setLoading(false);
       return data;
     } catch (e) {
-      MySnackBar.show(context, content: e.message);
+      MySnackBar.show(content: e.message);
       log(e.message);
       setLoading(false);
       return [];
@@ -182,7 +186,9 @@ class DriveProvider extends ChangeNotifier {
       driveQuota = about.storageQuota;
       notifyListeners();
     } on DetailedApiRequestError catch (e) {
-      MySnackBar.show(context, content: e.message);
+      MySnackBar.show(content: e.message);
+    } catch (e) {
+      MySnackBar.show(content: e.message);
     }
     setLoading(false);
   }

@@ -1,4 +1,5 @@
 import 'package:files/provider/MyProvider.dart';
+import 'package:files/provider/drive_provider/drive_deleter_provider.dart';
 import 'package:files/provider/drive_provider/drive_downloader_provider.dart';
 import 'package:files/provider/videos_provider.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,9 @@ class AddProviders extends StatelessWidget {
         ),
         ChangeNotifierProvider<DriveDownloader>(
           create: (context) => DriveDownloader(),
+        ),
+        ChangeNotifierProvider<DriveDeleter>(
+          create: (context) => DriveDeleter(),
         ),
         ChangeNotifierProvider<VideosProvider>(
           create: (context) => VideosProvider(),

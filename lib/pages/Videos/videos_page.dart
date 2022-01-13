@@ -1,11 +1,7 @@
-import 'package:files/data_models/VideoModel.dart';
-import 'package:files/decoration/my_decoration.dart';
 import 'package:files/helpers/provider_helpers.dart';
-import 'package:files/pages/MediaPage/MediaFiles.dart';
-import 'package:files/pages/MediaPage/MediaStorageInfo.dart';
+import 'package:files/pages/Videos/models/video_folder.dart';
 import 'package:files/pages/Videos/videos_in_folders.dart';
 import 'package:files/pages/Videos/videos_listview.dart';
-import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/videos_provider.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:files/widgets/animated_widgets/my_slide_animation.dart';
@@ -19,7 +15,7 @@ import 'video_menu_options.dart';
 class VideosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final provider = getProvider<VideosProvider>(context);
+    final provider = getProvider<VideosProvider>(context, listen: true);
     // final myProvider = getProvider<MyProvider>(context);
 
     // final videos = provider.videosFiles;
@@ -40,7 +36,7 @@ class VideosPage extends StatelessWidget {
             Expanded(
               child: WillPopScope(
                 onWillPop: () => provider.onGoBack(),
-                child: Selector<VideosProvider, Tuple2<VideoModel, bool>>(
+                child: Selector<VideosProvider, Tuple2<VideoFolder, bool>>(
                   selector: (p0, p1) => Tuple2(p1.selectedVideoFolder, p1.showInFolders),
                   builder: (context, data, child) {
                     var widget;
@@ -50,12 +46,13 @@ class VideosPage extends StatelessWidget {
                       );
                     } else if (data.item1 == null) {
                       widget = VideosInFolders(
-                        videoFolders: provider.videosPath,
-                        onTap: (VideoModel videoModel) => provider.onTap(videoModel),
+                        videoFolders: provider.videosFolder,
+                        onSelect: (VideoFolder folder) => provider.addOrRemoveVideos(folder),
+                        onTap: (VideoFolder folder) => provider.onTap(folder),
                       );
                     } else {
                       widget = VideosListview(
-                        videos: data.item1.videos,
+                        videos: data.item1.files,
                       );
                     }
                     return MySlideAnimation(

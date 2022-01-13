@@ -56,8 +56,8 @@ class MyDecoration {
     return Center(
       heightFactor: heightFactor,
       child: Container(
-        height: 4,
-        width: 30,
+        height: 1.padding,
+        width: 10.width,
         decoration: BoxDecoration(
           color: color ?? Colors.grey[300],
           borderRadius: borderRadius,

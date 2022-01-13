@@ -8,15 +8,19 @@ class Description extends StatelessWidget {
   final Color textColor;
   final String bytes;
   final DateTime createdTime;
-  const Description({Key key, this.textColor, this.bytes, this.createdTime})
-      : super(key: key);
+
+  const Description({
+    Key key,
+    this.textColor,
+    this.bytes,
+    this.createdTime,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final hasSize = bytes != null;
 
-    final size =
-        hasSize ? '| ${FileUtils.formatBytes(int.parse(bytes), 2)}' : '';
+    final size = hasSize ? '| ${FileUtils.formatBytes(int.parse(bytes), 2)}' : '';
     var text = '${DateFormatter.formatDate(createdTime)} $size';
     return Text(
       text,

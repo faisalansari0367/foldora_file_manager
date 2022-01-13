@@ -16,6 +16,7 @@ class VideoUtil {
     return map;
   }
 
+  // ignore: missing_return
   static Future<File> createThumbnail(path) async {
     final apkIconDir = Directory(thumbnailDir);
     if (!apkIconDir.existsSync()) await apkIconDir.create();

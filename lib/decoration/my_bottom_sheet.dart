@@ -2,7 +2,7 @@ import 'package:files/decoration/my_decoration.dart';
 import 'package:flutter/material.dart';
 
 class MyBottomSheet {
-  static Future<void> bottomSheet(BuildContext context, {Widget child}) async {
+  static Future<void> bottomSheet(BuildContext context, {Widget child, AnimationController controller}) async {
     await showModalBottomSheet(
       backgroundColor: Colors.transparent,
       enableDrag: true,

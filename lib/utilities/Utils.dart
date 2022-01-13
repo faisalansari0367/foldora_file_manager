@@ -157,7 +157,7 @@ class FileUtils {
   }
 
   static List<FileSystemEntity> sortListAlphabetically(List<FileSystemEntity> list) {
-    final sort = (a, b) => p.basename(a.path).toLowerCase().compareTo(p.basename(b.path).toLowerCase());
+    final sort = (a, b) => p.basename(a.file).toLowerCase().compareTo(p.basename(b.file).toLowerCase());
     list.sort(sort);
     return list;
   }

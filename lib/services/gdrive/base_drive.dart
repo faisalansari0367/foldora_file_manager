@@ -1,53 +1,65 @@
+import 'dart:async';
 import 'dart:developer';
+import 'dart:io' as io;
 
+import 'package:files/utilities/my_snackbar.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:http/http.dart';
-import 'dart:async';
-import 'dart:io' as io;
 import 'package:path/path.dart' as path;
 
 class MyDrive {
   static DriveApi drive;
+  static bool isReady = false;
   static const mimeTypeFolder = 'application/vnd.google-apps.folder';
+
   MyDrive(Client client) {
+    isReady = true;
     final drive = DriveApi(client);
-    print('drive instantiated ' + client.toString());
+
     MyDrive.drive = drive;
   }
 
   static Future<List<File>> driveFiles({fileId, showAllFiles = false}) async {
-    log('getting drive files...');
+    // var files;
+    final idNotNull = fileId != null;
+    final listFolders = "mimeType='$mimeTypeFolder'";
+    final listFiles = "'$fileId' in parents";
 
-    var files;
-    final q = showAllFiles ? null : "'$fileId' in parents";
+    final whenIdIsNull = showAllFiles ? null : listFolders;
+    final q = idNotNull ? listFiles : whenIdIsNull;
+
+    // we only need iconLink, fileFUllExtension, name, size, createdTime,
     try {
-      if (fileId != null) {
-        files = await drive.files.list(
-          // driveId: fileId,
-          q: q,
-          $fields: '*',
-          supportsAllDrives: true,
-          includeItemsFromAllDrives: true,
-          // corpora: 'drive',
-          // supportsAllDrives: true,
-        );
-        return files.files;
-      }
-      files = await drive.files.list(
-        q: showAllFiles ? null : "mimeType='application/vnd.google-apps.folder'",
+      log('getting drive files...');
+      final files = await drive.files.list(
+        q: q,
         $fields: '*',
+        supportsAllDrives: idNotNull,
+        includeItemsFromAllDrives: idNotNull,
       );
       return files.files;
     } catch (e) {
       log('getting drive files error: $e');
-
       rethrow;
+    }
+  }
+
+  static Future<bool> deleteFiles(List<String> ids) async {
+    try {
+      for (var id in ids) {
+        print('deleting file $id');
+        await drive.files.delete(id);
+        print('file $id deleted');
+      }
+      return true;
+    } catch (e) {
+      MySnackBar.show(content: e.message);
+      return false;
     }
   }
 
   static Future<About> getDriveStorageQuota() async {
     log('getting storage quota...');
-
     try {
       final about = await drive.about.get($fields: '*');
       return about;
@@ -58,11 +70,8 @@ class MyDrive {
   }
 
   static Future<Media> downloadGoogleDriveFile(String fName, String gdID) async {
-    final Media file = await drive.files.get(
-      gdID,
-      downloadOptions: DownloadOptions.fullMedia,
-    );
-
+    final options = DownloadOptions.fullMedia;
+    final Media file = await drive.files.get(gdID, downloadOptions: options);
     return file;
   }
 

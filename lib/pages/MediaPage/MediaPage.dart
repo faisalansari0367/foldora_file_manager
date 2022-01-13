@@ -8,11 +8,10 @@ import 'package:files/utilities/OperationsUtils.dart';
 import 'package:files/utilities/Utils.dart';
 import 'package:files/widgets/FloatingActionButton.dart';
 import 'package:files/widgets/ListBuilder.dart';
-import 'package:files/widgets/MyAppBar.dart';
+import 'package:files/widgets/animated_widgets/my_slide_animation.dart';
+import 'package:files/widgets/my_annotated_region.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'package:provider/provider.dart';
 import './MediaStorageInfo.dart';
@@ -48,20 +47,19 @@ class MediaPage extends StatefulWidget {
 }
 
 class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
-  ScrollController _scrollController;
-  ScrollController _listViewController;
+  ScrollController _scrollController, _listViewController;
   OperationsProvider operations;
   ScrollProvider scrollProvider;
   MyProvider provider;
   static const decoration = MyDecoration.showMediaStorageBackground;
   @override
   void initState() {
-    SystemChrome.setSystemUIOverlayStyle(
-      AppbarUtils.systemUiOverylay(
-        backgroundColor: MyColors.darkGrey,
-        brightness: Brightness.light,
-      ),
-    );
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   AppbarUtils.systemUiOverylay(
+    //     backgroundColor: MyColors.darkGrey,
+    //     brightness: Brightness.light,
+    //   ),
+    // );
     scrollProvider = Provider.of<ScrollProvider>(context, listen: false);
     operations = Provider.of<OperationsProvider>(context, listen: false);
 
@@ -103,26 +101,28 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
       const MediaFiles(
         filesName: 'Internal Storage',
       ),
-      AnimationConfiguration.synchronized(
-        duration: const Duration(milliseconds: 375),
-        child: SlideAnimation(
-          verticalOffset: 50.0,
-          child: FadeInAnimation(
-            child: DirectoryLister(
-              path: storage.path,
-            ),
-          ),
+      MySlideAnimation(
+        child: DirectoryLister(
+          path: storage.path,
         ),
       ),
+      // AnimationConfiguration.synchronized(
+      //   duration: const Duration(milliseconds: 375),
+      //   child: SlideAnimation(
+      //     verticalOffset: 50.0,
+      //     child: FadeInAnimation(
+      //       child: DirectoryLister(
+      //         path: storage.path,
+      //       ),
+      //     ),
+      //   ),
+      // ),
       // DirectoryLister(path: storage.path),
     ];
 
-    return AnnotatedRegion(
-      value: AppbarUtils.systemUiOverylay(
-        backgroundColor: MyColors.darkGrey,
-        brightness: Brightness.light,
-        systemNavigationBarColor: Colors.white,
-      ),
+    return MyAnnotatedRegion(
+      statusBarColor: MyColors.darkGrey,
+      // systemNavigationBarColor: MyColors.darkGrey,
       child: Scaffold(
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: true,
@@ -138,8 +138,7 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                 title: Consumer<OperationsProvider>(
                   builder: (context, provider, child) {
                     final value = provider.selectedMedia;
-                    final size = FileUtils.formatBytes(
-                        provider.selectedItemSizeBytes, 2);
+                    final size = FileUtils.formatBytes(provider.selectedItemSizeBytes, 2);
                     // final getData = operations.getFiles(value);
                     if (value.isEmpty) return Container();
                     final file = value.length > 1 ? 'files' : 'file';
@@ -149,18 +148,16 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                       children: [
                         Text(
                           '${value.length} $file selected',
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1
-                              .copyWith(color: MyColors.appbarActionsColor),
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(color: MyColors.appbarActionsColor),
                         ),
                         SizedBox(height: 5),
                         if (provider.selectedItemSizeBytes != 0)
                           Text(
                             '$size',
-                            style: Theme.of(context).textTheme.caption.copyWith(
-                                color: MyColors.appbarActionsColor
-                                    .withOpacity(.6)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption
+                                .copyWith(color: MyColors.appbarActionsColor.withOpacity(.6)),
                           ),
                       ],
                     );
@@ -188,17 +185,11 @@ class _MediaPageState extends State<MediaPage> with TickerProviderStateMixin {
                           ),
                         );
                       }
-                      return AnimationConfiguration.synchronized(
+                      return MySlideAnimation(
                         key: UniqueKey(),
-                        duration: const Duration(milliseconds: 375),
-                        child: SlideAnimation(
-                          verticalOffset: 50.0,
-                          child: FadeInAnimation(
-                            child: DirectoryLister(
-                              path: storage.currentPath,
-                              scrollController: _listViewController,
-                            ),
-                          ),
+                        child: DirectoryLister(
+                          path: storage.currentPath,
+                          scrollController: _listViewController,
                         ),
                       );
                     },

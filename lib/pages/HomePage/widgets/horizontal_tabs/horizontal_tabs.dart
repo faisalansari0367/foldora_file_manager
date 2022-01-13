@@ -14,27 +14,10 @@ class HorizontalTabs extends StatefulWidget {
   State<HorizontalTabs> createState() => _HorizontalTabsState();
 }
 
-class _HorizontalTabsState extends State<HorizontalTabs>
-    with AutomaticKeepAliveClientMixin {
-  static final Widget sizedBox =
-      SizedBox(width: 5 * Responsive.widthMultiplier);
+class _HorizontalTabsState extends State<HorizontalTabs> with AutomaticKeepAliveClientMixin {
+  static final Widget sizedBox = SizedBox(width: 5.width);
 
-  static final children = <Widget>[
-    // sizedBox,
-    PhotosTab(),
-
-    sizedBox,
-
-    MediaTab(),
-
-    sizedBox,
-    VideosTab(),
-
-    sizedBox,
-    DriveTab(),
-
-    // sizedBox,
-  ];
+  static final children = <Widget>[PhotosTab(), sizedBox, MediaTab(), sizedBox, VideosTab(), sizedBox, DriveTab()];
 
   @override
   Widget build(BuildContext context) {
