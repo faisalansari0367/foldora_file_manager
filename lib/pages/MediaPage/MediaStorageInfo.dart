@@ -1,8 +1,10 @@
+import 'package:files/decoration/my_decoration.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
+
 import './LinearPercentBar.dart';
-import '../../sizeConfig.dart';
 import './ShowStorageDetails.dart';
+import '../../sizeConfig.dart';
 
 class MediaStorageInfo extends StatelessWidget {
   final String path, storageName;
@@ -27,8 +29,8 @@ class MediaStorageInfo extends StatelessWidget {
         decoration: BoxDecoration(
           color: MyColors.darkGrey,
           borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(30.0),
-            bottomLeft: Radius.circular(30.0),
+            bottomRight: MyDecoration.circularRadius,
+            bottomLeft: MyDecoration.circularRadius,
           ),
         ),
         child: Column(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+
 import 'package:files/data_models/AudioModel.dart';
 import 'package:files/data_models/DocumentsModel.dart';
 import 'package:files/data_models/ImageModel.dart';
@@ -139,7 +140,7 @@ class FileUtils {
     final decodeJson = jsonDecode(json);
     var _size = 0;
     final storePhotos = <ImageModel>[];
-    for (final  item in decodeJson) {
+    for (final item in decodeJson) {
       var folderSize = 0;
       // final model = ImageModel.fromJson(item);
       for (final i in item['files']) {
@@ -157,7 +158,7 @@ class FileUtils {
   }
 
   static List<FileSystemEntity> sortListAlphabetically(List<FileSystemEntity> list) {
-    final sort = (a, b) => p.basename(a.file).toLowerCase().compareTo(p.basename(b.file).toLowerCase());
+    final sort = (a, b) => p.basename(a.path).toLowerCase().compareTo(p.basename(b.path).toLowerCase());
     list.sort(sort);
     return list;
   }
@@ -197,7 +198,7 @@ class FileUtils {
       if (showHidden) sortedList += hiddenFiles;
       return sortedList;
     } catch (e) {
-      // print('error from directory LIst: $e');
+      print('error from directory LIst: $e');
       rethrow;
     }
   }

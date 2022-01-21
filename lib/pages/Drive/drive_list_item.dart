@@ -38,7 +38,8 @@ class _DriveListItemState extends State<DriveListItem> {
   // static const duration = Duration(milliseconds: 300);
   @override
   Widget build(BuildContext context) {
-    final Widget padding = Padding(
+    final Widget child = Container(
+      // color: Colors.white,
       padding: EdgeInsets.symmetric(
         horizontal: Responsive.width(4),
         vertical: Responsive.height(0.6),
@@ -59,7 +60,7 @@ class _DriveListItemState extends State<DriveListItem> {
     return InkWell(
       onTap: widget.ontap,
       onLongPress: widget.onLongPress,
-      child: padding,
+      child: child,
     );
   }
 }
@@ -86,4 +87,3 @@ class _Item extends StatelessWidget {
     );
   }
 }
-

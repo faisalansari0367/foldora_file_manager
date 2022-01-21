@@ -1,24 +1,19 @@
-import 'package:files/decoration/my_decoration.dart';
-import 'package:files/pages/Drive/empty_folder.dart';
-import 'package:files/pages/Drive/list_view_switcher.dart';
+import 'package:files/pages/Drive/drive_sliver_listview.dart';
 import 'package:files/provider/drive_provider/drive_deleter_provider.dart';
 import 'package:files/provider/drive_provider/drive_downloader_provider.dart';
 import 'package:files/provider/drive_provider/drive_provider.dart';
 import 'package:files/services/gdrive/base_drive.dart';
 import 'package:files/services/gdrive/drive_storage.dart';
-import 'package:files/widgets/animated_widgets/my_slide_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:googleapis/drive/v3.dart' show File;
 import 'package:provider/provider.dart';
 
-import 'drive_list_view.dart';
-
-class DriveFutureBuilder extends StatefulWidget {
+class DriveSliverFutureBuilder extends StatefulWidget {
   final String fileId;
   final ScrollController controller;
   final bool showAllFiles;
 
-  const DriveFutureBuilder({
+  const DriveSliverFutureBuilder({
     Key key,
     this.fileId,
     this.controller,
@@ -26,10 +21,10 @@ class DriveFutureBuilder extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<DriveFutureBuilder> createState() => _DriveFutureBuilderState();
+  State<DriveSliverFutureBuilder> createState() => _DriveSliverFutureBuilderState();
 }
 
-class _DriveFutureBuilderState extends State<DriveFutureBuilder> {
+class _DriveSliverFutureBuilderState extends State<DriveSliverFutureBuilder> {
   bool _isLoading = false;
   var _data = <File>[];
   DriveStorage storage;
@@ -62,9 +57,9 @@ class _DriveFutureBuilderState extends State<DriveFutureBuilder> {
     if (data == null) return;
     try {
       _data = data.map((e) => File.fromJson(e)).toList();
-      // setState(() {});
+      setState(() {});
     } catch (e) {
-      print('some stupid error $e');
+      print('some fucking stupid error $e');
       rethrow;
     }
     if (_data.isNotEmpty) setLoading(false);
@@ -91,20 +86,11 @@ class _DriveFutureBuilderState extends State<DriveFutureBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return MySlideAnimation(
-      curve: MyDecoration.curve,
-      child: ListViewSwitcher(
-        isLoading: _isLoading,
-        child: EmptyFolder(
-          isEmpty: _data.isEmpty,
-          child: DriveListview(
-            controller: widget.controller,
-            data: _data,
-            onTap: (file) => onTap(file, context),
-            onTapIcon: onTapIcon,
-          ),
-        ),
-      ),
+    return DriveSliverListview(
+      controller: widget.controller,
+      data: _data,
+      onTap: (file) => onTap(file, context),
+      onTapIcon: onTapIcon,
     );
   }
 

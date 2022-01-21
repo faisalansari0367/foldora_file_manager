@@ -1,14 +1,14 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:extended_image/extended_image.dart';
-import 'package:files/decoration/my_decoration.dart';
 import 'package:files/decoration/my_bottom_sheet.dart';
+import 'package:files/decoration/my_decoration.dart';
 import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/sizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 import 'options_bottom_sheet.dart';
@@ -34,7 +34,13 @@ class _FullScreenImageState extends State<FullScreenImage> with SingleTickerProv
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
+    _animationController = AnimationController(
+      vsync: this,
+      duration: duration,
+      // lowerBound: 0.8,
+
+      // upperBound: 1.0,
+    );
     controller = PageController(initialPage: widget.index);
   }
 
@@ -72,7 +78,6 @@ class _FullScreenImageState extends State<FullScreenImage> with SingleTickerProv
                   mode: ExtendedImageMode.gesture,
                   fit: BoxFit.contain,
                   onDoubleTap: onDoubleTap,
-                               
                 );
                 return extendedImage;
               },
@@ -146,9 +151,7 @@ class _FullScreenImageState extends State<FullScreenImage> with SingleTickerProv
     };
     final curvedAnimation = CurvedAnimation(parent: _animationController, curve: MyDecoration.curve);
     _animation = Tween<double>(begin: begin, end: end).animate(curvedAnimation);
-
     _animation.addListener(animationListener);
-
     _animationController.forward();
   }
 }

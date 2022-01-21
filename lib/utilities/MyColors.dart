@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class MyColors {
@@ -15,6 +14,8 @@ class MyColors {
 
   //
   static final themeData = ThemeData(
+    // fontFamily: GoogleFonts.roboto().fontFamily,
+
     appBarTheme: AppBarTheme(
       actionsIconTheme: IconThemeData(
         color: appbarActionsColor,

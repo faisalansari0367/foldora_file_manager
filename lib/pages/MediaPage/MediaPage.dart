@@ -12,8 +12,8 @@ import 'package:files/widgets/animated_widgets/my_slide_animation.dart';
 import 'package:files/widgets/my_annotated_region.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
 import 'package:provider/provider.dart';
+
 import './MediaStorageInfo.dart';
 import '../../provider/MyProvider.dart';
 import '../../provider/OperationsProvider.dart';

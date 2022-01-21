@@ -1,6 +1,7 @@
 import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/drive_provider/drive_deleter_provider.dart';
 import 'package:files/provider/drive_provider/drive_downloader_provider.dart';
+import 'package:files/provider/local_auth_provider.dart';
 import 'package:files/provider/videos_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +46,9 @@ class AddProviders extends StatelessWidget {
         ),
         ChangeNotifierProvider<VideosProvider>(
           create: (context) => VideosProvider(),
+        ),
+        ChangeNotifierProvider<LocalAuth>(
+          create: (context) => LocalAuth(),
         ),
       ],
       child: child,

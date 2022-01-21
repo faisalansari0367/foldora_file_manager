@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:files/decoration/my_decoration.dart';
 import 'package:files/widgets/FileNotFoundScreen.dart';
 import 'package:files/widgets/animated_widgets/my_slide_animation.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,6 @@ class MyGridView extends StatefulWidget {
 }
 
 class _MyGridViewState extends State<MyGridView> {
-  final int _crossAxisCount = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +23,34 @@ class _MyGridViewState extends State<MyGridView> {
     return MySlideAnimation(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: StaggeredGridView.countBuilder(
-          padding: const EdgeInsets.all(8.0),
-          crossAxisCount: _crossAxisCount,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          physics: MyDecoration.physics,
-          itemCount: widget.photos.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Photo(files: widget.photos, index: index);
-          },
-          staggeredTileBuilder: (int index) => StaggeredTile.count(1, index.isEven ? 1.2 : 1.8),
+        child: GridView.custom(
+          gridDelegate: SliverQuiltedGridDelegate(
+            crossAxisCount: 2,
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
+            repeatPattern: QuiltedGridRepeatPattern.inverted,
+            pattern: [
+              QuiltedGridTile(2, 2),
+              QuiltedGridTile(1, 1),
+              QuiltedGridTile(1, 1),
+              QuiltedGridTile(1, 2),
+            ],
+          ),
+          childrenDelegate: SliverChildBuilderDelegate(
+            (context, index) => Photo(files: widget.photos, index: index),
+          ),
+          // childrenDelegate: childrenDelegate,
+          // )(
+          // padding: const EdgeInsets.all(8.0),
+          // crossAxisCount: _crossAxisCount,
+          // crossAxisSpacing: 12,
+          // mainAxisSpacing: 12,
+          // physics: MyDecoration.physics,
+          // itemCount: widget.photos.length,
+          // itemBuilder: (BuildContext context, int index) {
+          //   return Photo(files: widget.photos, index: index);
+          // },
+          // staggeredTileBuilder: (int index) => StaggeredTile.count(1, index.isEven ? 1.2 : 1.8),
         ),
       ),
     );

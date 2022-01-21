@@ -1,4 +1,3 @@
-
 import 'package:files/pages/Videos/models/video_entity.dart';
 import 'package:files/pages/Videos/models/video_file.dart';
 import 'package:files/pages/Videos/models/video_folder.dart';
@@ -8,9 +7,9 @@ import 'package:storage_path/storage_path.dart';
 
 class VideosProvider extends ChangeNotifier {
   int _videosSize = 0;
-  List<VideoEntity> _selectedFiles = [];
-  List<VideoFolder> _videosFolder = [];
-  List<VideoFile> _videos = [];
+  final List<VideoEntity> _selectedFiles = [];
+  final List<VideoFolder> _videosFolder = [];
+  final List<VideoFile> _videos = [];
 
   VideoFolder selectedVideoFolder;
   bool showInFolders = false;

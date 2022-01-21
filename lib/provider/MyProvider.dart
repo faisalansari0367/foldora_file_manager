@@ -71,12 +71,14 @@ class MyProvider extends ChangeNotifier {
     final args = {'path': path, 'showHidden': isShowHidden};
     try {
       if (streamSubscription != null) await streamSubscription.cancel();
-      final dir = Directory(path).watch(recursive: true);
+      final dir = Directory(path).watch();
       dir.listen(streamListener);
-      final result = await FileUtils.worker.doWork(FileUtils.directoryList, args);
+      // final result = await FileUtils.worker.doWork(FileUtils.directoryList, args);
+      final result = await FileUtils.directoryList(args);
+
       return result;
     } catch (e) {
-      rethrow;
+                                rethrow;
     }
   }
 

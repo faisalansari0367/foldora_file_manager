@@ -21,11 +21,14 @@ class _DriveSignInScreenState extends State<DriveSignInScreen> {
   @override
   void initState() {
     super.initState();
-    onPressed();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      onPressed();
+    });
   }
 
   void onPressed() async {
-    await Auth.initializeFirebase(context: context);
+    // ignore: unawaited_futures
+    Auth.initializeFirebase();
     // ignore: unawaited_futures
     if (mounted) getProvider<DriveProvider>(context).init();
     await Navigator.pushReplacement(

@@ -7,12 +7,12 @@ import 'package:provider/provider.dart';
 import 'description.dart';
 import 'drive_list_item.dart';
 
-class DriveListview extends StatelessWidget {
+class DriveSliverListview extends StatelessWidget {
   final ScrollController controller;
   final List<File> data;
   final Function(File) onTap, onTapIcon;
 
-  const DriveListview({
+  const DriveSliverListview({
     Key key,
     this.controller,
     this.data,
@@ -22,16 +22,28 @@ class DriveListview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      controller: controller ?? ScrollController(),
-      shrinkWrap: true,
-      itemCount: data.length,
-      itemBuilder: itemBuilder,
+    // print('building drive sliver list items');
+    // return CustomScrollView(
+    //   slivers: <Widget>[
+    //     SliverList(
+    //       delegate: SliverChildBuilderDelegate(itemBuilder),
+    //     ),
+    //   ],
+    // );
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        itemBuilder,
+        childCount: data.length,
+
+        // controller: controller ?? ScrollController(),
+        // shrinkWrap: false,
+        // itemCount: data.length,
+      ),
     );
   }
 
   Widget itemBuilder(context, index) {
-    // print('drive item');
+    print('driver sliver list view builder building');
     final file = data[index];
     return DriveListItem(
       title: Text(

@@ -19,30 +19,34 @@ abstract class AuthImplementation {
 class Auth {
   static final googleSignIn = GoogleSignIn(scopes: [DriveApi.driveScope]);
 
-  static Future<void> initializeFirebase({BuildContext context}) async {
+  static Future<void> initializeFirebase() async {
     try {
-      if (await googleSignIn.isSignedIn()) {
+      var isSignedIn = await googleSignIn.isSignedIn();
+      if (isSignedIn) {
         await initDrive();
       } else {
         await signInWithGoogle(googleSignIn);
       }
     } catch (e) {
-      MySnackBar.show(content: e.message);
+      log(e.toString());
+      MySnackBar.show(content: e.code);
     }
   }
 
   static Future<void> initDrive() async {
-    var result;
-    result = await googleSignIn.signInSilently();
-    result ??= await googleSignIn.signIn();
-    final client = await getClient(result);
-    await signInWithGoogle(googleSignIn);
+    GoogleSignInAccount gsa;
+    gsa = await googleSignIn.signInSilently();
+    gsa ??= await googleSignIn.signIn();
+    log('sign in silently result: $gsa');
+    final client = await getClient(gsa);
+    // await signInWithGoogle(googleSignIn);
     MyDrive(client);
   }
 
   static Future<GoogleHttpClient> getClient(GoogleSignInAccount googleSignInAccount) async {
     final drive = DriveStorage();
     final headers = await googleSignInAccount.authHeaders;
+    log('headers: $headers');
     await drive.saveClient(headers);
     return GoogleHttpClient(headers);
   }

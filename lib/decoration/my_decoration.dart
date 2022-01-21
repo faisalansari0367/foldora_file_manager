@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import '../sizeConfig.dart';
 
 class MyDecoration {
-  static const Radius circularRadius = Radius.circular(25);
+  static const Radius circularRadius = Radius.circular(32);
+  static const Radius bottomSheetCorner = Radius.circular(32);
+
   static const BorderRadius borderRadius = BorderRadius.all(circularRadius);
   static const BouncingScrollPhysics physics = BouncingScrollPhysics();
   static const Curve curve = Curves.fastOutSlowIn;
@@ -12,16 +14,16 @@ class MyDecoration {
   // static final borderRadius = BorderRadius.circular(25.0);
 
   static const BorderRadius borderRadiusTlr = BorderRadius.only(
-    topLeft: circularRadius,
-    topRight: circularRadius,
+    topLeft: bottomSheetCorner,
+    topRight: bottomSheetCorner,
   );
 
   static const showMediaStorageBackground = BoxDecoration(
     gradient: LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
-      colors: [MyColors.darkGrey, Colors.white],
-      stops: [0.4, 0.1],
+      colors: [MyColors.darkGrey, Colors.transparent],
+      stops: [0.4, 0.6],
     ),
   );
 

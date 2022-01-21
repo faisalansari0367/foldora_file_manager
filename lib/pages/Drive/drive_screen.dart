@@ -1,3 +1,4 @@
+import 'package:files/decoration/my_bottom_sheet.dart';
 import 'package:files/decoration/my_decoration.dart';
 import 'package:files/helpers/provider_helpers.dart';
 import 'package:files/pages/Drive/drive_fab.dart';
@@ -5,6 +6,7 @@ import 'package:files/pages/Drive/drive_listview_builder.dart';
 import 'package:files/pages/MediaPage/MediaFiles.dart';
 import 'package:files/pages/MediaPage/MediaStorageInfo.dart';
 import 'package:files/provider/drive_provider/drive_provider.dart';
+import 'package:files/services/gdrive/auth.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:files/widgets/my_annotated_region.dart';
@@ -32,20 +34,56 @@ class _DriveScreenState extends State<DriveScreen> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    // final curve = CurvedAnimation(curve: Curves.bounceIn, parent: _animationController);
-    // _animationController = AnimationController(
-    //   vsync: this,
-    //   duration: const Duration(milliseconds: 500),
-    //   upperBound: 0.9,
-    //   lowerBound: 0.0,
-    // );
     controller = ScrollController();
-    init();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      init();
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  Future<void> signingIn() async {
+    final textTheme = ThemeData.dark().textTheme;
+    await MyBottomSheet.bottomSheet(
+      context,
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: 5.padding,
+          right: 5.width,
+          left: 5.width,
+          bottom: 5.padding,
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 1,
+              ),
+            ),
+            SizedBox(width: 5.width),
+            Text(
+              'Signing in please wait...',
+              style: textTheme.bodyText2,
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> init() async {
     final driveProvider = getProvider<DriveProvider>(context);
-    await driveProvider.getDriveFiles();
+    // ignore: unawaited_futures
+    signingIn();
+    await Auth.initializeFirebase();
+    // await driveProvider.getDriveFiles();
+    Navigator.pop(context);
+    await driveProvider.init();
   }
 
   @override
@@ -54,7 +92,6 @@ class _DriveScreenState extends State<DriveScreen> with SingleTickerProviderStat
     controller.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -78,12 +115,10 @@ class _DriveScreenState extends State<DriveScreen> with SingleTickerProviderStat
               },
             ),
           ),
-          // b
         ),
         body: Container(
           decoration: MyDecoration.showMediaStorageBackground,
           child: SingleChildScrollView(
-            controller: controller,
             physics: MyDecoration.physics,
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -106,21 +141,21 @@ class _DriveScreenState extends State<DriveScreen> with SingleTickerProviderStat
                 MediaFiles(filesName: 'Drive Files', menu: DriveMenuOptions()),
                 Container(
                   color: MyColors.white,
-                  child: Selector<DriveProvider, Tuple2<int, bool>>(
-                    selector: (p0, p1) => Tuple2(p1.selectedIndex, p1.showAllFiles),
-                    builder: (context, data, child) {
-                      final value = data.item1;
-                      final fileId = driveProvider.navRail[value].id;
-                      return WillPopScope(
-                        onWillPop: driveProvider.onWillPop,
-                        child: DriveFutureBuilder(
+                  child: WillPopScope(
+                    onWillPop: driveProvider.onWillPop,
+                    child: Selector<DriveProvider, Tuple2<int, bool>>(
+                      selector: (p0, p1) => Tuple2(p1.selectedIndex, p1.showAllFiles),
+                      builder: (context, data, child) {
+                        final value = data.item1;
+                        final fileId = driveProvider.navRail[value].id;
+                        return DriveFutureBuilder(
                           key: UniqueKey(),
                           controller: controller,
                           fileId: fileId,
                           showAllFiles: data.item2,
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],

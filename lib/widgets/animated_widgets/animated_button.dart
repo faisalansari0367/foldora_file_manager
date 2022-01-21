@@ -16,13 +16,14 @@ class _AnimatedButtonState extends State<AnimatedButton> with SingleTickerProvid
   AnimationController _controller;
   Animation<double> _scale;
 
-  static const duration = Duration(milliseconds: 500);
+  static const duration = Duration(milliseconds: 125);
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this, duration: duration);
-    final animation = CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
-    _scale = Tween<double>(begin: 1.0, end: 0.95).animate(animation);
+    final animation = CurvedAnimation(parent: _controller, curve: Curves.decelerate);
+    final tween = Tween<double>(begin: 1.0, end: 0.97);
+    _scale = tween.animate(animation);
     super.initState();
   }
 
@@ -34,19 +35,22 @@ class _AnimatedButtonState extends State<AnimatedButton> with SingleTickerProvid
     super.dispose();
   }
 
-  void _onTapDown(TapDownDetails details) {
-    _controller.forward();
-  }
+  void _onTapDown(TapDownDetails details) => _controller.forward();
 
-  void _onTapUp(TapUpDetails details) {
-    _controller.reverse();
+  void _onTapUp(TapUpDetails details) => _controller.reverse();
+
+  void _onTap() async {
+    await _controller.forward();
+    await _controller.reverse();
+
+    widget.onTap();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       key: UniqueKey(),
-      onTap: widget.onTap,
+      onTap: _onTap,
       onTapUp: _onTapUp,
       onTapDown: _onTapDown,
       child: AnimatedBuilder(

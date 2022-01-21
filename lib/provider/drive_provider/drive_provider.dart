@@ -120,6 +120,7 @@ class DriveProvider extends ChangeNotifier {
       await getStorageQuota();
       _completer.complete();
       await diskSpace();
+      await getDriveFiles();
     }
   }
 

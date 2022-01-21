@@ -1,4 +1,3 @@
-import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
 
 import '../../sizeConfig.dart';
@@ -12,7 +11,7 @@ class MediaFiles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: MyColors.white,
+      color: Colors.white,
       padding: EdgeInsets.only(
         top: 2 * Responsive.heightMultiplier,
         bottom: 1 * Responsive.heightMultiplier,
@@ -29,7 +28,7 @@ class MediaFiles extends StatelessWidget {
             ),
           ),
           Spacer(),
-          if(menu != null) menu,
+          if (menu != null) menu,
         ],
       ),
     );

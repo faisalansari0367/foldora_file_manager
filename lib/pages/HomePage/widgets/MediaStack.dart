@@ -1,3 +1,4 @@
+import 'package:files/decoration/my_decoration.dart';
 import 'package:files/widgets/animated_widgets/animated_button.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +40,7 @@ class MediaStack extends StatelessWidget {
               width: 55 * Responsive.widthMultiplier,
               decoration: BoxDecoration(
                 color: color,
-                borderRadius: BorderRadius.circular(32.0),
+                borderRadius: MyDecoration.borderRadius,
               ),
             ),
           ),
@@ -115,7 +116,7 @@ class MediaStack extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: 15 * Responsive.widthMultiplier),
                   child: Text(
-                    size,          
+                    size,
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       color: Colors.grey[700],

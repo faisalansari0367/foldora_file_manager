@@ -5,13 +5,14 @@ import 'package:files/widgets/shimmer_animattion.dart';
 import 'package:flutter/material.dart';
 
 class DriveListItemPlaceholder extends StatelessWidget {
-  const DriveListItemPlaceholder({Key key}) : super(key: key);
+  final int itemCount;
+  const DriveListItemPlaceholder({Key key, this.itemCount =10}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: MyDecoration.physics,
-      itemCount: 20,
+      itemCount: itemCount,
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
         return DriveListItem(

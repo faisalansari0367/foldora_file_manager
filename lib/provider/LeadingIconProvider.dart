@@ -35,8 +35,7 @@ class IconProvider extends ChangeNotifier {
     final _systemApps = SqfLite.systemApps;
 
     final _systemAppsData = await _systemApps.query(SqfLite.systemAppsTable);
-    systemApps =
-        await FileUtils.worker.doWork(SqfLite.fromMap, _systemAppsData);
+    systemApps = await FileUtils.worker.doWork(SqfLite.fromMap, _systemAppsData);
 
     final _localAppsData = await _localApps.query(SqfLite.localAppsTable);
     localApps = await FileUtils.worker.doWork(SqfLite.fromMap, _localAppsData);
@@ -52,8 +51,7 @@ class IconProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  static Widget forQueryingDatabase(
-      {@required Future future, Widget initialData}) {
+  static Widget forQueryingDatabase({@required Future future, Widget initialData}) {
     return FutureBuilder<Widget>(
       future: future,
       initialData: initialData,
@@ -69,8 +67,7 @@ class IconProvider extends ChangeNotifier {
 
   static final IconData folderIcon = Icons.folder_open;
 
-  Future<Widget> _toShowApkIcon(path,
-      {iconBgColor, iconColor, decoration}) async {
+  Future<Widget> _toShowApkIcon(path, {iconBgColor, iconColor, decoration}) async {
     final result = Widgets.folderIcons(
       Widgets.fileIcon,
       bgColor: iconBgColor,
@@ -78,10 +75,9 @@ class IconProvider extends ChangeNotifier {
       decoration: decoration,
     );
 
-    final appsData = await DeviceApps.getAppByApkFile([path]);
+    final appsData = await DeviceApps.getAppByApkFile([path.path]);
     if (appsData.isEmpty) return result;
-    final List<App> apps =
-        await FileUtils.worker.doWork(App.fromList, appsData);
+    final List<App> apps = await FileUtils.worker.doWork(App.fromList, appsData);
     await SqfLite.isReady;
     await SqfLite.localApps.insert(
       SqfLite.localAppsTable,
@@ -91,8 +87,7 @@ class IconProvider extends ChangeNotifier {
     return Widgets.forImage(apps[0].appIcon);
   }
 
-  Future<Widget> _createVideoThumbnail(path,
-      {iconBgColor, iconColor, decoration, radius}) async {
+  Future<Widget> _createVideoThumbnail(path, {iconBgColor, iconColor, decoration, radius}) async {
     String filePath;
     try {
       filePath = await FileUtils.createThumbnail(path);
@@ -140,10 +135,7 @@ class IconProvider extends ChangeNotifier {
   }
 
   Widget switchCaseForIcons(FileSystemEntity data,
-      {Color iconBgColor,
-      Color iconColor,
-      BoxDecoration decoration,
-      double imageRadius}) {
+      {Color iconBgColor, Color iconColor, BoxDecoration decoration, double imageRadius}) {
     if (data is Directory) {
       return _showIcon(
         data.path,
@@ -234,30 +226,26 @@ class IconProvider extends ChangeNotifier {
   Widget video(data, {iconBgColor, iconColor, decoration, imageRadius}) {
     final map = FileUtils.isVideoThumbnailExist(data.file);
     return map['isFileExist']
-        ? Widgets.forImage(map['thumb'],
-            decoration: decoration, radius: imageRadius)
+        ? Widgets.forImage(map['thumb'], decoration: decoration, radius: imageRadius)
         : forQueryingDatabase(
-            future: _createVideoThumbnail(data.file,
-                decoration: decoration, radius: imageRadius),
-            initialData: Widgets.folderIcons(Icons.videocam,
-                bgColor: iconBgColor,
-                iconColor: iconColor,
-                decoration: decoration),
+            future: _createVideoThumbnail(data.file, decoration: decoration, radius: imageRadius),
+            initialData:
+                Widgets.folderIcons(Icons.videocam, bgColor: iconBgColor, iconColor: iconColor, decoration: decoration),
           );
   }
 
   Widget caseApk(data, {iconBgColor, iconColor, decoration, double radius}) {
     Widget widget;
-    final result = Widgets.folderIcons(Widgets.fileIcon,
-        bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
+    final result =
+        Widgets.folderIcons(Widgets.fileIcon, bgColor: iconBgColor, iconColor: iconColor, decoration: decoration);
 
     for (final item in localApps) {
-      if (item.filePath == data.file) {
+      if (item.filePath == data.path) {
         widget = Widgets.forImage(item.icon, radius: 10);
       }
     }
     widget ??= forQueryingDatabase(
-      future: _toShowApkIcon(data.file),
+      future: _toShowApkIcon(data),
       initialData: result,
     );
     return widget;

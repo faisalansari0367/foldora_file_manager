@@ -33,7 +33,7 @@ class MyDrive {
       log('getting drive files...');
       final files = await drive.files.list(
         q: q,
-        $fields: '*',
+        $fields: 'files(name, iconLink, size, createdTime, fullFileExtension, mimeType, id)',
         supportsAllDrives: idNotNull,
         includeItemsFromAllDrives: idNotNull,
       );

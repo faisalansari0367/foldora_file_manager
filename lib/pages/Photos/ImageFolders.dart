@@ -101,7 +101,7 @@ class FolderImage extends StatelessWidget {
                 children: [
                   Text(
                     folderName ?? '',
-                    style: theme.subtitle2.copyWith(color: MyColors.whitish),
+                    style: theme.bodyText2.copyWith(color: MyColors.whitish),
                   ),
                   SizedBox(height: 5),
                   Text(
@@ -110,9 +110,11 @@ class FolderImage extends StatelessWidget {
                   ),
                 ],
               ),
-              Text(
-                '$folderSize',
-                style: theme.caption.copyWith(color: MyColors.whitish),
+              Flexible(
+                child: Text(
+                  '$folderSize',
+                  style: theme.caption.copyWith(color: MyColors.whitish, overflow: TextOverflow.ellipsis),
+                ),
               ),
             ],
           ),
