@@ -1,11 +1,13 @@
-import 'package:files/pages/HomePage/widgets/horizontal_tabs/horizontal_tabs.dart';
 import 'package:files/pages/HomePage/widgets/circleChartAndFilePercent.dart';
+import 'package:files/pages/HomePage/widgets/horizontal_tabs/horizontal_tabs.dart';
 import 'package:files/provider/storage_path_provider.dart';
+import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/FloatingActionButton.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
+
 import '../../sizeConfig.dart';
 
 class HomePage extends StatefulWidget {
@@ -57,6 +59,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       floatingActionButton: FAB(),
       appBar: MyAppBar(
+        leading: Icon(
+          Icons.menu,
+          color: MyColors.appbarActionsColor,
+        ),
         backgroundColor: Colors.white,
         systemNavbarColor: Colors.white,
         iconData: Icons.menu,

@@ -50,7 +50,7 @@ class FileUtils {
   }
 
   static Map<String, dynamic> isVideoThumbnailExist(path) {
-    final fileName = p.basenameWithoutExtension(path);
+    final fileName = p.basenameWithoutExtension(path.path);
     final thumb = File('$apkIconPath/$fileName.png');
     final isFileExist = thumb.existsSync();
     final map = <String, dynamic>{};

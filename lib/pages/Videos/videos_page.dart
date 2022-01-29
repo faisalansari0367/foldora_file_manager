@@ -21,49 +21,41 @@ class VideosPage extends StatelessWidget {
     // final videos = provider.videosFiles;
     return MyAnnotatedRegion(
       child: Scaffold(
-        appBar: MyAppBar(actions: [VideoMenuOptions()]),
-        body: Column(
-          children: [
-            // MediaStorageInfo(
-            //   availableBytes: myProvider.spaceInfo.first.total - myProvider.spaceInfo.first.used,
-            //   totalBytes: myProvider.spaceInfo.first.total,
-            //   usedBytes: provider.videosSize,
-            //   storageName: 'Videos',
-            // ),
-            // MediaFiles(
-            //   filesName: 'Video Files',
-            // ),
-            Expanded(
-              child: WillPopScope(
-                onWillPop: () => provider.onGoBack(),
-                child: Selector<VideosProvider, Tuple2<VideoFolder, bool>>(
-                  selector: (p0, p1) => Tuple2(p1.selectedVideoFolder, p1.showInFolders),
-                  builder: (context, data, child) {
-                    var widget;
-                    if (data.item2 && data.item1 == null) {
-                      widget = VideosListview(
-                        videos: provider.videosFiles,
-                      );
-                    } else if (data.item1 == null) {
-                      widget = VideosInFolders(
-                        videoFolders: provider.videosFolder,
-                        onSelect: (VideoFolder folder) => provider.addOrRemoveVideos(folder),
-                        onTap: (VideoFolder folder) => provider.onTap(folder),
-                      );
-                    } else {
-                      widget = VideosListview(
-                        videos: data.item1.files,
-                      );
-                    }
-                    return MySlideAnimation(
-                      key: UniqueKey(),
-                      child: widget,
-                    );
-                  },
-                ),
-              ),
-            ),
+        appBar: MyAppBar(
+          actions: [
+            provider.selectedFiles.isNotEmpty
+                ? IconButton(onPressed: provider.delete, icon: Icon(Icons.delete))
+                : SizedBox.shrink(),
+            VideoMenuOptions(),
           ],
+          // title: Text('Videos'),
+        ),
+        body: WillPopScope(
+          onWillPop: () => provider.onGoBack(),
+          child: Selector<VideosProvider, Tuple2<VideoFolder, bool>>(
+            selector: (p0, p1) => Tuple2(p1.selectedVideoFolder, p1.showInFolders),
+            builder: (context, data, child) {
+              var widget;
+              if (data.item2 && data.item1 == null) {
+                widget = VideosInFolders(
+                  videoFolders: provider.videosFolder,
+                  onSelect: (VideoFolder folder) => provider.addOrRemoveVideos(folder),
+                  onTap: (VideoFolder folder) => provider.onTap(folder),
+                  // selected: provider.selectedFiles.contains(element),
+                );
+              } else {
+                widget = VideosListview(
+                  videos: data.item1?.files ?? provider.videosFiles,
+                );
+              }
+
+              return MySlideAnimation(
+                // key: UniqueKey(),
+                curve: Curves.fastOutSlowIn,
+                child: widget,
+              );
+            },
+          ),
         ),
       ),
     );

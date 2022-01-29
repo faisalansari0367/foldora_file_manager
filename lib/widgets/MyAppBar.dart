@@ -7,12 +7,12 @@ import 'package:files/utilities/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
 import '../sizeConfig.dart';
 import 'MyDropDown.dart';
 import 'Search.dart';
-import 'package:path/path.dart' as p;
 
 class AppbarUtils {
   static const duration = Duration(milliseconds: 300);
@@ -158,7 +158,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final IconData iconData;
   final bool menu;
   final bool bottomNavBar;
-  final Widget bottom, title;
+  final Widget bottom, title, leading;
   final Brightness brightness;
   final List<Widget> actions;
   // final StorageType storageType;
@@ -171,6 +171,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.brightness = Brightness.light,
     this.actions,
     this.title,
+    this.leading,
     this.systemNavbarColor = Colors.transparent,
   });
 
@@ -184,7 +185,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       systemOverlayStyle:
           AppbarUtils.systemUiOverylay(brightness: brightness, systemNavigationBarColor: systemNavbarColor),
       backgroundColor: color,
-      leading: AppbarUtils.backIcon(context),
+      leading: leading ?? AppbarUtils.backIcon(context),
       elevation: 0.0,
       actions: actions ?? [AppbarUtils.searchIcon(context), MyDropDown()],
       bottom: bottom,

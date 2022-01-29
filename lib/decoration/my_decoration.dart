@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import '../sizeConfig.dart';
 
 class MyDecoration {
-  static const Radius circularRadius = Radius.circular(32);
-  static const Radius bottomSheetCorner = Radius.circular(32);
-
-  static const BorderRadius borderRadius = BorderRadius.all(circularRadius);
-  static const BouncingScrollPhysics physics = BouncingScrollPhysics();
-  static const Curve curve = Curves.fastOutSlowIn;
+  static const circularRadius = Radius.circular(32);
+  static const bottomSheetCorner = Radius.circular(32);
+  static const duration = Duration(milliseconds: 375);
+  static const borderRadius = BorderRadius.all(circularRadius);
+  static const physics = BouncingScrollPhysics();
+  static const curve = Curves.fastOutSlowIn;
   // static const radius = Radius.circular(25);
   // static final borderRadius = BorderRadius.circular(25.0);
 
@@ -23,7 +23,7 @@ class MyDecoration {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [MyColors.darkGrey, Colors.transparent],
-      stops: [0.4, 0.6],
+      stops: [0.3, 0.4],
     ),
   );
 
@@ -36,8 +36,6 @@ class MyDecoration {
     borderRadius: borderRadius,
     side: BorderSide(color: Colors.transparent),
   );
-
-  static const duration = Duration(milliseconds: 375);
 
   static final elevatedButtonStyle = ElevatedButton.styleFrom(
     elevation: 4,

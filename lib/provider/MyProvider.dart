@@ -78,7 +78,7 @@ class MyProvider extends ChangeNotifier {
 
       return result;
     } catch (e) {
-                                rethrow;
+      rethrow;
     }
   }
 

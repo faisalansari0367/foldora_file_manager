@@ -224,11 +224,11 @@ class IconProvider extends ChangeNotifier {
   }
 
   Widget video(data, {iconBgColor, iconColor, decoration, imageRadius}) {
-    final map = FileUtils.isVideoThumbnailExist(data.file);
+    final map = FileUtils.isVideoThumbnailExist(data);
     return map['isFileExist']
         ? Widgets.forImage(map['thumb'], decoration: decoration, radius: imageRadius)
         : forQueryingDatabase(
-            future: _createVideoThumbnail(data.file, decoration: decoration, radius: imageRadius),
+            future: _createVideoThumbnail(data, decoration: decoration, radius: imageRadius),
             initialData:
                 Widgets.folderIcons(Icons.videocam, bgColor: iconBgColor, iconColor: iconColor, decoration: decoration),
           );

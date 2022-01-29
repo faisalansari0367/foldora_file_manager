@@ -1,6 +1,10 @@
+import 'package:files/decoration/my_decoration.dart';
+import 'package:files/helpers/provider_helpers.dart';
 import 'package:files/pages/Videos/models/video_folder.dart';
+import 'package:files/pages/Videos/video_list_item.dart';
+import 'package:files/provider/videos_provider.dart';
+import 'package:files/utilities/MyColors.dart';
 import 'package:files/utilities/Utils.dart';
-import 'package:files/widgets/MediaListItem.dart';
 import 'package:flutter/material.dart';
 
 import '../../sizeConfig.dart';
@@ -10,22 +14,25 @@ class VideosInFolders extends StatelessWidget {
   final List<VideoFolder> videoFolders;
   final void Function(VideoFolder folder) onTap;
   final void Function(VideoFolder folder) onSelect;
+  final bool selected;
 
-  const VideosInFolders({Key key, this.videoFolders, @required this.onTap, this.onSelect}) : super(key: key);
+  const VideosInFolders({Key key, this.videoFolders, @required this.onTap, this.onSelect, this.selected = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final provider = getProvider<VideosProvider>(context);
+
     return ListView.builder(
       itemCount: videoFolders.length,
-      physics: BouncingScrollPhysics(),
+      physics: MyDecoration.physics,
       itemBuilder: (context, index) {
         final folder = videoFolders[index];
-        return MediaListItem(
-          
-          selectedColor: Colors.blueGrey[500],
+        return VideoListItem(
+          selectedColor: MyColors.darkGrey.withOpacity(0.2),
           currentPath: folder.folderName,
           data: folder.files.first.file,
-          index: index,
+          selected: provider.selectedFiles.contains(folder),
           description: Text(
             FileUtils.formatBytes(folder.size, 2),
             style: TextStyle(
@@ -34,7 +41,6 @@ class VideosInFolders extends StatelessWidget {
               color: Colors.grey[700],
             ),
           ),
-          onLongPress: null,
           ontap: () => onTap(folder),
           title: folder.folderName,
           leading: GestureDetector(

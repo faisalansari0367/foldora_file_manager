@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:files/pages/Videos/models/video_entity.dart';
 
@@ -7,7 +8,7 @@ VideoFile videoFileFromJson(String str) => VideoFile.fromJson(json.decode(str));
 
 String videoFileToJson(VideoFile data) => json.encode(data.toJson());
 
-class VideoFile extends VideoEntity {
+class VideoFile implements VideoEntity {
   VideoFile({
     this.album,
     this.artist,
@@ -15,7 +16,10 @@ class VideoFile extends VideoEntity {
     this.dateAdded,
     this.displayName,
     this.duration,
-    // this.size,
+    this.thumbnail,
+    this.resolution,
+    this.size,
+    this.folderName,
   });
 
   String album;
@@ -24,7 +28,10 @@ class VideoFile extends VideoEntity {
   String dateAdded;
   String displayName;
   String duration;
-  // String size;
+  String resolution;
+  String folderName;
+  // int size;
+  Uint8List thumbnail;
 
   factory VideoFile.fromJson(Map<String, dynamic> json) => VideoFile(
         album: json['album'],
@@ -33,7 +40,21 @@ class VideoFile extends VideoEntity {
         dateAdded: json['dateAdded'],
         displayName: json['displayName'],
         duration: json['duration'],
-        // size: json['size'],
+        resolution: json['resolution'],
+        thumbnail: json['thumbnail'],
+      );
+
+  factory VideoFile.fromMap(Map<Object, Object> json) => VideoFile(
+        album: json['album'],
+        artist: json['artist'],
+        file: File(json['imagePath']),
+        dateAdded: json['date'],
+        displayName: json['name'],
+        duration: json['duration'],
+        resolution: json['resolution'],
+        thumbnail: json['thumbnail'],
+        folderName: json['folderName'],
+        size: int.parse(json['size']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,6 +67,14 @@ class VideoFile extends VideoEntity {
         // 'size': size,
       };
 
+  // @override
+  // int get size => file.statSync().size;
+
   @override
-  int get size => file.statSync().size;
+  void delete() {
+    file.delete();
+  }
+
+  @override
+  int size;
 }

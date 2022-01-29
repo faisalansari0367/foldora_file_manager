@@ -7,29 +7,32 @@ class LeadingVIdeo extends StatelessWidget {
   const LeadingVIdeo({
     Key key,
     @required this.video,
+    this.onTap,
   }) : super(key: key);
 
   final VideoFile video;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: VideoUtil.createThumbnail(video.file.path),
-      builder: (context, snapshot) {
-        return SizedBox(
-          height: 8.height,
-          width: 25.width,
-          child: !snapshot.hasData
-              ? Center(child: CircularProgressIndicator())
-              : ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.file(
-                    snapshot.data,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-        );
-      },
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        height: 7.5.height,
+        width: 25.width,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+        child: video.thumbnail != null
+            ? Image.memory(video.thumbnail, fit: BoxFit.cover)
+            : FutureBuilder(
+                future: VideoUtil.createThumbnail(video.file.path),
+                builder: (context, snapshot) {
+                  return !snapshot.hasData
+                      ? Center(child: CircularProgressIndicator())
+                      : Image.file(snapshot.data, fit: BoxFit.cover);
+                },
+              ),
+      ),
     );
   }
 }

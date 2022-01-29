@@ -9,11 +9,11 @@ List<VideoEntity> videoFolderFromJson(String str) {
   }).toList();
 }
 
-class VideoFolder extends VideoEntity {
+class VideoFolder implements VideoEntity {
   final List<VideoFile> files;
   final String folderName;
 
-  VideoFolder({this.files, this.folderName});
+  VideoFolder({this.files = const [], this.folderName});
 
   static List<VideoFile> getFiles(List data) {
     return List.generate(data.length, (index) => VideoFile.fromJson(data[index]));
@@ -26,6 +26,16 @@ class VideoFolder extends VideoEntity {
     );
   }
 
+
+  @override
+  void delete() {
+    print('todo delete files');
+    // files.forEach((element) {
+    //   element.file.delete();
+    // });
+  }
+
+  // int size() {}
   @override
   int get size {
     var size = 0;

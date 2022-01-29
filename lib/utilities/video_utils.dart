@@ -28,7 +28,6 @@ class VideoUtil {
           thumbnailPath: thumbnailDir,
           video: path,
           imageFormat: ImageFormat.PNG,
-          timeMs: 10000,
           quality: 100,
         );
         print('file is Located at: $filePath');
