@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
 
 import '../sizeConfig.dart';
-import 'LeadingIcon.dart';
+import 'leading_icon/leading_icon.dart';
 import 'MediaListItem.dart';
 import 'MyAppBar.dart';
 

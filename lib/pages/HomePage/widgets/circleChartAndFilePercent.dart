@@ -1,10 +1,12 @@
 import 'package:files/helpers/provider_helpers.dart';
 import 'package:files/pages/HomePage/widgets/CircleChart.dart';
+import 'package:files/pages/HomePage/widgets/rounded_progress_indicator.dart';
 import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/provider/MyProvider.dart';
 import 'package:files/provider/videos_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:storage_path/storage_path.dart';
 import '../../../sizeConfig.dart';
 import 'FilePercent.dart';
 
@@ -41,29 +43,30 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
                 builder: (_, value, __) {
                   final totalSize = storage.calculatePercent(value, 3);
                   _photosPercent = double.parse(totalSize);
-                  return CircleChart(
+                  return RoundedProgressIndicator(
                     color: Colors.indigo[300],
                     strokeWidth: 6,
-                    radius: Responsive.imageSize(3.5),
+                    radius: Responsive.imageSize(Responsive.imageSize(3.5)),
                     percentage: _photosPercent,
                   );
                 },
               ),
               Selector<StoragePathProvider, int>(
-                selector: (context, value) => value.audiosSize,
+                selector: (context, value) => value.videosSize,
                 // shouldRebuild: (a, b) => a != b,
                 builder: (_, value, __) {
-                  final videosSize = getProvider<VideosProvider>(context).videosSize;
-                  final complete = storage.calculatePercent(value + videosSize, 3);
+                  // final storageProvider = getProvider<StoragePathProvider>(context);
+                  // getProvider<VideosProvider>(context).setVideosSize(value);
+                  final complete = storage.calculatePercent(value, 3);
                   _mediaPercent = double.parse(complete);
                   print('mediaSize: $_mediaPercent');
                   // print(_mediaPercent);
 
-                  return CircleChart(
+                  return RoundedProgressIndicator(
                     // duration: Duration(seconds: 5),
                     strokeWidth: 5,
                     color: Colors.teal[300],
-                    radius: Responsive.imageSize(2.6),
+                    radius: Responsive.imageSize(Responsive.imageSize(2.6)),
                     percentage: _mediaPercent,
                   );
                 },
@@ -74,10 +77,10 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
                   final documents = storage.calculatePercent(value, 3);
                   _documentsPercent = double.parse(documents);
                   // print(_documentsPercent);
-                  return CircleChart(
+                  return RoundedProgressIndicator(
                     strokeWidth: 4,
                     color: Colors.amber[300],
-                    radius: Responsive.imageSize(1.7),
+                    radius: Responsive.imageSize(Responsive.imageSize(1.7)),
                     percentage: _documentsPercent,
                   );
                 },
@@ -101,7 +104,7 @@ class _CircleChartAndFilePercentState extends State<CircleChartAndFilePercent> {
                   },
                 ),
                 Selector<StoragePathProvider, int>(
-                  selector: (context, value) => value.audiosSize,
+                  selector: (context, value) => value.mediaSize,
                   builder: (_, value, __) {
                     return FilePercent(
                       name: 'Media',

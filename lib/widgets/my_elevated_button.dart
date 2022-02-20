@@ -3,7 +3,7 @@ import 'package:files/sizeConfig.dart';
 import 'package:flutter/material.dart';
 
 class MyElevatedButton extends StatelessWidget {
-  final Function onPressed;
+  final void Function() onPressed;
   final String text;
   final Widget icon;
   const MyElevatedButton({

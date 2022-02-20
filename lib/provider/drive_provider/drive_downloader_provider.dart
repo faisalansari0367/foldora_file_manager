@@ -57,6 +57,9 @@ class DriveDownloader extends ChangeNotifier {
     final file = await MyDrive.downloadGoogleDriveFile(fName, id);
     final saveFile = io.File('$downloadsDirectory/$fName');
     await saveFile.create();
+    // var downloadFile = DownloadableFileBasic(() => 'Test string', testFile);
+    // DownloadManager.instance().add(DownloadableFileBasic(() => 'Test string', testBFile));
+
     final totalSize = file.length ?? int.parse(fileSize);
     var percent = 0.0;
     var dataStore = <int>[];

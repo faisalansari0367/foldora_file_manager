@@ -1,12 +1,15 @@
+import 'package:files/helpers/provider_helpers.dart';
 import 'package:files/pages/HomePage/widgets/circleChartAndFilePercent.dart';
 import 'package:files/pages/HomePage/widgets/horizontal_tabs/horizontal_tabs.dart';
 import 'package:files/provider/storage_path_provider.dart';
+import 'package:files/provider/videos_provider.dart';
+import 'package:files/services/gdrive/auth.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/FloatingActionButton.dart';
 import 'package:files/widgets/MyAppBar.dart';
+import 'package:files/widgets/show_profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:provider/provider.dart';
 
 import '../../sizeConfig.dart';
 
@@ -17,7 +20,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Future<void> _onRefresh(context) async {
-    await Provider.of<StoragePathProvider>(context, listen: false).onRefresh();
+    await getProvider<VideosProvider>(context).getVideos();
+    await getProvider<StoragePathProvider>(context).onRefresh();
   }
 
   var sizedBox = SizedBox(height: 4.height);
@@ -63,6 +67,17 @@ class _HomePageState extends State<HomePage> {
           Icons.menu,
           color: MyColors.appbarActionsColor,
         ),
+        actions: [
+          ProfilePicture(
+            imageUrl: Auth.getCurrentUser()?.photoURL,
+          ),
+          // Icon(
+          //   Icons.account_circle_outlined,
+          //   size: 7.padding,
+          //   color: MyColors.appbarActionsColor,
+          // ),
+          SizedBox(width: 3.padding),
+        ],
         backgroundColor: Colors.white,
         systemNavbarColor: Colors.white,
         iconData: Icons.menu,

@@ -18,6 +18,11 @@ abstract class AuthImplementation {
 
 class Auth {
   static final googleSignIn = GoogleSignIn(scopes: [DriveApi.driveScope]);
+  static User user;
+
+  static User getCurrentUser() {
+    return FirebaseAuth.instance.currentUser;
+  }
 
   static Future<void> initializeFirebase() async {
     try {
@@ -57,7 +62,6 @@ class Auth {
   }
 
   static Future<User> signInWithGoogle(googleSignin, {BuildContext context}) async {
-    User user;
     final auth = FirebaseAuth.instance;
     try {
       final googleSignInAccount = await driveSignIn(googleSignin);

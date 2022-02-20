@@ -29,6 +29,8 @@ class _CircleChartState extends State<CircleChart>
   Animation<double> tween;
   static const duration = Duration(milliseconds: 1000);
   var percentage = 0.0;
+
+  
   void createAnimation(AnimationController controller) {
     final curved =
         CurvedAnimation(parent: controller, curve: Curves.easeInOutBack);

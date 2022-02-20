@@ -32,59 +32,57 @@ class _DriveFabState extends State<DriveFab> {
     Navigator.pop(context);
     await MyBottomSheet.bottomSheet(
       context,
-      child: AnimatedPadding(
-        duration: Duration(milliseconds: 1000),
-        padding: MediaQuery.of(context).viewInsets,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 3.height),
-              TextField(
-                cursorColor: MyColors.appbarActionsColor,
-                cursorRadius: MyDecoration.circularRadius,
-                onChanged: (v) => folderName = v,
-                style: Theme.of(context).textTheme.subtitle2.copyWith(
-                      color: MyColors.appbarActionsColor,
-                      fontSize: 1.8.text,
-                    ),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: ' Folder Name',
-                  hintStyle: TextStyle(
+      child: Container(
+        margin: EdgeInsets.all(5.padding),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // SizedBox(height: 3.height),
+            TextField(
+              cursorColor: MyColors.appbarActionsColor,
+              cursorRadius: MyDecoration.circularRadius,
+              onChanged: (v) => folderName = v,
+              style: Theme.of(context).textTheme.subtitle2.copyWith(
                     color: MyColors.appbarActionsColor,
+                    fontSize: 1.8.text,
                   ),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xff2e2f42),
+                contentPadding: EdgeInsets.symmetric(horizontal: 5.padding),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(50), borderSide: BorderSide.none),
+                hintStyle: TextStyle(fontSize: 14, color: Colors.grey.shade300),
+                hintText: 'Folder Name',
+              ),
+            ),
+            SizedBox(
+              height: 2.height,
+            ),
+            Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 5.padding,
+                      color: MyColors.darkGrey,
+                      spreadRadius: 3.padding,
+                    ),
+                  ],
+                ),
+                child: MyElevatedButton(
+                  text: 'Create folder',
+                  onPressed: () async {
+                    final dir = Directory(folderName);
+                    final drive = getProvider<DriveProvider>(context);
+                    await drive.createDriveDir(dir);
+                    Navigator.pop(context);
+                  },
                 ),
               ),
-              SizedBox(
-                height: 2.height,
-              ),
-              Center(
-                child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 5.padding,
-                        color: MyColors.darkGrey,
-                        spreadRadius: 5.padding,
-                      ),
-                    ],
-                  ),
-                  child: MyElevatedButton(
-                    text: 'Create folder',
-                    onPressed: () async {
-                      final dir = Directory(folderName);
-                      final drive = getProvider<DriveProvider>(context);
-                      await drive.createDriveDir(dir);
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(height: 5.height),
-            ],
-          ),
+            ),
+            // SizedBox(height: 2.height),
+          ],
         ),
       ),
     );

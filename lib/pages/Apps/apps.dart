@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:files/utilities/Utils.dart';
-import 'package:files/widgets/LeadingIcon.dart';
+import 'package:files/widgets/leading_icon/leading_icon.dart';
 import 'package:files/widgets/MediaListItem.dart';
 import 'package:files/widgets/MyAppBar.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +12,12 @@ import 'package:path/path.dart' as p;
 
 import '../../sizeConfig.dart';
 
-class Apps extends StatefulWidget {
+class AppsPage extends StatefulWidget {
   @override
-  _AppsState createState() => _AppsState();
+  _AppsPageState createState() => _AppsPageState();
 }
 
-class _AppsState extends State<Apps> {
+class _AppsPageState extends State<AppsPage> {
   var apps = [];
   @override
   Widget build(BuildContext context) {

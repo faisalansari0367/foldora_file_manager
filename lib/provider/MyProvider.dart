@@ -14,6 +14,7 @@ class MyProvider extends ChangeNotifier {
   Function scrollListener;
 
   int currentPage = 0;
+  String newFolderName = '';
 
   // }
 
@@ -36,6 +37,10 @@ class MyProvider extends ChangeNotifier {
   void addPath(String path) {
     navigationAddOrRemove(data[currentPage].navItems, path);
     notifyListeners();
+  }
+
+  void onChangeFolder(String value) {
+    newFolderName = value;
   }
 
   // to show and hide the navigation rail on opening new directory.

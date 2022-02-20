@@ -1,12 +1,15 @@
+import 'dart:convert';
+import 'dart:developer' show log;
+
 import 'package:files/decoration/my_decoration.dart';
+import 'package:files/pages/Videos/animated_video_list_mixin.dart';
 import 'package:files/pages/Videos/models/video_entity.dart';
 import 'package:files/pages/Videos/models/video_file.dart';
 import 'package:files/pages/Videos/models/video_folder.dart';
-import 'package:files/sizeConfig.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:storage_details/storage_details.dart';
 
-class VideosProvider extends ChangeNotifier {
+class VideosProvider extends ChangeNotifier with AnimatedVideoListMixin {
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
 
   int _videosSize = 0;
@@ -27,6 +30,8 @@ class VideosProvider extends ChangeNotifier {
     // videos();
     getVideos();
   }
+
+  
 
   Future<void> getVideos() async {
     final List result = await StorageDetails.getVideos();
@@ -49,6 +54,8 @@ class VideosProvider extends ChangeNotifier {
       _videosSize += folder.size;
       videoFolders.add(folder);
     }
+
+    videoFiles.first.toJson();
 
     _videos.addAll(videoFiles);
     _videosFolder.addAll(videoFolders);
@@ -92,20 +99,14 @@ class VideosProvider extends ChangeNotifier {
 
   void _remove(VideoFile file) {
     final index = _getCurrentItemIndex(file);
-    listKey.currentState.removeItem(index, _itemRemover, duration: MyDecoration.duration);
+    listKey.currentState.removeItem(
+      index,
+      (context, animation) => itemRemover(context, animation, file),
+      duration: MyDecoration.duration,
+    );
     _removeCurrentItem(file);
     // _selectedFiles.remove(file);
     Future.delayed(MyDecoration.duration, () => notifyListeners());
-  }
-
-  Widget _itemRemover(BuildContext context, Animation<double> animation) {
-    return FadeTransition(
-      opacity: animation,
-      child: SizeTransition(
-        sizeFactor: animation,
-        child: SizedBox(height: 9.height),
-      ),
-    );
   }
 
   List<VideoFile> videosInAFolder(List data, String folderName) {

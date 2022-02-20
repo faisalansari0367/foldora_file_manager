@@ -11,6 +11,7 @@ import 'package:googleapis/drive/v3.dart';
 import 'package:storage_details/storage_details.dart';
 
 class DriveProvider extends ChangeNotifier {
+  
   final _completer = Completer<void>();
   Future<void> get isReady async => await _completer.future;
   AboutStorageQuota driveQuota;

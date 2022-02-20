@@ -11,7 +11,7 @@ import 'package:storage_path/storage_path.dart';
 class StoragePathProvider extends ChangeNotifier {
   int _documentsSize = 0;
   int _audiosSize = 0;
-  // int _videosSize = 0;
+  int _videosSize = 0;
   int _photosSize = 0;
   int photosIndex = 0;
   int pageViewCurrentIndex = 0;
@@ -19,9 +19,9 @@ class StoragePathProvider extends ChangeNotifier {
 
   int get documentsSize => _documentsSize;
   int get audiosSize => _audiosSize;
-  // int get videosSize => _videosSize;
+  int get videosSize => _videosSize;
   int get photosSize => _photosSize;
-  // int get mediaSize => _audiosSize + 0;
+  int get mediaSize => _audiosSize + _videosSize;
 
   // List<VideoModel> _videosPath = [];
   // List<VideoModel> get videosPath => _videosPath;
@@ -46,26 +46,10 @@ class StoragePathProvider extends ChangeNotifier {
     // _imagesObserver();
   }
 
-  // void watching() {
-  //   log('we are watching for any changes');
-  //   final dir = Directory('/storage/emulated/0');
-  //   dir.watch(recursive: true).listen((event) {
-  //     log('event received $event');
-  //     if (!event.isDirectory) {
-  //       final fileName = p.basename(event.path);
-  //       final mimeType = mime(fileName);
-  //       final type = mimeType.split('/')?.first == 'image';
-  //       if (type) photos();
-  //     }
-  //   });
-  // }
-  // void _imagesObserver() {
-  //   StorageDetails.watchImages.listen((event) {
-  //     print(event);
-  //     photos();
-  //     notifyListeners();
-  //   });
-  // }
+  void setVideosSize(int size) => {
+        _videosSize = size,
+        notifyListeners(),
+      };
 
   ///  these functions are used by photos they are not getting used here
   void updateIndex(int index) {
@@ -124,20 +108,24 @@ class StoragePathProvider extends ChangeNotifier {
   /// end
 
   Future<void> photos() async {
-    final imagesPath = await StoragePath.imagesPath;
-    // log(imagesPath);
-    final images = await FileUtils.worker.doWork(FileUtils.imagesPath, imagesPath);
-    // await FileUtils.imagesPath(imagesPath);
-    _photos = images['data'];
-    for (var item in _photos) {
-      for (var i in item.files) {
-        allPhotos.add(File(i));
+    try {
+      final imagesPath = await StoragePath.imagesPath;
+      // log(imagesPath);
+      final images = await FileUtils.worker.doWork(FileUtils.imagesPath, imagesPath);
+      // await FileUtils.imagesPath(imagesPath);
+      _photos = images['data'];
+      for (var item in _photos) {
+        for (var i in item.files) {
+          allPhotos.add(File(i));
+        }
       }
-    }
-    _photosSize = images['size'];
+      _photosSize = images['size'];
 
-    print('images length :${_photos.length}');
-    notifyListeners();
+      print('images length :${_photos.length}');
+      notifyListeners();
+    } on Exception catch (e) {
+      log('error from storage path images ${e.toString()}');
+    }
   }
 
   /// for deleting photos

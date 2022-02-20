@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
-import 'LeadingIcon.dart';
+import 'leading_icon/leading_icon.dart';
 
 class DirectoryLister extends StatelessWidget {
   final String path;
@@ -79,19 +79,12 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
             key: UniqueKey(),
             index: index,
             data: data,
-            // ontap: () {
-            //   operations.selectedMedia.isNotEmpty
-            //       ? !operations.showCopy
-            //           ? provider.ontap(data)
-            //           : operations.onTapOfLeading(data)
-            //       : provider.ontap(data);
-            // },
             ontap: () => onTap(data),
             title: p.basename(data.path),
             currentPath: data.path,
             description: MediaUtils.description(data),
             leading: LeadingIcon(data: data),
-            selectedColor: MyColors.darkGrey.withOpacity(0.2),
+            selectedColor: MyColors.darkGrey.withOpacity(0.1),
           );
           return mediaListItem;
         },

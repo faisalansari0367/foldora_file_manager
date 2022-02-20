@@ -11,29 +11,26 @@ class MyDrive {
   static DriveApi drive;
   static bool isReady = false;
   static const mimeTypeFolder = 'application/vnd.google-apps.folder';
+  static const fields = 'files(name, iconLink, size, createdTime, fullFileExtension, mimeType, id)';
 
   MyDrive(Client client) {
     isReady = true;
     final drive = DriveApi(client);
-
     MyDrive.drive = drive;
   }
 
   static Future<List<File>> driveFiles({fileId, showAllFiles = false}) async {
-    // var files;
     final idNotNull = fileId != null;
     final listFolders = "mimeType='$mimeTypeFolder'";
     final listFiles = "'$fileId' in parents";
-
     final whenIdIsNull = showAllFiles ? null : listFolders;
     final q = idNotNull ? listFiles : whenIdIsNull;
 
-    // we only need iconLink, fileFUllExtension, name, size, createdTime,
     try {
       log('getting drive files...');
       final files = await drive.files.list(
         q: q,
-        $fields: 'files(name, iconLink, size, createdTime, fullFileExtension, mimeType, id)',
+        $fields: fields,
         supportsAllDrives: idNotNull,
         includeItemsFromAllDrives: idNotNull,
       );
@@ -42,6 +39,7 @@ class MyDrive {
       log('getting drive files error: $e');
       rethrow;
     }
+    
   }
 
   static Future<bool> deleteFiles(List<String> ids) async {

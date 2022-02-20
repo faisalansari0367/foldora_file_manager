@@ -4,19 +4,15 @@ import 'package:flutter/material.dart';
 import '../sizeConfig.dart';
 
 class MyDecoration {
-  static const circularRadius = Radius.circular(32);
-  static const bottomSheetCorner = Radius.circular(32);
-  static const duration = Duration(milliseconds: 375);
-  static const borderRadius = BorderRadius.all(circularRadius);
-  static const physics = BouncingScrollPhysics();
-  static const curve = Curves.fastOutSlowIn;
-  // static const radius = Radius.circular(25);
-  // static final borderRadius = BorderRadius.circular(25.0);
+  static const circularRadius = Radius.circular(32),
+      bottomSheetCorner = Radius.circular(32),
+      duration = Duration(milliseconds: 375),
+      borderRadius = BorderRadius.all(circularRadius),
+      physics = BouncingScrollPhysics(),
+      curve = Curves.fastOutSlowIn;
 
-  static const BorderRadius borderRadiusTlr = BorderRadius.only(
-    topLeft: bottomSheetCorner,
-    topRight: bottomSheetCorner,
-  );
+
+  static const borderRadiusTlr = BorderRadius.vertical(top: bottomSheetCorner);
 
   static const showMediaStorageBackground = BoxDecoration(
     gradient: LinearGradient(
@@ -42,7 +38,7 @@ class MyDecoration {
     primary: MyColors.teal,
     shadowColor: MyColors.teal,
     shape: roundedBorderShape,
-    minimumSize: Size(Responsive.width(87), Responsive.height(5)),
+    minimumSize: Size(87.width, 5.height),
   );
 
   static BoxDecoration decoration({Color color = Colors.white}) {

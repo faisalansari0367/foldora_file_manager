@@ -23,9 +23,6 @@ class AddProviders extends StatelessWidget {
         ChangeNotifierProvider<MyProvider>(
           create: (context) => MyProvider(),
         ),
-        ChangeNotifierProvider<StoragePathProvider>(
-          create: (context) => StoragePathProvider(),
-        ),
         ChangeNotifierProvider<IconProvider>(
           create: (context) => IconProvider(),
         ),
@@ -46,6 +43,10 @@ class AddProviders extends StatelessWidget {
         ),
         ChangeNotifierProvider<VideosProvider>(
           create: (context) => VideosProvider(),
+        ),
+        ChangeNotifierProxyProvider<VideosProvider, StoragePathProvider>(
+          create: (context) => StoragePathProvider(),
+          update: (context, value, previous) => previous..setVideosSize(value.videosSize),
         ),
         ChangeNotifierProvider<LocalAuth>(
           create: (context) => LocalAuth(),

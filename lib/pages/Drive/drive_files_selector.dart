@@ -4,7 +4,7 @@ import 'package:files/decoration/my_decoration.dart';
 import 'package:files/provider/drive_provider/drive_provider.dart';
 import 'package:files/utilities/MediaListItemUtils.dart';
 import 'package:files/utilities/MyColors.dart';
-import 'package:files/widgets/LeadingIcon.dart';
+import 'package:files/widgets/leading_icon/leading_icon.dart';
 import 'package:files/widgets/MediaListItem.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
