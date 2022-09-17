@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer' show log;
-
 import 'package:files/decoration/my_decoration.dart';
 import 'package:files/pages/Videos/animated_video_list_mixin.dart';
 import 'package:files/pages/Videos/models/video_entity.dart';
@@ -31,8 +28,6 @@ class VideosProvider extends ChangeNotifier with AnimatedVideoListMixin {
     getVideos();
   }
 
-  
-
   Future<void> getVideos() async {
     final List result = await StorageDetails.getVideos();
     var videoFiles = <VideoFile>[];
@@ -54,9 +49,8 @@ class VideosProvider extends ChangeNotifier with AnimatedVideoListMixin {
       _videosSize += folder.size;
       videoFolders.add(folder);
     }
-
-    videoFiles.first.toJson();
-
+    
+    if (videoFiles.isNotEmpty) videoFiles.first.toJson();
     _videos.addAll(videoFiles);
     _videosFolder.addAll(videoFolders);
     notifyListeners();

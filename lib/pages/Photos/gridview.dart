@@ -16,10 +16,15 @@ class MyGridView extends StatefulWidget {
 }
 
 class _MyGridViewState extends State<MyGridView> {
-
   @override
   Widget build(BuildContext context) {
     if (widget.photos.isEmpty) return FileNotFoundScreen();
+    final pattern = [
+      QuiltedGridTile(2, 2),
+      QuiltedGridTile(1, 1),
+      QuiltedGridTile(1, 1),
+      QuiltedGridTile(1, 2),
+    ];
     return MySlideAnimation(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -29,16 +34,9 @@ class _MyGridViewState extends State<MyGridView> {
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
             repeatPattern: QuiltedGridRepeatPattern.inverted,
-            pattern: [
-              QuiltedGridTile(2, 2),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 2),
-            ],
+            pattern: pattern,
           ),
-          childrenDelegate: SliverChildBuilderDelegate(
-            (context, index) => Photo(files: widget.photos, index: index),
-          ),
+          childrenDelegate: SliverChildBuilderDelegate(builder),
           // childrenDelegate: childrenDelegate,
           // )(
           // padding: const EdgeInsets.all(8.0),
@@ -55,4 +53,6 @@ class _MyGridViewState extends State<MyGridView> {
       ),
     );
   }
+
+  Widget builder(context, index) => Photo(files: widget.photos, index: index);
 }

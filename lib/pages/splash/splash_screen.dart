@@ -1,21 +1,18 @@
+import 'dart:developer';
+
 import 'package:files/constants/assets/onboard.dart';
 import 'package:files/pages/HomePage/HomePage.dart';
 import 'package:files/pages/splash/screen.dart';
-import 'package:files/provider/MyProvider.dart';
+import 'package:files/services/permission_service.dart';
 import 'package:files/services/storage_service.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-
-
 
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver {
   PageController pageController;
   int _initialPage = 0;
   static const Duration duration = Duration(milliseconds: 100);
@@ -24,46 +21,62 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     WidgetsFlutterBinding.ensureInitialized();
     pageController = PageController(initialPage: _initialPage);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    log(state.toString());
+    switch (state) {
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.resumed:
+        break;
+      case AppLifecycleState.paused:
+        break;
+      case AppLifecycleState.detached:
+        break;
+      default:
+    }
+    super.didChangeAppLifecycleState(state);
   }
 
   @override
   void dispose() {
     pageController.dispose();
     pageController = null;
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
-  Future<void> moveToPage(int page) async {
-    void _listener() {
+  Future<void> _moveToPage(int page) async {
+    await Future.delayed(duration, () {
       pageController.animateToPage(
         page,
         duration: Duration(milliseconds: 500),
         curve: Curves.fastOutSlowIn,
       );
+    });
+  }
+
+  Future<void> setFirstSeen() async => await StorageService().setFirstTimeSeen();
+
+  Future<void> _redirectToHome() async {
+    final status = await PermissionService.accessAllFiles();
+    if (status) {
+      final pageView = PageView(children: [HomePage(), HomePage()]);
+      final route = MaterialPageRoute(builder: (context) => pageView);
+      await Navigator.pushReplacement(context, route);
     }
-
-    await Future.delayed(duration, _listener);
-  }
-
-  Future<void> setFirstSeen() async {
-    final storage = StorageService();
-    await storage.setFirstTimeSeen();
-  }
-
-  void redirectToHome() {
-    final pageView = PageView(children: [HomePage(), HomePage()]);
-    final route = MaterialPageRoute(builder: (context) => pageView);
-    Navigator.pushReplacement(context, route);
   }
 
   Future<void> _onpressed() async {
-    final provider = Provider.of<MyProvider>(context, listen: false);
-    final status = await provider.getPermission();
-    print(status.isGranted);
-    if (status.isGranted) {
+    final status = await PermissionService.storage();
+    print(status);
+    if (status) {
       await setFirstSeen();
-      await moveToPage(1);
+      await _moveToPage(1);
     }
   }
 
@@ -84,8 +97,8 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Screen(
             path: Onboard.undraw4,
-            buttonText: 'Let"s Explore',
-            onPressed: redirectToHome,
+            buttonText: 'Allow all files access',
+            onPressed: _redirectToHome,
             title: Screen.titleWidget('Let\'s', 'Explore'),
           ),
         ],

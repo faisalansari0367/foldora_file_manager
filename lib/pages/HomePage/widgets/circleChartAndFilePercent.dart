@@ -1,12 +1,8 @@
-import 'package:files/helpers/provider_helpers.dart';
-import 'package:files/pages/HomePage/widgets/CircleChart.dart';
 import 'package:files/pages/HomePage/widgets/rounded_progress_indicator.dart';
 import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/provider/MyProvider.dart';
-import 'package:files/provider/videos_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:storage_path/storage_path.dart';
 import '../../../sizeConfig.dart';
 import 'FilePercent.dart';
 

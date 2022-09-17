@@ -14,7 +14,6 @@ class FileNotFoundScreen extends StatelessWidget {
   // @override
   @override
   Widget build(BuildContext context) {
-    final buttonColor = MaterialStateProperty.all(Color(0xFF70DAAD));
     final provider = Provider.of<MyProvider>(context, listen: false);
     final bottom = 22 * Responsive.heightMultiplier;
     final leftRight = 10 * Responsive.widthMultiplier;
@@ -40,8 +39,10 @@ class FileNotFoundScreen extends StatelessWidget {
                   child: Text(
                     message,
                     textAlign: TextAlign.center,
-                    style:
-                        Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 13, height: 1.5),
+                    style: Theme.of(context).textTheme.subtitle2.copyWith(
+                          fontSize: 13,
+                          height: 1.5,
+                        ),
                     // style: TextStyle(
                     //   fontWeight: FontWeight.bold,
                     //   backgroundColor: Colors.white,
@@ -53,20 +54,9 @@ class FileNotFoundScreen extends StatelessWidget {
               bottom: Responsive.height(12),
               left: MediaQuery.of(context).size.width * .37,
               child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: buttonColor,
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
+                style: ElevatedButton.styleFrom(
+                  shape: StadiumBorder(),
                 ),
-
-                // color: Color(0xFF70DAAD),
-                // color: Color(0xFF7070DA),
-                // shape: RoundedRectangleBorder(
-                //   borderRadius: BorderRadius.circular(50),
-                // ),
                 onPressed: () => provider.onGoBack(context),
                 child: Text(
                   'Go Back'.toUpperCase(),
