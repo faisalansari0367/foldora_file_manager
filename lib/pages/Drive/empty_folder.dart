@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class EmptyFolder extends StatelessWidget {
   final Widget child;
   final bool isEmpty;
-  const EmptyFolder({Key key, @required this.child, this.isEmpty = false}) : super(key: key);
+  const EmptyFolder({Key? key, required this.child, this.isEmpty = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

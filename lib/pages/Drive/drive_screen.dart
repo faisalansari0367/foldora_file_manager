@@ -21,14 +21,14 @@ import '../../sizeConfig.dart';
 import 'drive_options.dart';
 
 class DriveScreen extends StatefulWidget {
-  const DriveScreen({Key key, User user}) : super(key: key);
+  const DriveScreen({Key? key, User? user}) : super(key: key);
 
   @override
   _DriveScreenState createState() => _DriveScreenState();
 }
 
 class _DriveScreenState extends State<DriveScreen> with SingleTickerProviderStateMixin {
-  ScrollController controller;
+  ScrollController? controller;
   // AnimationController _animationController;
 
   @override
@@ -89,7 +89,7 @@ class _DriveScreenState extends State<DriveScreen> with SingleTickerProviderStat
   @override
   void dispose() {
     // _animationController.dispose();
-    controller.dispose();
+    controller!.dispose();
     super.dispose();
   }
 
@@ -123,7 +123,7 @@ class _DriveScreenState extends State<DriveScreen> with SingleTickerProviderStat
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Selector<DriveProvider, AboutStorageQuota>(
+                Selector<DriveProvider, AboutStorageQuota?>(
                   selector: (p0, p1) => p1.driveQuota,
                   builder: (context, quota, child) {
                     final total = int.parse(quota?.limit ?? '0');

@@ -17,9 +17,9 @@ import 'MyAppBar.dart';
 
 class ModalSheet {
   static Future<void> deleteModal({
-    BuildContext context,
-    List<FileSystemEntity> list,
-    void Function() onPressed,
+    required BuildContext context,
+    List<FileSystemEntity?>? list,
+    void Function()? onPressed,
   }) async {
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,
@@ -87,7 +87,7 @@ class ModalSheet {
                             controller: scrollController,
                             itemCount: operations.selectedMedia.length,
                             itemBuilder: (context, index) {
-                              final data = operations.selectedMedia[index];
+                              final data = operations.selectedMedia[index]!;
                               return MediaListItem(
                                 index: index,
                                 data: data,

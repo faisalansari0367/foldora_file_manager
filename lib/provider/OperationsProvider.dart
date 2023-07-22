@@ -10,29 +10,29 @@ import 'package:path/path.dart' as p;
 import '../utilities/OperationsUtils.dart';
 
 class OperationsProvider extends ChangeNotifier {
-  int _copied = 0;
-  double _progress = 0.0;
+  int? _copied = 0;
+  double? _progress = 0.0;
   String _speed = '';
   String _remaining = '';
-  String _srcName = '';
-  String _srcSize = '0.0 KB';
+  String? _srcName = '';
+  String? _srcSize = '0.0 KB';
   int selectedIndex = 5;
   bool showCopy = true;
-  final _selectedMediaItems = <FileSystemEntity>[];
+  final _selectedMediaItems = <FileSystemEntity?>[];
   bool operationIsRunning = false;
 
-  String get totalSize => _srcSize;
+  String? get totalSize => _srcSize;
   String get speed => _speed;
-  int get copied => _copied;
+  int? get copied => _copied;
   String get remaining => _remaining;
-  String get srcName => _srcName;
-  double get progress => _progress;
-  List<FileSystemEntity> get selectedMedia => _selectedMediaItems;
+  String? get srcName => _srcName;
+  double? get progress => _progress;
+  List<FileSystemEntity?> get selectedMedia => _selectedMediaItems;
   int selectedItemSizeBytes = 0;
 
   // for sharing the files
   List<String> sharePaths() {
-    final paths = _selectedMediaItems.map((e) => e.path).toList();
+    final paths = _selectedMediaItems.map((e) => e!.path).toList();
     return paths;
   }
 
@@ -56,7 +56,7 @@ class OperationsProvider extends ChangeNotifier {
     final mylist = [..._selectedMediaItems];
     _selectedMediaItems.clear();
     list.forEach((e) {
-      if (mylist.any((element) => element.path == e.path)) {
+      if (mylist.any((element) => element!.path == e.path)) {
         _selectedMediaItems.remove(e);
       } else {
         _selectedMediaItems.add(e);
@@ -65,14 +65,14 @@ class OperationsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onTapOfLeading(FileSystemEntity item) {
+  void onTapOfLeading(FileSystemEntity? item) {
     final isExist = _selectedMediaItems.contains(item);
     if (isExist) {
       _selectedMediaItems.remove(item);
-      removeSelectedItemSize(item);
+      removeSelectedItemSize(item!);
     } else {
       _selectedMediaItems.add(item);
-      addSelectedItemSize(item);
+      addSelectedItemSize(item!);
     }
     // operations.selectItem(_selectedMediaItems, item);
     showBottomNavbar = _selectedMediaItems.isEmpty ? false : true;
@@ -93,7 +93,7 @@ class OperationsProvider extends ChangeNotifier {
     if (_selectedMediaItems.isEmpty) return;
     try {
       for (final item in _selectedMediaItems) {
-        final result = await item.delete(recursive: true);
+        final result = await item!.delete(recursive: true);
         print('item deleted $result');
       }
       _selectedMediaItems.clear();
@@ -105,7 +105,7 @@ class OperationsProvider extends ChangeNotifier {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         content: Text(e.toString()),
       );
-      ScaffoldMessenger.maybeOf(context).showSnackBar(snackBar);
+      ScaffoldMessenger.maybeOf(context)!.showSnackBar(snackBar);
       // _selectedMediaItems.clear();
       final paths = sharePaths();
       final result = await StorageSpace.deleteWhenError(paths);
@@ -115,7 +115,7 @@ class OperationsProvider extends ChangeNotifier {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         content: Text(result.toString()),
       );
-      ScaffoldMessenger.maybeOf(context).showSnackBar(_snackBar);
+      ScaffoldMessenger.maybeOf(context)!.showSnackBar(_snackBar);
       // notifyListeners();
     }
     notifyListeners();
@@ -137,7 +137,7 @@ class OperationsProvider extends ChangeNotifier {
     };
   }
 
-  Future<void> copySelectedItems(String currentPath, void Function() notify) async {
+  Future<void> copySelectedItems(String? currentPath, void Function() notify) async {
     if (selectedMedia.isEmpty) return;
     operationIsRunning = true;
     notifyListeners();
@@ -184,16 +184,16 @@ class OperationsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> move(String currentPath) async {
+  Future<void> move(String? currentPath) async {
     operationIsRunning = true;
     final totalFiles = _selectedMediaItems.length;
     var movedFiles = 0;
     // final currentPath = MediaUtils.currentPath;
     for (final item in _selectedMediaItems) {
       movedFiles++;
-      _srcName = p.basename(item.path);
+      _srcName = p.basename(item!.path);
       try {
-        await item.rename(p.join(currentPath, _srcName));
+        await item.rename(p.join(currentPath!, _srcName));
       } catch (e) {
         log('item moving failed $e');
       }

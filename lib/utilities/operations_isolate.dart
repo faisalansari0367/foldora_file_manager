@@ -6,15 +6,15 @@ import 'CopyUtils.dart';
 
 class OperationIsolate {
   bool running = false;
-  Isolate isolate;
-  StreamController<Map<String, dynamic>> _streamController;
-  Stream<Map<String, dynamic>> _stream;
+  late Isolate isolate;
+  StreamController<Map<String, dynamic>>? _streamController;
+  Stream<Map<String, dynamic>>? _stream;
   // ignore: unused_field
-  SendPort _toIsolate;
+  SendPort? _toIsolate;
 
-  Future<Stream<Map<String, dynamic>>> operationsIsolate({
-    List<FileSystemEntity> filesToCopy,
-    String pathWhereToCopy,
+  Future<Stream<Map<String, dynamic>>?> operationsIsolate({
+    List<FileSystemEntity>? filesToCopy,
+    String? pathWhereToCopy,
   }) async {
     if (running) {
       return _stream;
@@ -25,13 +25,13 @@ class OperationIsolate {
     fromIsolate.listen((data) {
       // print(data is Map<String, dynamic>);
       if (data is bool) {
-        _streamController.close();
+        _streamController!.close();
       }
       if (data is SendPort) {
         _toIsolate = data;
       }
       if (data is Map<String, dynamic>) {
-        _streamController.sink.add(data);
+        _streamController!.sink.add(data);
       }
     }, onDone: () {
       print('stream completed');
@@ -45,21 +45,21 @@ class OperationIsolate {
           pathWhereToCopy: pathWhereToCopy,
           sendPort: fromIsolate.sendPort),
     );
-    return _streamController.stream;
+    return _streamController!.stream;
   }
 
   void _update(IsolateCopyProgress utils) {
     var _toIsolate = ReceivePort();
-    utils.sendPort.send(_toIsolate.sendPort);
+    utils.sendPort!.send(_toIsolate.sendPort);
     final stream = utils.copySelectedItems();
     stream.listen(
       (event) {
         print(event);
         if (event['progress'] == 100.0) {
-          utils.sendPort.send(true);
+          utils.sendPort!.send(true);
         } else {
           // utils.streamController.sink.add(event);
-          utils.sendPort.send(event);
+          utils.sendPort!.send(event);
         }
       },
     );

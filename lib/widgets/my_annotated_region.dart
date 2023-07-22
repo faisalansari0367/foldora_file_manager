@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 
 class MyAnnotatedRegion extends StatelessWidget {
   final Brightness brightness;
-  final Color systemNavigationBarColor, statusBarColor;
-  final Widget child;
+  final Color? systemNavigationBarColor, statusBarColor;
+  final Widget? child;
   const MyAnnotatedRegion({
-    Key key,
+    Key? key,
     this.brightness = Brightness.light,
     this.systemNavigationBarColor,
     this.statusBarColor,
@@ -26,7 +26,7 @@ class MyAnnotatedRegion extends StatelessWidget {
         systemStatusBarContrastEnforced: true,
         systemNavigationBarIconBrightness: brightness,
       ),
-      child: child,
+      child: child!,
     );
   }
 }

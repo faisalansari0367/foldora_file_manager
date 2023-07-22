@@ -2,9 +2,9 @@ import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
 
 class FAB extends StatefulWidget {
-  final String path;
-  final void Function() onPressed;
-  final Widget child;
+  final String? path;
+  final void Function()? onPressed;
+  final Widget? child;
   const FAB({this.path, this.onPressed, this.child});
 
   @override

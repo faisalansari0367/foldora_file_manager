@@ -14,12 +14,12 @@ class DriveProvider extends ChangeNotifier {
   
   final _completer = Completer<void>();
   Future<void> get isReady async => await _completer.future;
-  AboutStorageQuota driveQuota;
+  AboutStorageQuota? driveQuota;
   bool isLoading = false;
-  BuildContext context;
+  BuildContext? context;
   final List<DriveNavRailItem> navRail = [DriveNavRailItem(name: 'Drive')];
   final filesToUpload = <io.FileSystemEntity>[];
-  List<Data> storageDetails;
+  List<Data>? storageDetails;
   int selectedIndex = 0;
   String currentPath = '/storage/emulated/0';
   bool showAllFiles = false;
@@ -32,7 +32,7 @@ class DriveProvider extends ChangeNotifier {
     }
   }
 
-  var driveFiles = <File>[];
+  List<File>? driveFiles = <File>[];
 
   DriveProvider() {
     // init();
@@ -52,7 +52,7 @@ class DriveProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addNavRail(String name, String id) {
+  void addNavRail(String? name, String? id) {
     // navRail.add(DriveNavRailItem(name: name, id: id));
     navigationAddOrRemove(name, id);
     notifyListeners();
@@ -135,7 +135,7 @@ class DriveProvider extends ChangeNotifier {
     navRail.add(item);
   }
 
-  void navigationAddOrRemove(String name, String id) {
+  void navigationAddOrRemove(String? name, String? id) {
     final navItem = DriveNavRailItem(name: name, id: id);
     final isExist = navRail.contains(navItem);
     if (!isExist) {
@@ -164,7 +164,7 @@ class DriveProvider extends ChangeNotifier {
     print(createDir);
   }
 
-  Future<List<File>> getDriveFiles({fileId}) async {
+  Future<List<File>?> getDriveFiles({fileId}) async {
     await isReady;
     try {
       print('file id is $fileId');
@@ -174,8 +174,8 @@ class DriveProvider extends ChangeNotifier {
       setLoading(false);
       return data;
     } catch (e) {
-      MySnackBar.show(content: e.message);
-      log(e.message);
+      // MySnackBar.show(content: e.message);
+      // log(e.message);
       setLoading(false);
       return [];
     }
@@ -188,9 +188,9 @@ class DriveProvider extends ChangeNotifier {
       driveQuota = about.storageQuota;
       notifyListeners();
     } on DetailedApiRequestError catch (e) {
-      MySnackBar.show(content: e.message);
+      MySnackBar.show(content: e.message!);
     } catch (e) {
-      MySnackBar.show(content: e.message);
+      // MySnackBar.show(content: e.message);
     }
     setLoading(false);
   }

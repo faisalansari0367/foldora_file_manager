@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 class AudioModel {
-  final String folderName;
-  final List<Audio> audios;
+  final String? folderName;
+  final List<Audio>? audios;
   AudioModel({this.folderName, this.audios});
 
-  static List<Audio> audioFiles(dynamic decodedJson) {
+  static List<Audio?> audioFiles(dynamic decodedJson) {
     final list = List.generate(decodedJson.length, (index) {
       final files = decodedJson[index];
       // print(files);q
@@ -32,8 +32,9 @@ class AudioModel {
     return List<AudioModel>.generate(source.length, (int index) {
       final Map<String, dynamic> data = source[index];
       return AudioModel(
-        audios: audioFiles(data['files']),
-        folderName: data['folderName'] as String,
+        // audios: audioFiles(data['files']),
+        audios: [],
+        folderName: data['folderName'] as String?,
       );
     });
   }
@@ -49,11 +50,11 @@ class Audio {
     this.duration,
     this.size,
   });
-  final String album;
-  final String artist;
-  final File file;
-  final String dateAdded;
-  final String displayName;
-  final String duration;
-  final int size;
+  final String? album;
+  final String? artist;
+  final File? file;
+  final String? dateAdded;
+  final String? displayName;
+  final String? duration;
+  final int? size;
 }

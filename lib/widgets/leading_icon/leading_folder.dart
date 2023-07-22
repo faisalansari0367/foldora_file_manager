@@ -7,9 +7,9 @@ final _position = 5.image;
 
 class FolderLeading extends StatelessWidget {
   final IconData iconData;
-  final Color color;
-  final Uint8List folderIcon;
-  const FolderLeading({Key key, this.iconData = Icons.folder_open_rounded, this.color, this.folderIcon})
+  final Color? color;
+  final Uint8List? folderIcon;
+  const FolderLeading({Key? key, this.iconData = Icons.folder_open_rounded, this.color, this.folderIcon})
       : super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class FolderLeading extends StatelessWidget {
           bottom: 0,
           right: 0,
           child: Image.memory(
-            folderIcon,
+            folderIcon!,
             height: _position,
             width: _position,
           ),

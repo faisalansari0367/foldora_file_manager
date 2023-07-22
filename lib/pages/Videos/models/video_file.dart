@@ -22,16 +22,16 @@ class VideoFile implements VideoEntity {
     this.folderName,
   });
 
-  String album;
-  String artist;
-  File file;
-  String dateAdded;
-  String displayName;
-  String duration;
-  String resolution;
-  String folderName;
+  String? album;
+  String? artist;
+  File? file;
+  String? dateAdded;
+  String? displayName;
+  String? duration;
+  String? resolution;
+  String? folderName;
   // int size;
-  Uint8List thumbnail;
+  Uint8List? thumbnail;
 
   factory VideoFile.fromJson(Map<String, dynamic> json) => VideoFile(
         album: json['album'],
@@ -45,16 +45,16 @@ class VideoFile implements VideoEntity {
       );
 
   factory VideoFile.fromMap(Map<Object, Object> json) => VideoFile(
-        album: json['album'],
-        artist: json['artist'],
-        file: File(json['imagePath']),
-        dateAdded: json['date'],
-        displayName: json['name'],
-        duration: json['duration'],
-        resolution: json['resolution'],
-        thumbnail: json['thumbnail'],
-        folderName: json['folderName'],
-        size: int.parse(json['size']),
+        album: json['album'] as String?,
+        artist: json['artist'] as String?,
+        file: File(json['imagePath'] as String),
+        dateAdded: json['date'] as String?,
+        displayName: json['name'] as String?,
+        duration: json['duration'] as String?,
+        resolution: json['resolution'] as String?,
+        thumbnail: json['thumbnail'] as Uint8List?,
+        folderName: json['folderName'] as String?,
+        size: int.parse(json['size'] as String),
       );
 
   Map<String, dynamic> toJson() => {
@@ -72,9 +72,9 @@ class VideoFile implements VideoEntity {
 
   @override
   void delete() {
-    file.delete();
+    file!.delete();
   }
 
   @override
-  int size;
+  int? size;
 }

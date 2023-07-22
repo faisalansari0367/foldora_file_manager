@@ -12,7 +12,7 @@ abstract class DriveKeys {
 }
 
 class DriveStorage extends HiveImplementation {
-  static Box box;
+  static late Box box;
   static var _isInit = false;
 
   DriveStorage() {
@@ -33,7 +33,7 @@ class DriveStorage extends HiveImplementation {
   GoogleHttpClient getClient() {
     Map data = box.get(DriveKeys.authHeaders);
     final headers = data.cast<String, String>();
-    if (headers == null) return null;
+    // if (headers == null) return null;
     final client = GoogleHttpClient(headers);
     return client;
   }
@@ -46,7 +46,7 @@ class DriveStorage extends HiveImplementation {
     }
   }
 
-  Future<List<dynamic>> getDriveFiles(String id) async {
+  Future<List<dynamic>?> getDriveFiles(String id) async {
     try {
       final data = await box.get(id);
       return data;

@@ -4,9 +4,9 @@ import '../../sizeConfig.dart';
 
 class MediaFiles extends StatelessWidget {
   final String filesName;
-  final Widget menu;
+  final Widget? menu;
 
-  const MediaFiles({Key key, this.filesName = 'Media Files', this.menu}) : super(key: key);
+  const MediaFiles({Key? key, this.filesName = 'Media Files', this.menu}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class MediaFiles extends StatelessWidget {
             ),
           ),
           Spacer(),
-          if (menu != null) menu,
+          if (menu != null) menu!,
         ],
       ),
     );

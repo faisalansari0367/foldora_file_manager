@@ -14,7 +14,7 @@ class DriveUtils {
     DriveNavRailItem(id: '8', name: 'folder 8'),
   ];
 
-  static void navigationAddOrRemove(String name, String id) {
+  static void navigationAddOrRemove(String? name, String? id) {
     final item = DriveNavRailItem(id: id, name: name);
     final itemExist = list.contains(item);
     if (itemExist) {

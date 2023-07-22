@@ -1,21 +1,21 @@
 class BatteryManager {
-  bool present;
-  int plugged;
-  int status;
-  int health;
-  String technology;
-  int scale;
-  int level;
-  int temperature;
-  int voltage;
-  int healthDead;
-  int healthCold;
-  int healthGood;
+  bool? present;
+  int? plugged;
+  int? status;
+  int? health;
+  String? technology;
+  int? scale;
+  int? level;
+  int? temperature;
+  int? voltage;
+  int? healthDead;
+  int? healthCold;
+  int? healthGood;
   // int current;
-  int chargeCounter;
-  int currentNow;
-  int currentAvg;
-  int energyCounter;
+  int? chargeCounter;
+  int? currentNow;
+  int? currentAvg;
+  int? energyCounter;
 
   BatteryManager({
     this.present,
@@ -39,23 +39,23 @@ class BatteryManager {
 
   static BatteryManager fromMap(Map<Object, Object> map) {
     return BatteryManager(
-      energyCounter: map['energyCounter'],
-      chargeCounter: map['chargeCounter'],
+      energyCounter: map['energyCounter'] as int?,
+      chargeCounter: map['chargeCounter'] as int?,
       // current: map['current'],
-      currentAvg: map['currentAvg'],
-      currentNow: map['currentNow'],
-      healthCold: map['healthCold'],
-      healthDead: map['healthDead'],
-      healthGood: map['healthGood'],
-      health: map['health'],
-      level: map['level'],
-      plugged: map['plugged'],
-      present: map['present'],
-      scale: map['scale'],
-      status: map['status'],
-      technology: map['technology'],
-      temperature: map['temperature'],
-      voltage: map['voltage'],
+      currentAvg: map['currentAvg'] as int?,
+      currentNow: map['currentNow'] as int?,
+      healthCold: map['healthCold'] as int?,
+      healthDead: map['healthDead'] as int?,
+      healthGood: map['healthGood'] as int?,
+      health: map['health'] as int?,
+      level: map['level'] as int?,
+      plugged: map['plugged'] as int?,
+      present: map['present'] as bool?,
+      scale: map['scale'] as int?,
+      status: map['status'] as int?,
+      technology: map['technology'] as String?,
+      temperature: map['temperature'] as int?,
+      voltage: map['voltage'] as int?,
     );
   }
 }

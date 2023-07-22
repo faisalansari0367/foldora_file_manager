@@ -8,9 +8,9 @@ class ShowSelectedIcon extends StatelessWidget {
   final bool isSelected;
   final Widget child;
   const ShowSelectedIcon({
-    Key key,
+    Key? key,
     this.isSelected = false,
-    @required this.child,
+    required this.child,
   }) : super(key: key);
 
   @override

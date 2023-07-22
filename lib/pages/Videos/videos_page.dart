@@ -32,7 +32,7 @@ class VideosPage extends StatelessWidget {
         ),
         body: WillPopScope(
           onWillPop: () => provider.onGoBack(),
-          child: Selector<VideosProvider, Tuple2<VideoFolder, bool>>(
+          child: Selector<VideosProvider, Tuple2<VideoFolder?, bool>>(
             selector: (p0, p1) => Tuple2(p1.selectedVideoFolder, p1.showInFolders),
             builder: (context, data, child) {
               var widget;

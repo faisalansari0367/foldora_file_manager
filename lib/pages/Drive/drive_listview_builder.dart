@@ -14,12 +14,12 @@ import 'package:provider/provider.dart';
 import 'drive_list_view.dart';
 
 class DriveFutureBuilder extends StatefulWidget {
-  final String fileId;
-  final ScrollController controller;
+  final String? fileId;
+  final ScrollController? controller;
   final bool showAllFiles;
 
   const DriveFutureBuilder({
-    Key key,
+    Key? key,
     this.fileId,
     this.controller,
     this.showAllFiles = false,
@@ -31,8 +31,8 @@ class DriveFutureBuilder extends StatefulWidget {
 
 class _DriveFutureBuilderState extends State<DriveFutureBuilder> {
   bool _isLoading = false;
-  var _data = <File>[];
-  DriveStorage storage;
+  List<File>? _data = <File>[];
+  late DriveStorage storage;
 
   @override
   void initState() {
@@ -51,7 +51,7 @@ class _DriveFutureBuilderState extends State<DriveFutureBuilder> {
   }
 
   Future<void> saveToCache() async {
-    final json = _data.map((e) => e.toJson()).toList();
+    final json = _data!.map((e) => e.toJson()).toList();
     await storage.saveDriveFiles(widget.fileId ?? '0', json);
   }
 
@@ -67,7 +67,7 @@ class _DriveFutureBuilderState extends State<DriveFutureBuilder> {
       print('some stupid error $e');
       rethrow;
     }
-    if (_data.isNotEmpty) setLoading(false);
+    if (_data!.isNotEmpty) setLoading(false);
     print('getting data from cache took ${sw.elapsedMicroseconds}');
     sw.stop();
   }
@@ -85,7 +85,7 @@ class _DriveFutureBuilderState extends State<DriveFutureBuilder> {
 
   @override
   void dispose() {
-    _data.clear();
+    _data!.clear();
     super.dispose();
   }
 
@@ -96,7 +96,7 @@ class _DriveFutureBuilderState extends State<DriveFutureBuilder> {
       child: ListViewSwitcher(
         isLoading: _isLoading,
         child: EmptyFolder(
-          isEmpty: _data.isEmpty,
+          isEmpty: _data!.isEmpty,
           child: DriveListview(
             controller: widget.controller,
             data: _data,
@@ -124,7 +124,7 @@ class _DriveFutureBuilderState extends State<DriveFutureBuilder> {
       if (isDownloaded) return;
       await driveDownloader.downloadFile(
         file.name,
-        file.id,
+        file.id!,
         file.size,
       );
     }

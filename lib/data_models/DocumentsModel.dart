@@ -1,16 +1,16 @@
 import 'dart:io';
 
 class Document {
-  final String mimeType;
-  final int size;
-  final String title;
-  final File file;
+  final String? mimeType;
+  final int? size;
+  final String? title;
+  final File? file;
   Document({this.mimeType, this.size, this.title, this.file});
 }
 
 class DocumentsModel {
-  final String folderName;
-  final List<Document> document;
+  final String? folderName;
+  final List<Document>? document;
 
   DocumentsModel({this.folderName, this.document});
 

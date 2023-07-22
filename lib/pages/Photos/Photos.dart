@@ -15,7 +15,7 @@ class Photos extends StatefulWidget {
 }
 
 class _PhotosState extends State<Photos> with SingleTickerProviderStateMixin {
-  TabController tabController;
+  TabController? tabController;
 
   @override
   void initState() {

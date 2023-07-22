@@ -11,7 +11,7 @@ import 'package:files/widgets/my_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 class DriveFab extends StatefulWidget {
-  const DriveFab({Key key}) : super(key: key);
+  const DriveFab({Key? key}) : super(key: key);
 
   @override
   State<DriveFab> createState() => _DriveFabState();
@@ -43,7 +43,7 @@ class _DriveFabState extends State<DriveFab> {
               cursorColor: MyColors.appbarActionsColor,
               cursorRadius: MyDecoration.circularRadius,
               onChanged: (v) => folderName = v,
-              style: Theme.of(context).textTheme.subtitle2.copyWith(
+              style: Theme.of(context).textTheme.subtitle2!.copyWith(
                     color: MyColors.appbarActionsColor,
                     fontSize: 1.8.text,
                   ),
@@ -125,11 +125,11 @@ class _DriveFabState extends State<DriveFab> {
 }
 
 class _Item extends StatelessWidget {
-  final void Function() onTap;
-  final String name;
-  final IconData iconData;
+  final void Function()? onTap;
+  final String? name;
+  final IconData? iconData;
   const _Item({
-    Key key,
+    Key? key,
     this.onTap,
     this.name,
     this.iconData,
@@ -148,7 +148,7 @@ class _Item extends StatelessWidget {
             width: 50,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: MyColors.appbarActionsColor),
+              border: Border.all(color: MyColors.appbarActionsColor!),
             ),
             child: Icon(
               iconData,
@@ -157,7 +157,7 @@ class _Item extends StatelessWidget {
           ),
         ),
         SizedBox(height: 1.height),
-        Text(name, style: theme.textTheme.bodyText2),
+        Text(name!, style: theme.textTheme.bodyText2),
       ],
     );
   }

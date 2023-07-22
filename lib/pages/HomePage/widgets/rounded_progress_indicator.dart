@@ -7,18 +7,18 @@ import 'package:flutter/material.dart';
 class RoundedProgressIndicator extends StatefulWidget {
   final double percentage;
   final double radius;
-  final Color color;
-  final Color backgroundColor;
+  final Color? color;
+  final Color? backgroundColor;
   final double strokeWidth;
   final Duration duration;
   final Curve curve;
 
   const RoundedProgressIndicator({
-    Key key,
-    @required this.percentage,
-    @required this.radius,
-    @required this.color,
-    @required this.strokeWidth,
+    Key? key,
+    required this.percentage,
+    required this.radius,
+    required this.color,
+    required this.strokeWidth,
     this.backgroundColor,
     this.curve = Curves.easeInOutBack,
     this.duration = const Duration(milliseconds: 1000),
@@ -70,28 +70,28 @@ class _RoundedProgressIndicatorState extends State<RoundedProgressIndicator> wit
 
 class MyPainter extends CustomPainter {
   final double radius;
-  final Color color, backgroundColor;
+  final Color? color, backgroundColor;
   final double percentage;
   final double strokeWidth;
 
   MyPainter({
     this.strokeWidth = 5,
-    @required this.percentage,
-    @required this.color,
-    @required this.backgroundColor,
-    @required this.radius,
+    required this.percentage,
+    required this.color,
+    required this.backgroundColor,
+    required this.radius,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = color
+      ..color = color!
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
     final backGroundCircle = Paint()
-      ..color = backgroundColor
+      ..color = backgroundColor!
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;

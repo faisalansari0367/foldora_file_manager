@@ -12,7 +12,7 @@ class StorageKeys {
 }
 
 class StorageService extends HiveImplementation {
-  static Box box;
+  static late Box box;
   static var _init = false;
 
   StorageService() {
@@ -29,7 +29,7 @@ class StorageService extends HiveImplementation {
 
   Future<void> setFirstTimeSeen() async => await box.put(StorageKeys.firstSeen, true);
 
-  List<String> get getSearchSuggestions {
+  List<String>? get getSearchSuggestions {
     final suggestion = box.get(StorageKeys.suggestions, defaultValue: <String>[]);
     return suggestion;
   }
@@ -37,7 +37,7 @@ class StorageService extends HiveImplementation {
   Future<void> setSearchSuggestions(List<String> suggestions) async =>
       await box.put(StorageKeys.suggestions, suggestions);
 
-  bool get getFirstTimeSeen {
+  bool? get getFirstTimeSeen {
     final isSeen = box.get(StorageKeys.firstSeen, defaultValue: false);
     return isSeen;
   }

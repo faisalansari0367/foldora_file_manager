@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'helpers.dart';
 
 class LiveLine extends StatefulWidget {
-  const LiveLine({Key key}) : super(key: key);
+  const LiveLine({Key? key}) : super(key: key);
 
   @override
   _LiveLineState createState() => _LiveLineState();
@@ -16,7 +16,7 @@ class LiveLine extends StatefulWidget {
 
 class _LiveLineState extends State<LiveLine> {
   var timerForChagningMinMax;
-  var timer;
+  late var timer;
   var time = 0.0;
   var value = 500.0;
   var spots = <FlSpot>[];

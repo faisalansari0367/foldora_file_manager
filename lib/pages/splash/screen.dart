@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 import '../../sizeConfig.dart';
 
 class Screen extends StatefulWidget {
-  final String path, buttonText;
-  final Function onPressed;
-  final Widget title;
+  final String? path, buttonText;
+  final Function? onPressed;
+  final Widget? title;
   final bool showLoader;
 
-  const Screen({Key key, this.path, this.onPressed, this.buttonText, this.title, this.showLoader = false})
+  const Screen({Key? key, this.path, this.onPressed, this.buttonText, this.title, this.showLoader = false})
       : super(key: key);
 
   @override
@@ -54,11 +54,11 @@ class _ScreenState extends State<Screen> {
               children: animatedListView(
                 children: [
                   SizedBox(height: Responsive.height(10)),
-                  if (widget.title != null) widget.title,
+                  if (widget.title != null) widget.title!,
                   SizedBox(height: Responsive.height(10)),
                   Center(
                     child: MyImage.asset(
-                      widget.path,
+                      widget.path!,
                       width: Responsive.width(80),
                       height: Responsive.height(30),
                       fit: BoxFit.contain,
@@ -68,7 +68,7 @@ class _ScreenState extends State<Screen> {
                   Row(
                     children: [
                       MyElevatedButton(
-                        onPressed: widget.onPressed,
+                        onPressed: widget.onPressed as void Function()?,
                         text: (widget.buttonText),
                         icon: widget.showLoader
                             ? SizedBox(

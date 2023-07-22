@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import '../../sizeConfig.dart';
 
 class ShowStorageDetails extends StatelessWidget {
-  final int usedBytes, availableBytes;
+  final int? usedBytes, availableBytes;
 
-  const ShowStorageDetails({Key key, this.usedBytes, this.availableBytes}) : super(key: key);
+  const ShowStorageDetails({Key? key, this.usedBytes, this.availableBytes}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +51,8 @@ class ShowStorageDetails extends StatelessWidget {
 }
 
 class AvailableSpace extends StatelessWidget {
-  final int availableBytes;
-  const AvailableSpace({Key key, this.availableBytes}) : super(key: key);
+  final int? availableBytes;
+  const AvailableSpace({Key? key, this.availableBytes}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +78,8 @@ class AvailableSpace extends StatelessWidget {
 }
 
 class UsedSpace extends StatelessWidget {
-  final int usedBytes;
-  const UsedSpace({Key key, this.usedBytes}) : super(key: key);
+  final int? usedBytes;
+  const UsedSpace({Key? key, this.usedBytes}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

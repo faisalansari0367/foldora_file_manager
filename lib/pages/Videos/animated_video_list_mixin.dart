@@ -24,9 +24,9 @@ mixin AnimatedVideoListMixin {
     final provider = getProvider<VideosProvider>(context);
     final video = file;
     return VideoListItem(
-      currentPath: video.file.path,
+      currentPath: video.file!.path,
       description: MediaUtils.description(video.file),
-      ontap: () => MediaUtils.ontap(context, video.file),
+      ontap: () => MediaUtils.ontap(context, video.file!),
       title: video.displayName,
       selectedColor: MyColors.darkGrey.withOpacity(0.25),
       selected: provider.selectedFiles.contains(video),

@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BottomSheetWidget extends StatefulWidget {
-  const BottomSheetWidget({Key key}) : super(key: key);
+  const BottomSheetWidget({Key? key}) : super(key: key);
 
   @override
   _BottomSheetWidgetState createState() => _BottomSheetWidgetState();
@@ -45,7 +45,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                     TextField(
                       cursorColor: MyColors.appbarActionsColor,
                       cursorRadius: MyDecoration.circularRadius,
-                      style: Theme.of(context).textTheme.subtitle2.copyWith(
+                      style: Theme.of(context).textTheme.subtitle2!.copyWith(
                             color: MyColors.appbarActionsColor,
                             fontSize: 1.8.text,
                           ),
@@ -62,7 +62,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                     ),
                     Text(
                       'Select files to upload',
-                      style: theme.textTheme.subtitle1.copyWith(
+                      style: theme.textTheme.subtitle1!.copyWith(
                         color: MyColors.appbarActionsColor,
                       ),
                     ),
@@ -107,7 +107,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                     onPressed: () {
                       driveProvider.filesToUpload.forEach(
                         (element) {
-                          MyDrive.uploadFileToGoogleDrive(element);
+                          MyDrive.uploadFileToGoogleDrive(element as File);
                         },
                       );
                     },

@@ -13,13 +13,12 @@ class HorizontalTabs extends StatefulWidget {
   State<HorizontalTabs> createState() => _HorizontalTabsState();
 }
 
-class _HorizontalTabsState extends State<HorizontalTabs> with AutomaticKeepAliveClientMixin {
+class _HorizontalTabsState extends State<HorizontalTabs> {
   static final children = <Widget>[PhotosTab(), MediaTab(), VideosTab(), DriveTab()];
   static final sizedBox = SizedBox(width: 5.width);
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Container(
       height: 40 * Responsive.heightMultiplier,
       child: ListView.separated(
@@ -36,6 +35,6 @@ class _HorizontalTabsState extends State<HorizontalTabs> with AutomaticKeepAlive
   Widget seperatorBuilder(context, index) => sizedBox;
   Widget itemBuilder(context, index) => children[index];
 
-  @override
-  bool get wantKeepAlive => true;
+  // @override
+  // bool get wantKeepAlive => true;
 }

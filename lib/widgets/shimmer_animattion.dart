@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerAnimation extends StatelessWidget {
-  final double width, height;
-  const ShimmerAnimation({Key key, this.width, this.height}) : super(key: key);
+  final double? width, height;
+  const ShimmerAnimation({Key? key, this.width, this.height}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class ShimmerAnimation extends StatelessWidget {
     );
     final placeHolder = Shimmer.fromColors(
       highlightColor: color,
-      baseColor: Colors.grey[500],
+      baseColor: Colors.grey[500]!,
       direction: ShimmerDirection.ltr,
       child: shimmer,
     );

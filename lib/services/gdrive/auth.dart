@@ -12,15 +12,15 @@ import 'drive_storage.dart';
 import 'http_client.dart';
 
 abstract class AuthImplementation {
-  Future<void> signInWithGoogle({@required context});
-  Future<void> signOut({@required BuildContext context});
+  Future<void> signInWithGoogle({required context});
+  Future<void> signOut({required BuildContext context});
 }
 
 class Auth {
   static final googleSignIn = GoogleSignIn(scopes: [DriveApi.driveScope]);
-  static User user;
+  static User? user;
 
-  static User getCurrentUser() {
+  static User? getCurrentUser() {
     return FirebaseAuth.instance.currentUser;
   }
 
@@ -34,16 +34,16 @@ class Auth {
       }
     } catch (e) {
       log(e.toString());
-      MySnackBar.show(content: e.code);
+      // MySnackBar.show(content: e.code);
     }
   }
 
   static Future<void> initDrive() async {
-    GoogleSignInAccount gsa;
+    GoogleSignInAccount? gsa;
     gsa = await googleSignIn.signInSilently();
     gsa ??= await googleSignIn.signIn();
     log('sign in silently result: $gsa');
-    final client = await getClient(gsa);
+    final client = await getClient(gsa!);
     // await signInWithGoogle(googleSignIn);
     MyDrive(client);
   }
@@ -56,15 +56,15 @@ class Auth {
     return GoogleHttpClient(headers);
   }
 
-  static Future<GoogleSignInAccount> driveSignIn(GoogleSignIn googleSignIn) async {
+  static Future<GoogleSignInAccount?> driveSignIn(GoogleSignIn googleSignIn) async {
     final googleSignInAccount = await googleSignIn.signIn();
     return googleSignInAccount;
   }
 
-  static Future<User> signInWithGoogle(googleSignin, {BuildContext context}) async {
+  static Future<User?> signInWithGoogle(googleSignin, {BuildContext? context}) async {
     final auth = FirebaseAuth.instance;
     try {
-      final googleSignInAccount = await driveSignIn(googleSignin);
+      final googleSignInAccount = (await driveSignIn(googleSignin))!;
       assert(googleSignInAccount != null);
       await getClient(googleSignInAccount);
       final authentication = await googleSignInAccount.authentication;
@@ -87,7 +87,7 @@ class Auth {
     return user;
   }
 
-  static Future<void> signOut({@required BuildContext context}) async {
+  static Future<void> signOut({required BuildContext context}) async {
     try {
       await FirebaseAuth.instance.signOut();
     } catch (e) {

@@ -7,14 +7,14 @@ import 'package:provider/provider.dart';
 import '../MediaStack.dart';
 
 class PhotosTab extends StatelessWidget {
-  const PhotosTab({Key key}) : super(key: key);
+  const PhotosTab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Consumer<StoragePathProvider>(
       builder: (BuildContext context, photos, child) {
         var length = 0;
         for (var item in photos.imagesPath) {
-          length += item.files.length;
+          length += item.files!.length;
         }
         final itemsCount = length;
         print(itemsCount);

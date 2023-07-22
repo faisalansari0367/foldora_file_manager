@@ -7,28 +7,28 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 
 class CustomDialog extends StatefulWidget {
-  final FileSystemEntity item;
-  final String path;
+  final FileSystemEntity? item;
+  final String? path;
   final String eventName;
-  const CustomDialog({@required this.item, @required this.eventName, this.path});
+  const CustomDialog({required this.item, required this.eventName, this.path});
 
   @override
   _CustomDialogState createState() => _CustomDialogState();
 }
 
 class _CustomDialogState extends State<CustomDialog> {
-  TextEditingController _textController;
+  TextEditingController? _textController;
 
   @override
   void initState() {
-    final text = widget.item == null ? null : p.basename(widget.item.path);
+    final text = widget.item == null ? null : p.basename(widget.item!.path);
     _textController = TextEditingController(text: text);
     super.initState();
   }
 
   @override
   void dispose() {
-    _textController.dispose();
+    _textController!.dispose();
     super.dispose();
   }
 
@@ -74,14 +74,14 @@ class _CustomDialogState extends State<CustomDialog> {
                   style: textStyle,
                 ),
                 onPressed: () async {
-                  final name = _textController.text.trim();
+                  final name = _textController!.text.trim();
                   if (widget.eventName == 'rename') {
-                    await provider.rename(widget.item, name);
+                    await provider.rename(widget.item!, name);
                   } else {
-                    final currentPath = provider.data[provider.currentPage].currentPath;
+                    final currentPath = provider.data[provider.currentPage].currentPath!;
                     await provider.createFileSystemEntity(currentPath, name);
                   }
-                  _textController.text = '';
+                  _textController!.text = '';
                   Navigator.of(context).pop();
                 },
               ),

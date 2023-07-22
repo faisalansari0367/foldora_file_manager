@@ -11,20 +11,20 @@ import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
 class DriveFilesSelector extends StatelessWidget {
-  final ScrollController controller;
+  final ScrollController? controller;
   final List<FileSystemEntity> data;
-  final List<FileSystemEntity> selectedFiles;
-  final Widget trailing;
+  final List<FileSystemEntity>? selectedFiles;
+  final Widget? trailing;
   final void Function(FileSystemEntity) onTap;
-  final void Function(FileSystemEntity) onPressed;
-  final bool Function(FileSystemEntity) isSelected;
+  final void Function(FileSystemEntity)? onPressed;
+  final bool Function(FileSystemEntity)? isSelected;
 
   const DriveFilesSelector({
-    Key key,
+    Key? key,
     this.controller,
-    @required this.data,
+    required this.data,
     this.trailing,
-    @required this.onTap,
+    required this.onTap,
     this.onPressed,
     this.isSelected,
     this.selectedFiles,
@@ -65,16 +65,16 @@ class DriveFilesSelector extends StatelessWidget {
 
 class TrailingWidget extends StatefulWidget {
   const TrailingWidget({
-    Key key,
+    Key? key,
     // @required this.selectedFiles,
-    @required this.file,
-    @required this.onPressed,
+    required this.file,
+    required this.onPressed,
     // this.selectedFiles,
   }) : super(key: key);
 
   // final List<FileSystemEntity> selectedFiles;
   final FileSystemEntity file;
-  final void Function(FileSystemEntity p1) onPressed;
+  final void Function(FileSystemEntity p1)? onPressed;
 
   @override
   State<TrailingWidget> createState() => _TrailingWidgetState();
@@ -104,7 +104,7 @@ class _TrailingWidgetState extends State<TrailingWidget> {
         color: MyColors.appbarActionsColor,
       ),
       onPressed: () {
-        widget.onPressed(widget.file);
+        widget.onPressed!(widget.file);
       },
     );
   }

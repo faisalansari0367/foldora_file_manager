@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 
 import '../sizeConfig.dart';
 
-bool getSelectedItem(List<FileSystemEntity> files, String path) {
+bool getSelectedItem(List<FileSystemEntity?> files, String path) {
   var isSelected = false;
   for (var item in files) {
-    if (path == item.path) {
+    if (path == item!.path) {
       isSelected = true;
       break;
     } else {
@@ -20,20 +20,20 @@ bool getSelectedItem(List<FileSystemEntity> files, String path) {
 }
 
 class MediaListItem extends StatefulWidget {
-  final Color selectedColor;
-  final String title;
-  final Color textColor;
-  final Widget description;
-  final String currentPath;
-  final Function ontap;
-  final Function onLongPress;
-  final Widget leading;
-  final int index;
-  final FileSystemEntity data;
-  final Widget trailing;
+  final Color? selectedColor;
+  final String? title;
+  final Color? textColor;
+  final Widget? description;
+  final String? currentPath;
+  final Function? ontap;
+  final Function? onLongPress;
+  final Widget? leading;
+  final int? index;
+  final FileSystemEntity? data;
+  final Widget? trailing;
 
   const MediaListItem({
-    Key key,
+    Key? key,
     this.index,
     this.title,
     this.description,
@@ -62,24 +62,24 @@ class _MediaListItemState extends State<MediaListItem> {
       ),
       child: Row(
         children: <Widget>[
-          widget.leading,
+          widget.leading!,
           _Item(
             description: widget.description,
             title: widget.title,
             titleColor: widget.textColor,
           ),
-          if (widget.trailing != null) widget.trailing,
+          if (widget.trailing != null) widget.trailing!,
         ],
       ),
     );
 
     return InkWell(
-      onTap: widget.ontap,
-      onLongPress: widget.onLongPress,
+      onTap: widget.ontap as void Function()?,
+      onLongPress: widget.onLongPress as void Function()?,
       child: Consumer<OperationsProvider>(
         child: padding,
         builder: (context, provider, child) {
-          final isSelected = getSelectedItem(provider.selectedMedia, widget.data.path);
+          final isSelected = getSelectedItem(provider.selectedMedia, widget.data!.path);
           final color = isSelected ? widget.selectedColor : Colors.transparent;
           return AnimatedContainer(
             duration: duration,
@@ -93,13 +93,13 @@ class _MediaListItemState extends State<MediaListItem> {
 }
 
 class _Item extends StatelessWidget {
-  final Widget description;
-  final String title;
-  final Color titleColor;
+  final Widget? description;
+  final String? title;
+  final Color? titleColor;
   const _Item({this.description, this.title, this.titleColor});
   @override
   Widget build(BuildContext context) {
-    final subtitle1 = Theme.of(context).textTheme.subtitle1;
+    final subtitle1 = Theme.of(context).textTheme.subtitle1!;
     return Expanded(
       child: Padding(
         padding: EdgeInsets.only(left: Responsive.width(4.0)),
@@ -107,13 +107,13 @@ class _Item extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              title,
+              title!,
               style: subtitle1.copyWith(
                 color: titleColor ?? subtitle1.color,
               ),
             ),
             SizedBox(height: Responsive.height(0.5)),
-            if (description != null) description,
+            if (description != null) description!,
           ],
         ),
       ),

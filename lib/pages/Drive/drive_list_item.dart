@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import '../../sizeConfig.dart';
 
 class DriveListItem extends StatefulWidget {
-  final Color selectedColor;
-  final Widget title;
-  final Color textColor;
-  final Widget description;
-  final String currentPath;
-  final Function ontap;
-  final Function onLongPress;
-  final Widget leading;
-  final int index;
+  final Color? selectedColor;
+  final Widget? title;
+  final Color? textColor;
+  final Widget? description;
+  final String? currentPath;
+  final Function? ontap;
+  final Function? onLongPress;
+  final Widget? leading;
+  final int? index;
   // final FileSystemEntity data;
-  final IconButton trailing;
+  final IconButton? trailing;
 
   const DriveListItem({
-    Key key,
+    Key? key,
     this.index,
     this.title,
     this.description,
@@ -46,29 +46,29 @@ class _DriveListItemState extends State<DriveListItem> {
       ),
       child: Row(
         children: <Widget>[
-          widget.leading,
+          widget.leading!,
           _Item(
             description: widget.description,
             title: widget.title,
             titleColor: widget.textColor,
           ),
-          if (widget.trailing != null) widget.trailing,
+          if (widget.trailing != null) widget.trailing!,
         ],
       ),
     );
 
     return InkWell(
-      onTap: widget.ontap,
-      onLongPress: widget.onLongPress,
+      onTap: widget.ontap as void Function()?,
+      onLongPress: widget.onLongPress as void Function()?,
       child: child,
     );
   }
 }
 
 class _Item extends StatelessWidget {
-  final Widget description;
-  final Widget title;
-  final Color titleColor;
+  final Widget? description;
+  final Widget? title;
+  final Color? titleColor;
   const _Item({this.description, this.title, this.titleColor});
   @override
   Widget build(BuildContext context) {
@@ -78,9 +78,9 @@ class _Item extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            title,
+            title!,
             SizedBox(height: Responsive.height(0.5)),
-            if (description != null) description,
+            if (description != null) description!,
           ],
         ),
       ),

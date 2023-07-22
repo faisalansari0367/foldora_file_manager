@@ -8,7 +8,7 @@ class DropdownOptions extends StatelessWidget {
   /// pass the OptionItem in the children.
   final List<Widget> children;
 
-  const DropdownOptions({Key key, this.children = const []}) : super(key: key);
+  const DropdownOptions({Key? key, this.children = const []}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(

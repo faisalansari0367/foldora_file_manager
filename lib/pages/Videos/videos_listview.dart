@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class VideosListview extends StatefulWidget {
   final List<VideoFile> videos;
-  const VideosListview({Key key, this.videos = const []}) : super(key: key);
+  const VideosListview({Key? key, this.videos = const []}) : super(key: key);
 
   @override
   State<VideosListview> createState() => _VideosListviewState();

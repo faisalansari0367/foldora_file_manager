@@ -8,7 +8,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'photo.dart';
 
 class MyGridView extends StatefulWidget {
-  final List<File> photos;
+  final List<File>? photos;
   const MyGridView({this.photos});
 
   @override
@@ -18,7 +18,7 @@ class MyGridView extends StatefulWidget {
 class _MyGridViewState extends State<MyGridView> {
   @override
   Widget build(BuildContext context) {
-    if (widget.photos.isEmpty) return FileNotFoundScreen();
+    if (widget.photos!.isEmpty) return FileNotFoundScreen();
     final pattern = [
       QuiltedGridTile(2, 2),
       QuiltedGridTile(1, 1),

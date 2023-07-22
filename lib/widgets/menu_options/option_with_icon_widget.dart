@@ -3,11 +3,11 @@ import 'package:files/utilities/MyColors.dart';
 import 'package:flutter/material.dart';
 
 class OptionIcon extends StatelessWidget {
-  final void Function() onTap;
-  final String name;
-  final IconData iconData;
+  final void Function()? onTap;
+  final String? name;
+  final IconData? iconData;
   const OptionIcon({
-    Key key,
+    Key? key,
     this.onTap,
     this.name,
     this.iconData,
@@ -26,7 +26,7 @@ class OptionIcon extends StatelessWidget {
             width: 50,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: MyColors.appbarActionsColor),
+              border: Border.all(color: MyColors.appbarActionsColor!),
             ),
             child: Icon(
               iconData,
@@ -35,7 +35,7 @@ class OptionIcon extends StatelessWidget {
           ),
         ),
         SizedBox(height: 1.height),
-        Text(name, style: theme.textTheme.bodyText2),
+        Text(name!, style: theme.textTheme.bodyText2),
       ],
     );
   }

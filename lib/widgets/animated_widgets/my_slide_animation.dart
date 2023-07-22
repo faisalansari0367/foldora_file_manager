@@ -9,8 +9,8 @@ class MySlideAnimation extends StatelessWidget {
   final int delayInMs;
 
   const MySlideAnimation({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.curve = Curves.easeInOutExpo,
     this.verticalOffset = 50.0,
     this.horizontalOffset = 0.0,

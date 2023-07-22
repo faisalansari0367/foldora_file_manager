@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 
 class LeadingVIdeo extends StatelessWidget {
   const LeadingVIdeo({
-    Key key,
-    @required this.video,
+    Key? key,
+    required this.video,
     this.onTap,
   }) : super(key: key);
 
   final VideoFile video;
-  final void Function() onTap;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +23,14 @@ class LeadingVIdeo extends StatelessWidget {
         width: 25.width,
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
         child: video.thumbnail != null
-            ? Image.memory(video.thumbnail, fit: BoxFit.cover)
+            ? Image.memory(video.thumbnail!, fit: BoxFit.cover)
             : FutureBuilder(
-                future: VideoUtil.createThumbnail(video.file.path),
+                future: VideoUtil.createThumbnail(video.file!.path),
                 builder: (context, snapshot) {
                   return !snapshot.hasData
                       ? Center(child: CircularProgressIndicator())
-                      : Image.file(snapshot.data, fit: BoxFit.cover);
+                      : SizedBox.shrink();
+                  // : Image.file(snapshot.data, fit: BoxFit.cover);
                 },
               ),
       ),

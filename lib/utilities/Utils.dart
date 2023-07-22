@@ -14,15 +14,15 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 // import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class FileUtils {
-  static Worker worker;
+  static late Worker worker;
   FileUtils() {
     worker = Worker();
   }
 
   static const String apkIconPath = '/storage/emulated/0/.apkIcons';
 
-  static String formatBytes(int bytes, decimals, {bool inGB = false}) {
-    if (bytes == 0 || bytes.isNegative) return '0 B';
+  static String formatBytes(int? bytes, decimals, {bool inGB = false}) {
+    if (bytes == 0 || bytes!.isNegative) return '0 B';
     var k = 1024,
         dm = decimals <= 0 ? 0 : decimals,
         sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
@@ -60,7 +60,7 @@ class FileUtils {
   }
 
   // ignore: missing_return
-  static Future<String> createThumbnail(path) async {
+  static Future<String?> createThumbnail(path) async {
     final apkIconDir = Directory(apkIconPath);
     if (!apkIconDir.existsSync()) await apkIconDir.create();
     final map = isVideoThumbnailExist(path);
@@ -87,9 +87,9 @@ class FileUtils {
     var size = 0;
 
     for (final item in result) {
-      for (final i in item.videos) {
+      for (final i in item.videos!) {
         videos.add(i);
-        size += i.size;
+        size += i.size!;
       }
     }
 
@@ -115,8 +115,8 @@ class FileUtils {
     final result = DocumentsModel.jsonToDocument(decodedJson);
     var totalSize = 0;
     for (final i in result) {
-      for (final e in i.document) {
-        totalSize += e.size;
+      for (final e in i.document!) {
+        totalSize += e.size!;
       }
     }
     return {'data': result, 'size': totalSize};
@@ -127,7 +127,7 @@ class FileUtils {
     var size = 0;
     final result = AudioModel.jsonToAudio(json);
     for (final item in result) {
-      for (final i in item.audios) {
+      for (final i in item.audios!) {
         audios.add(i);
         size += i?.size ?? 0;
       }
@@ -164,7 +164,7 @@ class FileUtils {
   }
 
   ///This function returns all the apk files stored on the device.
-  static Future<List<String>> getAllLocalApps() async {
+  static Future<List<String>?> getAllLocalApps() async {
     final args = {'path': '/storage/emulated/0', 'query': '.apk', 'wantOnlyPath': true, 'withExt': true};
     final apksPaths = await worker.doWork(SearchUtils.doSearching, args);
     return apksPaths;
@@ -186,7 +186,7 @@ class FileUtils {
         if (p.basename(event.path).startsWith('.')) {
           hiddenFiles.add(event);
         } else {
-          event is Directory ? directories.add(event) : files.add(event);
+          event is Directory ? directories.add(event) : files.add(event as File);
         }
       }
 

@@ -11,29 +11,29 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'utilities/Utils.dart';
 import 'pages/splash/splash_screen.dart';
+import 'utilities/Utils.dart';
 
 Future<void> init() async {
   await Future.wait([
-    Firebase.initializeApp(),
     StorageService().isReady,
     DriveStorage().isReady,
   ]);
 
   // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
   //   systemNavigationBarColor: Colors.white, // navigation bar color
-    // statusBarColor: Colors.pink, // status bar color
-    // statusBarBrightness: Brightness.dark, //status bar brigtness
-    // statusBarIconBrightness: Brightness.dark, //status barIcon Brightness
-    // systemNavigationBarDividerColor: Colors.greenAccent, //Navigation bar divider color
-    // systemNavigationBarIconBrightness: Brightness.light, //navigation bar icon
+  // statusBarColor: Colors.pink, // status bar color
+  // statusBarBrightness: Brightness.dark, //status bar brigtness
+  // statusBarIconBrightness: Brightness.dark, //status barIcon Brightness
+  // systemNavigationBarDividerColor: Colors.greenAccent, //Navigation bar divider color
+  // systemNavigationBarIconBrightness: Brightness.light, //navigation bar icon
   // ));
 }
 
 void main() async {
-  final stopwatch = Stopwatch()..start();
   WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+  final stopwatch = Stopwatch()..start();
   await Hive.initFlutter();
   await init();
   FileUtils();
@@ -47,7 +47,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Widget child;
+  Widget? child;
 
   final PageView pageView = PageView(
     children: [HomePage(), HomePage()],
@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    child = StorageService().getFirstTimeSeen ? pageView : SplashScreen();
+    child = StorageService().getFirstTimeSeen! ? pageView : SplashScreen();
   }
 
   @override

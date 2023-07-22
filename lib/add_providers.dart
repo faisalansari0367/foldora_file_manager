@@ -14,7 +14,7 @@ import 'provider/scroll_provider.dart';
 
 class AddProviders extends StatelessWidget {
   final Widget child;
-  const AddProviders({Key key, @required this.child}) : super(key: key);
+  const AddProviders({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +44,9 @@ class AddProviders extends StatelessWidget {
         ChangeNotifierProvider<VideosProvider>(
           create: (context) => VideosProvider(),
         ),
-        ChangeNotifierProxyProvider<VideosProvider, StoragePathProvider>(
+        ChangeNotifierProxyProvider<VideosProvider, StoragePathProvider?>(
           create: (context) => StoragePathProvider(),
-          update: (context, value, previous) => previous..setVideosSize(value.videosSize),
+          update: (context, value, previous) => previous?..setVideosSize(value.videosSize),
         ),
         ChangeNotifierProvider<LocalAuth>(
           create: (context) => LocalAuth(),

@@ -12,23 +12,24 @@ import 'package:provider/provider.dart';
 import 'leading_icon/leading_icon.dart';
 
 class DirectoryLister extends StatelessWidget {
-  final String path;
-  final ScrollController scrollController;
+  final String? path;
+  final ScrollController? scrollController;
   const DirectoryLister({this.path, this.scrollController});
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<MyProvider>(context, listen: true);
 
-    return FutureBuilder(
-      future: provider.dirContents(path, isShowHidden: provider.showHidden),
+    return FutureBuilder<List<FileSystemEntity>>(
+      future: provider.dirContents(path!, isShowHidden: provider.showHidden),
       builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data.isEmpty) {
-          if (p.equals(path, provider.data[provider.currentPage].path)) {
+        if(snapshot.data == null) return Container();
+        if (snapshot.hasData && snapshot.data!.isEmpty) {
+          if (p.equals(path!, provider.data[provider.currentPage].path!)) {
             return Container();
           }
-          return MediaUtils.fileNotFound();
-        } else if (snapshot.hasData && snapshot.data.isNotEmpty) {
+          return MediaUtils.fileNotFound(message: '');
+        } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
           final widget = DirectoryListItem(
             data: snapshot.data,
             scrollController: scrollController,
@@ -45,13 +46,13 @@ class DirectoryLister extends StatelessWidget {
 }
 
 class DirectoryListItem extends StatefulWidget {
-  final String path;
-  final Color selected;
-  final List<FileSystemEntity> data;
-  final ScrollController scrollController;
+  final String? path;
+  final Color? selected;
+  final List<FileSystemEntity>? data;
+  final ScrollController? scrollController;
 
   const DirectoryListItem({
-    Key key,
+    Key? key,
     this.data,
     this.path,
     this.selected,
@@ -72,9 +73,9 @@ class _DirectoryListItemState extends State<DirectoryListItem> {
         physics: BouncingScrollPhysics(),
         shrinkWrap: true,
         controller: widget.scrollController ?? ScrollController(),
-        itemCount: widget.data.length,
+        itemCount: widget.data!.length,
         itemBuilder: (context, index) {
-          final data = widget.data[index];
+          final data = widget.data![index];
           final mediaListItem = MediaListItem(
             key: UniqueKey(),
             index: index,

@@ -12,9 +12,9 @@ class OperationsUtils {
 
   static final _size = 12.8 * Responsive.widthMultiplier;
 
-  static Widget customFAB(Widget child, {Function ontap}) {
+  static Widget customFAB(Widget child, {Function? ontap}) {
     return InkWell(
-      onTap: ontap,
+      onTap: ontap as void Function()?,
       child: CircleAvatar(
         radius: 7.0 * Responsive.widthMultiplier,
         backgroundColor: const Color(0xFF63cb99),
@@ -23,21 +23,21 @@ class OperationsUtils {
     );
   }
 
-  static final _cpi = Selector<OperationsProvider, double>(
+  static final _cpi = Selector<OperationsProvider, double?>(
     selector: (_, value) => value.progress,
     builder: (_, value, __) {
       return CircularProgressIndicator(
         valueColor: AlwaysStoppedAnimation(Colors.teal[300]),
-        value: value / 100,
+        value: value! / 100,
       );
     },
   );
 
-  static final _text = Selector<OperationsProvider, double>(
+  static final _text = Selector<OperationsProvider, double?>(
     selector: (_, value) => value.progress,
     builder: (_, value, __) {
       return Text(
-        value.toStringAsFixed(0),
+        value!.toStringAsFixed(0),
         style: TextStyle(color: Colors.white),
       );
     },
@@ -75,11 +75,11 @@ class OperationsUtils {
     );
   }
 
-  static Future<Widget> myDialog(
+  static Future<Widget?> myDialog(
     BuildContext context, {
-    FileSystemEntity item,
-    @required String eventName,
-    String path,
+    FileSystemEntity? item,
+    required String eventName,
+    String? path,
   }) async {
     return await showDialog(
       context: context,

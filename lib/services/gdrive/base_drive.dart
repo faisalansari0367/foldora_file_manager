@@ -8,7 +8,7 @@ import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
 class MyDrive {
-  static DriveApi drive;
+  static late DriveApi drive;
   static bool isReady = false;
   static const mimeTypeFolder = 'application/vnd.google-apps.folder';
   static const fields = 'files(name, iconLink, size, createdTime, fullFileExtension, mimeType, id)';
@@ -19,7 +19,7 @@ class MyDrive {
     MyDrive.drive = drive;
   }
 
-  static Future<List<File>> driveFiles({fileId, showAllFiles = false}) async {
+  static Future<List<File>?> driveFiles({fileId, showAllFiles = false}) async {
     final idNotNull = fileId != null;
     final listFolders = "mimeType='$mimeTypeFolder'";
     final listFiles = "'$fileId' in parents";
@@ -42,16 +42,16 @@ class MyDrive {
     
   }
 
-  static Future<bool> deleteFiles(List<String> ids) async {
+  static Future<bool> deleteFiles(List<String?> ids) async {
     try {
       for (var id in ids) {
         print('deleting file $id');
-        await drive.files.delete(id);
+        await drive.files.delete(id!);
         print('file $id deleted');
       }
       return true;
     } catch (e) {
-      MySnackBar.show(content: e.message);
+      // MySnackBar.show(content: e.message);
       return false;
     }
   }
@@ -67,9 +67,9 @@ class MyDrive {
     }
   }
 
-  static Future<Media> downloadGoogleDriveFile(String fName, String gdID) async {
+  static Future<Media> downloadGoogleDriveFile(String? fName, String gdID) async {
     final options = DownloadOptions.fullMedia;
-    final Media file = await drive.files.get(gdID, downloadOptions: options);
+    final Media file = await (drive.files.get(gdID, downloadOptions: options) as FutureOr<Media>);
     return file;
   }
 

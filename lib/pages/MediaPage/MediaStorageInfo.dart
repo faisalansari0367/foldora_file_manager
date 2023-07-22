@@ -8,7 +8,7 @@ import '../../sizeConfig.dart';
 
 class MediaStorageInfo extends StatelessWidget {
   final String path, storageName;
-  final int usedBytes, availableBytes, totalBytes;
+  final int? usedBytes, availableBytes, totalBytes;
 
   // static const backgroundColor = Color(0xFF2c2c3c);
   const MediaStorageInfo({
@@ -51,9 +51,9 @@ class MediaStorageInfo extends StatelessWidget {
 class StorageType extends StatelessWidget {
   final String path, storageName;
   const StorageType({
-    Key key,
-    @required this.path,
-    @required this.storageName,
+    Key? key,
+    required this.path,
+    required this.storageName,
   }) : super(key: key);
 
   @override

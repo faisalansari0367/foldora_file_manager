@@ -36,7 +36,7 @@ class _ImageFoldersState extends State<ImageFolders> {
       itemBuilder: (context, index) {
         final item = images[index];
 
-        final image = File(item.files.first);
+        final image = File(item.files!.first);
         return FolderImage(
           image: image,
           folderName: item.folderName,
@@ -50,10 +50,10 @@ class _ImageFoldersState extends State<ImageFolders> {
 
 class FolderImage extends StatelessWidget {
   final File image;
-  final String folderName;
-  final String folderSize;
+  final String? folderName;
+  final String? folderSize;
   final int index;
-  const FolderImage({@required this.image, @required this.folderName, @required this.index, this.folderSize});
+  const FolderImage({required this.image, required this.folderName, required this.index, this.folderSize});
 
   @override
   Widget build(BuildContext context) {
@@ -62,14 +62,14 @@ class FolderImage extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final photos = images[index];
-        final list = [for (var item in photos.files) File(item)];
+        final list = [for (var item in photos.files!) File(item)];
         MediaUtils.redirectToPage(
           context,
           page: Scaffold(
             backgroundColor: Colors.black,
             appBar: MyAppBar(
               backgroundColor: Colors.black,
-              title: Text(photos.folderName),
+              title: Text(photos.folderName!),
             ),
             body: MyGridView(
               photos: list,
@@ -101,19 +101,19 @@ class FolderImage extends StatelessWidget {
                 children: [
                   Text(
                     folderName ?? '',
-                    style: theme.bodyText2.copyWith(color: MyColors.whitish),
+                    style: theme.bodyText2!.copyWith(color: MyColors.whitish),
                   ),
                   SizedBox(height: 5),
                   Text(
-                    '${images[index].files.length} Items',
-                    style: theme.caption.copyWith(color: MyColors.whitish),
+                    '${images[index].files!.length} Items',
+                    style: theme.caption!.copyWith(color: MyColors.whitish),
                   ),
                 ],
               ),
               Flexible(
                 child: Text(
                   '$folderSize',
-                  style: theme.caption.copyWith(color: MyColors.whitish, overflow: TextOverflow.ellipsis),
+                  style: theme.caption!.copyWith(color: MyColors.whitish, overflow: TextOverflow.ellipsis),
                 ),
               ),
             ],

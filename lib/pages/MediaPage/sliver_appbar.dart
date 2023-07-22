@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import '../../sizeConfig.dart';
 
 class MySliverAppBar extends StatefulWidget {
-  final Widget title;
+  final Widget? title;
 
   MySliverAppBar({this.title});
 

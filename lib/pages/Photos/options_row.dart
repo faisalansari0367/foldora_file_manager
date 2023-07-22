@@ -5,8 +5,8 @@ import 'package:files/sizeConfig.dart';
 import 'package:flutter/material.dart';
 
 class OptionsRow extends StatelessWidget {
-  final File file;
-  const OptionsRow({Key key, this.file}) : super(key: key);
+  final File? file;
+  const OptionsRow({Key? key, this.file}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +36,16 @@ class OptionsRow extends StatelessWidget {
 
 class _Option extends StatelessWidget {
   const _Option({
-    Key key,
-    @required this.file,
-    @required this.onPressed,
-    @required this.title,
+    Key? key,
+    required this.file,
+    required this.onPressed,
+    required this.title,
     this.iconData,
   }) : super(key: key);
 
-  final File file;
+  final File? file;
   final String title;
-  final IconData iconData;
+  final IconData? iconData;
   final void Function() onPressed;
 
   @override

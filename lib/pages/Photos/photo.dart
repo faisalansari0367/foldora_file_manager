@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 import 'FullScreenImage.dart';
 
 class Photo extends StatelessWidget {
-  final List<File> files;
-  final int index;
+  final List<File>? files;
+  final int? index;
   const Photo({this.files, this.index});
 
   @override
@@ -39,7 +39,7 @@ class Photo extends StatelessWidget {
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(12)),
             child: Image.file(
-              files[index],
+              files![index!],
               fit: BoxFit.cover,
               cacheWidth: 240,
             ),

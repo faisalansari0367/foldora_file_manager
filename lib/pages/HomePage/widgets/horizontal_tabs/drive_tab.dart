@@ -27,7 +27,7 @@ class _DriveTabState extends State<DriveTab> {
       final provider = Provider.of<DriveProvider>(context, listen: false);
       await provider.init();
       await provider.isReady;
-      final list = await provider.getDriveFiles();
+      final list = (await provider.getDriveFiles())!;
       usedBytes = provider.driveQuota?.usageInDrive ?? '0';
       items = list.length;
       if (!mounted) return;
@@ -125,7 +125,7 @@ class _DriveTabState extends State<DriveTab> {
               Text(
                 'Use fingerprint or Enter pin',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.subtitle2!.copyWith(color: Colors.white),
                 // style: TextStyle(
                 //   color: MyColors.white,
                 //   fontSize: 20,
@@ -140,8 +140,8 @@ class _DriveTabState extends State<DriveTab> {
 }
 
 class DriveAuthenticator extends StatefulWidget {
-  final Widget child;
-  const DriveAuthenticator({Key key, this.child}) : super(key: key);
+  final Widget? child;
+  const DriveAuthenticator({Key? key, this.child}) : super(key: key);
 
   @override
   _DriveAuthenticatorState createState() => _DriveAuthenticatorState();
@@ -176,7 +176,7 @@ class _DriveAuthenticatorState extends State<DriveAuthenticator> {
       child: AnimatedCrossFade(
         duration: MyDecoration.duration,
         crossFadeState: state,
-        firstChild: widget.child,
+        firstChild: widget.child!,
         secondChild: secondChild(),
       ),
     );

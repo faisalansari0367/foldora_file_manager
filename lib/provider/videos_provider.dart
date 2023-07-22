@@ -16,7 +16,7 @@ class VideosProvider extends ChangeNotifier with AnimatedVideoListMixin {
 
   List<VideoEntity> get selectedFiles => _selectedFiles;
 
-  VideoFolder selectedVideoFolder;
+  VideoFolder? selectedVideoFolder;
   bool showInFolders = true;
 
   int get videosSize => _videosSize;
@@ -29,31 +29,31 @@ class VideosProvider extends ChangeNotifier with AnimatedVideoListMixin {
   }
 
   Future<void> getVideos() async {
-    final List result = await StorageDetails.getVideos();
-    var videoFiles = <VideoFile>[];
-    var videoFolders = <VideoFolder>[];
-    var folders = <String>[];
+    // final List result = await (StorageDetails.getVideos() as FutureOr<List<dynamic>>);
+    // var videoFiles = <VideoFile>[];
+    // var videoFolders = <VideoFolder>[];
+    // var folders = <String?>[];
 
-    for (Map item in result) {
-      final folderName = item['folderName'];
-      if (!folders.contains(folderName)) {
-        folders.add(folderName);
-      }
-      final videoFile = VideoFile.fromMap(item);
-      videoFiles.add(videoFile);
-    }
+    // for (Map item in result as Iterable<Map<dynamic, dynamic>>) {
+    //   final folderName = item['folderName'];
+    //   if (!folders.contains(folderName)) {
+    //     folders.add(folderName);
+    //   }
+    //   final videoFile = VideoFile.fromMap(item as Map<Object, Object>);
+    //   videoFiles.add(videoFile);
+    // }
 
-    for (var item in folders) {
-      final files = videosInAFolder(result, item);
-      final folder = VideoFolder(files: files, folderName: item);
-      _videosSize += folder.size;
-      videoFolders.add(folder);
-    }
+    // for (var item in folders) {
+    //   final files = videosInAFolder(result, item);
+    //   final folder = VideoFolder(files: files, folderName: item);
+    //   _videosSize += folder.size;
+    //   videoFolders.add(folder);
+    // }
     
-    if (videoFiles.isNotEmpty) videoFiles.first.toJson();
-    _videos.addAll(videoFiles);
-    _videosFolder.addAll(videoFolders);
-    notifyListeners();
+    // if (videoFiles.isNotEmpty) videoFiles.first.toJson();
+    // _videos.addAll(videoFiles);
+    // _videosFolder.addAll(videoFolders);
+    // notifyListeners();
   }
 
   void delete() {
@@ -75,7 +75,7 @@ class VideosProvider extends ChangeNotifier with AnimatedVideoListMixin {
     if (selectedVideoFolder == null) {
       index = videosFiles.indexOf(file);
     } else {
-      index = selectedVideoFolder.files.indexOf(file);
+      index = selectedVideoFolder!.files.indexOf(file);
     }
     return index;
   }
@@ -84,8 +84,8 @@ class VideosProvider extends ChangeNotifier with AnimatedVideoListMixin {
     if (selectedVideoFolder == null) {
       videosFiles.remove(file);
     } else {
-      selectedVideoFolder.files.remove(file);
-      if (selectedVideoFolder.files.isEmpty) {
+      selectedVideoFolder!.files.remove(file);
+      if (selectedVideoFolder!.files.isEmpty) {
         _videosFolder.remove(selectedVideoFolder);
       }
     }
@@ -93,7 +93,7 @@ class VideosProvider extends ChangeNotifier with AnimatedVideoListMixin {
 
   void _remove(VideoFile file) {
     final index = _getCurrentItemIndex(file);
-    listKey.currentState.removeItem(
+    listKey.currentState!.removeItem(
       index,
       (context, animation) => itemRemover(context, animation, file),
       duration: MyDecoration.duration,
@@ -103,7 +103,7 @@ class VideosProvider extends ChangeNotifier with AnimatedVideoListMixin {
     Future.delayed(MyDecoration.duration, () => notifyListeners());
   }
 
-  List<VideoFile> videosInAFolder(List data, String folderName) {
+  List<VideoFile> videosInAFolder(List data, String? folderName) {
     var files = <VideoFile>[];
     for (var element in data) {
       final condition = element['folderName'] == folderName;

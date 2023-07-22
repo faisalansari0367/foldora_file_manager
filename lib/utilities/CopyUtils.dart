@@ -10,15 +10,15 @@ import 'Utils.dart';
 class CopyUtils {
   final List<FileSystemEntity> filesToCopy;
   final String pathWhereToCopy;
-  final SendPort sendPort;
+  final SendPort? sendPort;
   static int _totalItemsSize = 0;
   static int _copied = 0;
   static double _progress = 0.0;
 
   CopyUtils({
     this.sendPort,
-    @required this.filesToCopy,
-    @required this.pathWhereToCopy,
+    required this.filesToCopy,
+    required this.pathWhereToCopy,
   });
 
   static void clearFields() {
@@ -39,13 +39,13 @@ class CopyUtils {
 
   static Stream<Map<String, dynamic>> copySelectedItems(Map map) async* {
     final List<FileSystemEntity> items = map['items'];
-    final String path = map['currentPath'];
+    final String? path = map['currentPath'];
     _totalItemsSize = await _getTotalSize(items);
     for (final item in items) {
       if (item is File) {
-        yield* _copyFileSystemEntity(item, path);
+        yield* _copyFileSystemEntity(item, path!);
       } else if (item is Directory) {
-        yield* _toCopyDirectories(item, path);
+        yield* _toCopyDirectories(item, path!);
       }
     }
     clearFields();
@@ -119,10 +119,10 @@ class CopyUtils {
 }
 
 class IsolateCopyProgress {
-  final List<FileSystemEntity> filesToCopy;
-  final StreamController<Map<String, dynamic>> streamController;
-  final String pathWhereToCopy;
-  final SendPort sendPort;
+  final List<FileSystemEntity?>? filesToCopy;
+  final StreamController<Map<String, dynamic>>? streamController;
+  final String? pathWhereToCopy;
+  final SendPort? sendPort;
   static int _totalItemsSize = 0;
   static int _copied = 0;
   static double _progress = 0.0;
@@ -130,8 +130,8 @@ class IsolateCopyProgress {
   IsolateCopyProgress({
     this.streamController,
     this.sendPort,
-    @required this.filesToCopy,
-    @required this.pathWhereToCopy,
+    required this.filesToCopy,
+    required this.pathWhereToCopy,
   });
 
   static void clearFields() {
@@ -141,14 +141,14 @@ class IsolateCopyProgress {
   }
 
   Stream<Map<String, dynamic>> copySelectedItems() async* {
-    final items = filesToCopy;
+    final items = filesToCopy!;
     final path = pathWhereToCopy;
     _totalItemsSize = await _getTotalSize(items);
     for (final item in items) {
       if (item is File) {
-        yield* _copyFileSystemEntity(item, path);
+        yield* _copyFileSystemEntity(item, path!);
       } else if (item is Directory) {
-        yield* _toCopyDirectories(item, path);
+        yield* _toCopyDirectories(item, path!);
       }
     }
     clearFields();
@@ -194,7 +194,7 @@ class IsolateCopyProgress {
     await destFile.close();
   }
 
-  static Future<int> _getTotalSize(List<FileSystemEntity> _selectedMediaItems) async {
+  static Future<int> _getTotalSize(List<FileSystemEntity?> _selectedMediaItems) async {
     var totalSize = 0;
     for (final item in _selectedMediaItems) {
       if (item is Directory) {

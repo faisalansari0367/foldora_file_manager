@@ -11,10 +11,10 @@ class Widgets {
 
   static Widget forImage(
     dynamic path, {
-    BoxDecoration decoration,
-    int cacheHeight,
-    int cacheWidth,
-    double radius,
+    BoxDecoration? decoration,
+    int? cacheHeight,
+    int? cacheWidth,
+    double? radius,
   }) {
     // final heightWidth = Responsive.imageSize(11);
     final imageSize = Responsive.imageSize(5);
@@ -44,10 +44,10 @@ class Widgets {
 
   static Widget folderIcons(
     IconData folderIcon, {
-    Color iconColor,
-    BoxDecoration decoration,
-    Color bgColor,
-    Uint8List bytes,
+    Color? iconColor,
+    BoxDecoration? decoration,
+    Color? bgColor,
+    Uint8List? bytes,
   }) {
     final position = Responsive.imageSize(5.5);
     // final heightWidth = 11 * Responsive.imageSizeMultiplier;

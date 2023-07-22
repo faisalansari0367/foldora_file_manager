@@ -1,5 +1,5 @@
 abstract class VideoEntity {
-  int get size;
+  int? get size;
   void  delete();
 
 }

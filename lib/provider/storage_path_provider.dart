@@ -2,18 +2,16 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:files/data_models/AudioModel.dart';
 import 'package:files/data_models/ImageModel.dart';
-import 'package:files/utilities/Utils.dart';
 import 'package:flutter/material.dart';
-import 'package:storage_path/storage_path.dart';
+// import 'package:storage_path/storage_path.dart';
 
 class StoragePathProvider extends ChangeNotifier {
-  int _documentsSize = 0;
-  int _audiosSize = 0;
+  final int _documentsSize = 0;
+  final int _audiosSize = 0;
   int _videosSize = 0;
-  int _photosSize = 0;
-  int photosIndex = 0;
+  final int _photosSize = 0;
+  int? photosIndex = 0;
   int pageViewCurrentIndex = 0;
   bool hasBottomNav = false;
 
@@ -28,11 +26,11 @@ class StoragePathProvider extends ChangeNotifier {
 
   // List<Video> _videos = [];
   // List<Video> get videosFiles => _videos;
-  List<int> selectedPhotos = [];
-  List _audiosPath = [];
-  List _documentsPath = [];
+  List<int?> selectedPhotos = [];
+  final List _audiosPath = [];
+  final List _documentsPath = [];
   // final List _rootDirectories = [];
-  List<ImageModel> _photos = [];
+  final List<ImageModel> _photos = [];
   List<ImageModel> get imagesPath => _photos;
   // List get rootDirectory => _rootDirectories;
   List get audiosPath => _audiosPath;
@@ -52,7 +50,7 @@ class StoragePathProvider extends ChangeNotifier {
       };
 
   ///  these functions are used by photos they are not getting used here
-  void updateIndex(int index) {
+  void updateIndex(int? index) {
     photosIndex = index;
     // notifyListeners();
   }
@@ -77,7 +75,7 @@ class StoragePathProvider extends ChangeNotifier {
     log('after updating index $pageViewCurrentIndex');
   }
 
-  void addImage(int index) {
+  void addImage(int? index) {
     final exist = selectedPhotos.contains(index);
     exist ? selectedPhotos.remove(index) : selectedPhotos.add(index);
     notifyListeners();
@@ -109,17 +107,17 @@ class StoragePathProvider extends ChangeNotifier {
 
   Future<void> photos() async {
     try {
-      final imagesPath = await StoragePath.imagesPath;
-      // log(imagesPath);
-      final images = await FileUtils.worker.doWork(FileUtils.imagesPath, imagesPath);
-      // await FileUtils.imagesPath(imagesPath);
-      _photos = images['data'];
-      for (var item in _photos) {
-        for (var i in item.files) {
-          allPhotos.add(File(i));
-        }
-      }
-      _photosSize = images['size'];
+      // // final imagesPath = await StoragePath.imagesPath;
+      // // log(imagesPath);
+      // final images = await FileUtils.worker.doWork(FileUtils.imagesPath, imagesPath);
+      // // await FileUtils.imagesPath(imagesPath);
+      // _photos = images['data'];
+      // for (var item in _photos) {
+      //   for (var i in item.files) {
+      //     allPhotos.add(File(i));
+      //   }
+      // }
+      // _photosSize = images['size'];
 
       print('images length :${_photos.length}');
       notifyListeners();
@@ -136,19 +134,19 @@ class StoragePathProvider extends ChangeNotifier {
   }
 
   /// on long press in photos
-  void onLongPress(int index) {
+  void onLongPress(int? index) {
     selectedPhotos.contains(index) ? selectedPhotos.remove(index) : selectedPhotos.add(index);
     hasBottomNav = selectedPhotos.isEmpty ? false : true;
     notifyListeners();
   }
 
   Future<void> documents() async {
-    final documents = await StoragePath.filePath;
-    final docs = await FileUtils.worker.doWork(FileUtils.storagePathDocuments, documents);
-    // final docs = await FileUtils.storagePathDocuments(documents);
-    _documentsPath = docs['data'];
-    _documentsSize = docs['size'];
-    print('_documentsPath length :${_documentsPath.length}');
+    // final documents = await StoragePath.filePath;
+    // final docs = await FileUtils.worker.doWork(FileUtils.storagePathDocuments, documents);
+    // // final docs = await FileUtils.storagePathDocuments(documents);
+    // _documentsPath = docs['data'];
+    // _documentsSize = docs['size'];
+    // print('_documentsPath length :${_documentsPath.length}');
     notifyListeners();
   }
 
@@ -166,12 +164,12 @@ class StoragePathProvider extends ChangeNotifier {
   // }
 
   Future<void> audios() async {
-    final audiosPath = await StoragePath.audioPath;
-    final audios = await FileUtils.worker.doWork(FileUtils.storagePathAudios, audiosPath);
-    // await FileUtils.storagePathAudios(audiosPath);
-    _audiosPath = audios['data'] as List<AudioModel>;
-    _audiosSize = audios['size'];
-    if (_audiosPath.isNotEmpty) print('_audiosPath length :${_audiosPath[0].audios.length}');
+    // final audiosPath = await StoragePath.audioPath;
+    // final audios = await FileUtils.worker.doWork(FileUtils.storagePathAudios, audiosPath);
+    // // await FileUtils.storagePathAudios(audiosPath);
+    // _audiosPath = audios['data'] as List<AudioModel>;
+    // _audiosSize = audios['size'];
+    // if (_audiosPath.isNotEmpty) print('_audiosPath length :${_audiosPath[0].audios.length}');
 
     notifyListeners();
   }

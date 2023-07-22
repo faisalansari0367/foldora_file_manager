@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../sizeConfig.dart';
 
 class FilePercent extends StatelessWidget {
-  final Color color;
-  final String percent;
-  final String name;
-  final Future future;
+  final Color? color;
+  final String? percent;
+  final String? name;
+  final Future? future;
 
   const FilePercent({this.color, this.percent, this.name, this.future});
 
@@ -25,7 +25,7 @@ class FilePercent extends StatelessWidget {
           ),
         ),
         Text(
-          name,
+          name!,
           style: TextStyle(
             color: Colors.grey[600],
             fontWeight: FontWeight.w400,
@@ -33,7 +33,7 @@ class FilePercent extends StatelessWidget {
         ),
         Spacer(),
         Text(
-          percent,
+          percent!,
           style: TextStyle(
             color: Colors.grey[600],
             letterSpacing: 0.25,

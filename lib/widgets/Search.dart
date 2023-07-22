@@ -39,15 +39,15 @@ class Search extends SearchDelegate {
     SearchUtils.addSuggestions(query);
     return StreamBuilder(
       stream: SearchUtils.searchDelegate(
-        path: provider.data[provider.currentPage].path,
+        path: provider.data[provider.currentPage].path!,
         query: query,
       ),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final List<FileSystemEntity> data = snapshot.data;
+        final List<FileSystemEntity>? data = snapshot.data;
         if (snapshot.hasData) {
           return snapshot.data.isNotEmpty ? DirectoryListItem(data: data) : NoResultFoundScreen();
         } else if (snapshot.hasError) {
-          return Center(child: Text(snapshot.error));
+          return Center(child: Text(snapshot.error as String));
         } else {
           return LinearProgressIndicator();
         }
@@ -57,7 +57,7 @@ class Search extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestions = StorageService().getSearchSuggestions;
+    final suggestions = StorageService().getSearchSuggestions!;
     return ListView.builder(
       itemCount: suggestions.length,
       itemBuilder: (context, int index) {

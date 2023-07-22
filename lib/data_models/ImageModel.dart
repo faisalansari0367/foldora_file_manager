@@ -1,7 +1,7 @@
 class ImageModel {
-  List<String> files;
-  String folderName;
-  int folderSize;
+  List<String>? files;
+  String? folderName;
+  int? folderSize;
 
   ImageModel({this.files, this.folderName});
 

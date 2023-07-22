@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 class VideoModel {
-  final String folderName;
-  final int totalSize;
-  final List<Video> videos;
+  final String? folderName;
+  final int? totalSize;
+  final List<Video>? videos;
 
   VideoModel({this.totalSize, this.folderName, this.videos});
 
@@ -25,7 +25,7 @@ class VideoModel {
   static int _getTotalSize(List<Video> videos) {
     var size = 0;
     for (var item in videos) {
-      size += item.size;
+      size += item.size!;
     }
     return size;
   }
@@ -45,11 +45,11 @@ class VideoModel {
 }
 
 class Video {
-  final File file;
-  final String dateAdded;
-  final String displayName;
-  final int size;
-  final String duration;
+  final File? file;
+  final String? dateAdded;
+  final String? displayName;
+  final int? size;
+  final String? duration;
 
   Video({
     this.file,

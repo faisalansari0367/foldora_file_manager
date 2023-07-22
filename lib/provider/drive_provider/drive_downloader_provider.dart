@@ -1,15 +1,16 @@
-import 'package:ext_storage/ext_storage.dart';
+// import 'package:ext_storage/ext_storage.dart';
+import 'dart:io' as io;
+
 import 'package:files/services/gdrive/base_drive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:open_file/open_file.dart';
-import 'dart:io' as io;
 import 'package:path/path.dart' as p;
 
 class DriveDownloader extends ChangeNotifier {
   bool isDownloading = false;
   double percent = 0.0;
   final queue = [];
-  String downloadsDirectory;
+  String? downloadsDirectory;
   List<io.FileSystemEntity> downloads = [];
 
   DriveDownloader() {
@@ -17,19 +18,19 @@ class DriveDownloader extends ChangeNotifier {
   }
 
   Future<void> _initDownloadDir() async {
-    downloadsDirectory = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
-    final downloadDir = io.Directory(downloadsDirectory);
-    downloads = await downloadDir.list().toList();
-    downloadDir.watch(recursive: true).listen((event) {
-      if (event.isDirectory) {
-        final dir = io.Directory(event.path);
-        downloads.add(dir);
-      } else {
-        final dir = io.File(event.path);
-        downloads.add(dir);
-      }
-      notifyListeners();
-    });
+    // downloadsDirectory = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
+    // final downloadDir = io.Directory(downloadsDirectory);
+    // downloads = await downloadDir.list().toList();
+    // downloadDir.watch(recursive: true).listen((event) {
+    //   if (event.isDirectory) {
+    //     final dir = io.Directory(event.path);
+    //     downloads.add(dir);
+    //   } else {
+    //     final dir = io.File(event.path);
+    //     downloads.add(dir);
+    //   }
+    //   notifyListeners();
+    // });
   }
 
   void setIsDownloading(bool value) {
@@ -50,7 +51,7 @@ class DriveDownloader extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> downloadFile(String fName, String id, String fileSize) async {
+  Future<void> downloadFile(String? fName, String id, String? fileSize) async {
     final map = {'fileName': fName, 'id': id, 'percent': 0.0};
     queue.add(map);
     notifyListeners();
@@ -60,7 +61,7 @@ class DriveDownloader extends ChangeNotifier {
     // var downloadFile = DownloadableFileBasic(() => 'Test string', testFile);
     // DownloadManager.instance().add(DownloadableFileBasic(() => 'Test string', testBFile));
 
-    final totalSize = file.length ?? int.parse(fileSize);
+    final totalSize = file.length ?? int.parse(fileSize!);
     var percent = 0.0;
     var dataStore = <int>[];
     file.stream.listen(
@@ -83,18 +84,18 @@ class DriveDownloader extends ChangeNotifier {
   }
 
   double calculatePercent(int size, int totalSize) {
-    if (size == null || size <= 0 || totalSize == null) {
+    if (size <= 0) {
       return 0.0;
     }
     final percent = size / totalSize * 100;
     return percent;
   }
 
-  bool isFileAlreadyDownloaded(String fileName) {
+  bool isFileAlreadyDownloaded(String? fileName) {
     var result = false;
     for (var item in downloads) {
       final itemFileName = p.basename(item.path);
-      if (itemFileName.contains(fileName)) {
+      if (itemFileName.contains(fileName!)) {
         OpenFile.open(item.path);
         result = true;
         break;

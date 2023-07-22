@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class DriveListItemPlaceholder extends StatelessWidget {
   final int itemCount;
-  const DriveListItemPlaceholder({Key key, this.itemCount =10}) : super(key: key);
+  const DriveListItemPlaceholder({Key? key, this.itemCount =10}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

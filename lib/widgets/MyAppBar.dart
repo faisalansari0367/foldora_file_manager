@@ -78,9 +78,9 @@ class AppbarUtils {
   }
 
   static SystemUiOverlayStyle systemUiOverylay({
-    Color backgroundColor,
+    Color? backgroundColor,
     Brightness brightness = Brightness.light,
-    Color systemNavigationBarColor,
+    Color? systemNavigationBarColor,
   }) {
     return SystemUiOverlayStyle(
       statusBarBrightness: brightness,
@@ -118,7 +118,7 @@ class AppbarUtils {
       splashRadius: splashRadius,
       color: Colors.grey[500],
       icon: icon,
-      onPressed: onPressed,
+      onPressed: onPressed as void Function()?,
     );
   }
 
@@ -154,13 +154,13 @@ class AppbarUtils {
 }
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Color backgroundColor, systemNavbarColor;
-  final IconData iconData;
-  final bool menu;
+  final Color? backgroundColor, systemNavbarColor;
+  final IconData? iconData;
+  final bool? menu;
   final bool bottomNavBar;
-  final Widget bottom, title, leading;
+  final Widget? bottom, title, leading;
   final Brightness brightness;
-  final List<Widget> actions;
+  final List<Widget>? actions;
   // final StorageType storageType;
   const MyAppBar({
     this.backgroundColor,
@@ -188,7 +188,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: leading ?? AppbarUtils.backIcon(context),
       elevation: 0.0,
       actions: actions ?? [AppbarUtils.searchIcon(context), MyDropDown()],
-      bottom: bottom,
+      bottom: bottom as PreferredSizeWidget?,
       title: title,
       // bottom: bottomNavBar ? MyBottomAppBar() : null,
     );

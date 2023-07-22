@@ -1,6 +1,8 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
-import 'package:extended_image/extended_image.dart';
+import 'dart:io';
+
+// import 'package:extended_image/extended_image.dart';
 import 'package:files/decoration/my_bottom_sheet.dart';
 import 'package:files/decoration/my_decoration.dart';
 import 'package:files/provider/storage_path_provider.dart';
@@ -14,8 +16,8 @@ import 'package:share/share.dart';
 import 'options_bottom_sheet.dart';
 
 class FullScreenImage extends StatefulWidget {
-  final int index;
-  final List<File> files;
+  final int? index;
+  final List<File>? files;
   const FullScreenImage({this.index, this.files});
 
   @override
@@ -26,9 +28,9 @@ const duration = Duration(milliseconds: 375);
 const curve = Curves.decelerate;
 
 class _FullScreenImageState extends State<FullScreenImage> with SingleTickerProviderStateMixin {
-  PageController controller;
-  AnimationController _animationController;
-  Animation _animation;
+  PageController? controller;
+  late AnimationController _animationController;
+  Animation? _animation;
   Function() animationListener = () {};
 
   @override
@@ -41,12 +43,12 @@ class _FullScreenImageState extends State<FullScreenImage> with SingleTickerProv
 
       // upperBound: 1.0,
     );
-    controller = PageController(initialPage: widget.index);
+    controller = PageController(initialPage: widget.index!);
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    controller!.dispose();
     super.dispose();
   }
 
@@ -72,12 +74,12 @@ class _FullScreenImageState extends State<FullScreenImage> with SingleTickerProv
               itemCount: provider.allPhotos.length,
               onPageChanged: onPageChanged,
               itemBuilder: (context, index) {
-                final image = widget.files[index];
-                final extendedImage = ExtendedImage.file(
+                final image = widget.files![index];
+                final extendedImage = Image.file(
                   image,
-                  mode: ExtendedImageMode.gesture,
+                  // mode: ExtendedImageMode.gesture,
                   fit: BoxFit.contain,
-                  onDoubleTap: onDoubleTap,
+                  // onDoubleTap: onDoubleTap,
                 );
                 return extendedImage;
               },
@@ -99,17 +101,17 @@ class _FullScreenImageState extends State<FullScreenImage> with SingleTickerProv
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     button(Icons.delete_outline_rounded, onPressed: () {
-                      deletePhoto(controller, widget.files);
+                      deletePhoto(controller!, widget.files!);
                       // ignore: invalid_use_of_protected_member
                       provider.notifyListeners();
                     }),
                     button(
                       Icons.share_rounded,
-                      onPressed: () => Share.shareFiles([widget.files[controller.page.toInt()].path]),
+                      onPressed: () => Share.shareFiles([widget.files![controller!.page!.toInt()].path]),
                     ),
                     button(
                       Icons.info_outline_rounded,
-                      onPressed: () => showInfo(context, widget.files[controller.page.toInt()]),
+                      onPressed: () => showInfo(context, widget.files![controller!.page!.toInt()]),
                     ),
                   ],
                 ),
@@ -122,38 +124,38 @@ class _FullScreenImageState extends State<FullScreenImage> with SingleTickerProv
   }
 
   void onPageChanged(int index) {
-    controller.animateToPage(
+    controller!.animateToPage(
       index,
       duration: duration,
       curve: curve,
     );
   }
 
-  void onDoubleTap(ExtendedImageGestureState state) {
-    ///you can use define pointerDownPosition as you can,
-    ///default value is double tap pointer down postion.
-    var pointerDownPosition = state.pointerDownPosition;
-    var begin = state.gestureDetails.totalScale;
-    double end;
+  // void onDoubleTap(ExtendedImageGestureState state) {
+  //   ///you can use define pointerDownPosition as you can,
+  //   ///default value is double tap pointer down postion.
+  //   var pointerDownPosition = state.pointerDownPosition;
+  //   var begin = state.gestureDetails!.totalScale;
+  //   double end;
 
-    //remove old
-    _animation?.removeListener(animationListener);
+  //   //remove old
+  //   _animation?.removeListener(animationListener);
 
-    //stop pre
-    _animationController.stop();
+  //   //stop pre
+  //   _animationController.stop();
 
-    //reset to use
-    _animationController.reset();
-    end = begin == 1 ? 2.5 : 1;
+  //   //reset to use
+  //   _animationController.reset();
+  //   end = begin == 1 ? 2.5 : 1;
 
-    animationListener = () {
-      state.handleDoubleTap(scale: _animation.value, doubleTapPosition: pointerDownPosition);
-    };
-    final curvedAnimation = CurvedAnimation(parent: _animationController, curve: MyDecoration.curve);
-    _animation = Tween<double>(begin: begin, end: end).animate(curvedAnimation);
-    _animation.addListener(animationListener);
-    _animationController.forward();
-  }
+  //   animationListener = () {
+  //     state.handleDoubleTap(scale: _animation!.value, doubleTapPosition: pointerDownPosition);
+  //   };
+  //   final curvedAnimation = CurvedAnimation(parent: _animationController, curve: MyDecoration.curve);
+  //   _animation = Tween<double>(begin: begin, end: end).animate(curvedAnimation);
+  //   _animation!.addListener(animationListener);
+  //   _animationController.forward();
+  // }
 }
 
 void showInfo(BuildContext context, File file) {
@@ -169,7 +171,7 @@ void showInfo(BuildContext context, File file) {
 }
 
 void deletePhoto(PageController controller, List<File> files) {
-  final index = controller.page.toInt();
+  final index = controller.page!.toInt();
   files[index].delete();
   files.removeAt(index);
   controller.previousPage(duration: duration, curve: curve);

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 class LeadingApk extends StatelessWidget {
   // final Uint8List bytes;
-  final Future<Uint8List> future;
-  const LeadingApk({Key key, @required this.future}) : super(key: key);
+  final Future<Uint8List?> future;
+  const LeadingApk({Key? key, required this.future}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

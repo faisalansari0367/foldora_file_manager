@@ -6,18 +6,18 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 abstract class SqfInterface {
   Future<Database> createDatabase({
-    @required String databaseName,
-    @required String tableName,
+    required String databaseName,
+    required String tableName,
   });
   Future<void> insertData();
   Future<void> init();
-  Future<List<Apps>> getApps();
+  Future<List<Apps>?> getApps();
 }
 
 class SqfDatabase extends SqfInterface {
   static const appName = 'app_name', packageName = 'package_name', apkFilePath = 'apk_file_path', appIcon = 'app_icon';
   @override
-  Future<Database> createDatabase({String databaseName, String tableName}) async {
+  Future<Database> createDatabase({String? databaseName, String? tableName}) async {
     // final doesDbExist = await databaseExists(databaseName);
     // if (doesDbExist) {
     //   final db = await openDatabase(databaseName);
@@ -57,7 +57,7 @@ class SqfDatabase extends SqfInterface {
   }
 
   @override
-  Future<List<Apps>> getApps() {
+  Future<List<Apps>?> getApps() {
     throw UnimplementedError();
   }
 }

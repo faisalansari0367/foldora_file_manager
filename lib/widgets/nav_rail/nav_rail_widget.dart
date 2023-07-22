@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import '../../sizeConfig.dart';
 
 class NavItem extends StatelessWidget {
-  final void Function() onTap;
-  final String path;
-  final Color selectedColor;
-  final bool isSelected;
-  const NavItem({Key key, this.path, this.isSelected, this.onTap, this.selectedColor}) : super(key: key);
+  final void Function()? onTap;
+  final String? path;
+  final Color? selectedColor;
+  final bool? isSelected;
+  const NavItem({Key? key, this.path, this.isSelected, this.onTap, this.selectedColor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final color = isSelected ? selectedColor : Colors.grey.shade400;
+    final color = isSelected! ? selectedColor : Colors.grey.shade400;
     return MySlideAnimation(
       horizontalOffset: 50,
       verticalOffset: 0,
@@ -27,7 +27,7 @@ class NavItem extends StatelessWidget {
                 vertical: 2.padding,
               ),
               child: Text(
-                path,
+                path!,
                 style: TextStyle(
                   color: color,
                   fontSize: 1.7.text,

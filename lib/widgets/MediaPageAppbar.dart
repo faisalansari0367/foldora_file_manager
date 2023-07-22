@@ -7,8 +7,8 @@ import '../sizeConfig.dart';
 import 'MyAppBar.dart';
 
 class MyBottomAppBar extends StatefulWidget {
-  final Color backgroundColor;
-  final double height;
+  final Color? backgroundColor;
+  final double? height;
   const MyBottomAppBar({this.backgroundColor, this.height});
 
   @override

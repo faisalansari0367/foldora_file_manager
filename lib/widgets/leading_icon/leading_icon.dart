@@ -10,11 +10,11 @@ import 'package:path/path.dart' as p;
 import '../../sizeConfig.dart';
 
 class LeadingIcon extends StatelessWidget {
-  final BoxDecoration decoration;
-  final Color iconBgColor; // background color of icon
-  final Color iconColor; // this is the iconColor
-  final FileSystemEntity data;
-  final double imageRadius;
+  final BoxDecoration? decoration;
+  final Color? iconBgColor; // background color of icon
+  final Color? iconColor; // this is the iconColor
+  final FileSystemEntity? data;
+  final double? imageRadius;
 
   const LeadingIcon({
     this.iconBgColor,
@@ -54,7 +54,7 @@ class LeadingIcon extends StatelessWidget {
   bool isApk() {
     var result = false;
     if (data is! File) return result;
-    if (p.extension(data.path) == '.apk') {
+    if (p.extension(data!.path) == '.apk') {
       result = true;
     }
     return result;

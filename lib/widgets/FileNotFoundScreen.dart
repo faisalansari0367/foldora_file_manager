@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FileNotFoundScreen extends StatelessWidget {
-  final String message;
+  final String? message;
   // final Exception exception;
 
   const FileNotFoundScreen({
@@ -37,9 +37,9 @@ class FileNotFoundScreen extends StatelessWidget {
                   padding: EdgeInsets.all(8 * Responsive.widthMultiplier),
                   color: Colors.white,
                   child: Text(
-                    message,
+                    message!,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.subtitle2.copyWith(
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
                           fontSize: 13,
                           height: 1.5,
                         ),

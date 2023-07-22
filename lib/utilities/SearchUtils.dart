@@ -18,7 +18,7 @@ class SearchUtils {
 
   static Future<void> addSuggestions(String query) async {
     final storage = StorageService();
-    final suggestions = storage.getSearchSuggestions;
+    final suggestions = storage.getSearchSuggestions!;
     if (suggestions.contains(query)) {
       final index = suggestions.indexOf(query);
       suggestions.removeAt(index);
@@ -30,7 +30,7 @@ class SearchUtils {
     }
   }
 
-  static Stream searchDelegate({String path, String query, bool withExt = false}) async* {
+  static Stream searchDelegate({required String path, String? query, bool withExt = false}) async* {
     final results = <FileSystemEntity>[];
     final dir = Directory(path);
 
@@ -43,14 +43,14 @@ class SearchUtils {
             final stream = i.list(recursive: true);
             await for (final item in stream) {
               if (withExt) {
-                if (searchWithExtension(item.path, query)) results.add(item);
+                if (searchWithExtension(item.path, query!)) results.add(item);
               } else {
-                if (_checkIfFound(item.path, query)) results.add(item);
+                if (_checkIfFound(item.path, query!)) results.add(item);
               }
             }
           }
         }
-        if (_checkIfFound(i.path, query)) results.add(i);
+        if (_checkIfFound(i.path, query!)) results.add(i);
       }
     } catch (e) {
       print('error from searchDelegate: $e');
@@ -63,8 +63,8 @@ class SearchUtils {
   static Future<List> doSearching(Map<String, dynamic> args) async {
     // args
     final String path = args['path'];
-    final String query = args['query'];
-    final bool withExt = args['withExt'];
+    final String? query = args['query'];
+    final bool? withExt = args['withExt'];
     final bool wantOnlyPath = args['wantOnlyPath'];
     //
     final stream = Directory(path).list();
@@ -76,21 +76,21 @@ class SearchUtils {
           if (i is Directory) {
             final stream = i.list(recursive: true);
             await for (final item in stream) {
-              if (withExt) {
+              if (withExt!) {
                 if (wantOnlyPath) {
-                  if (searchWithExtension(item.path, query)) {
+                  if (searchWithExtension(item.path, query!)) {
                     paths.add(item.path);
                   }
                 } else {
-                  if (searchWithExtension(item.path, query)) results.add(item);
+                  if (searchWithExtension(item.path, query!)) results.add(item);
                 }
               } else {
-                if (_checkIfFound(item.path, query)) results.add(item);
+                if (_checkIfFound(item.path, query!)) results.add(item);
               }
             }
           }
         }
-        if (_checkIfFound(i.path, query)) results.add(i);
+        if (_checkIfFound(i.path, query!)) results.add(i);
       }
     } catch (e) {
       print('error from searchDelegate: $e');

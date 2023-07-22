@@ -8,16 +8,16 @@ import 'description.dart';
 import 'drive_list_item.dart';
 
 class DriveSliverListview extends StatelessWidget {
-  final ScrollController controller;
-  final List<File> data;
+  final ScrollController? controller;
+  final List<File>? data;
   final Function(File) onTap, onTapIcon;
 
   const DriveSliverListview({
-    Key key,
+    Key? key,
     this.controller,
     this.data,
-    @required this.onTap,
-    @required this.onTapIcon,
+    required this.onTap,
+    required this.onTapIcon,
   }) : super(key: key);
 
   @override
@@ -33,7 +33,7 @@ class DriveSliverListview extends StatelessWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         itemBuilder,
-        childCount: data.length,
+        childCount: data!.length,
 
         // controller: controller ?? ScrollController(),
         // shrinkWrap: false,
@@ -44,10 +44,10 @@ class DriveSliverListview extends StatelessWidget {
 
   Widget itemBuilder(context, index) {
     print('driver sliver list view builder building');
-    final file = data[index];
+    final file = data![index];
     return DriveListItem(
       title: Text(
-        file.name,
+        file.name!,
         style: Theme.of(context).textTheme.subtitle1,
       ),
       ontap: () => onTap(file),
@@ -55,7 +55,7 @@ class DriveSliverListview extends StatelessWidget {
         bytes: file.size,
         createdTime: file.createdTime,
       ),
-      leading: Selector<DriveDeleter, List<String>>(
+      leading: Selector<DriveDeleter, List<String?>>(
         selector: (p0, p1) => p1.fileIds,
         builder: (context, value, child) {
           return LeadingDrive(
@@ -63,7 +63,7 @@ class DriveSliverListview extends StatelessWidget {
             isSelected: value.contains(file.id),
             id: file.id,
             extension: file.fullFileExtension,
-            iconLink: file.iconLink.replaceAll('/16/', '/64/'),
+            iconLink: file.iconLink!.replaceAll('/16/', '/64/'),
           );
         },
       ),

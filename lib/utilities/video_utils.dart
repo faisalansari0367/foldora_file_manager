@@ -17,19 +17,19 @@ class VideoUtil {
   }
 
   // ignore: missing_return
-  static Future<File> createThumbnail(path) async {
+  static Future<File?> createThumbnail(path) async {
     final apkIconDir = Directory(thumbnailDir);
     if (!apkIconDir.existsSync()) await apkIconDir.create();
     final map = isVideoThumbnailExist(path);
     
     try {
       if (!map['isFileExist']) {
-        final filePath = await VideoThumbnail.thumbnailFile(
+        final filePath = (await VideoThumbnail.thumbnailFile(
           thumbnailPath: thumbnailDir,
           video: path,
           imageFormat: ImageFormat.PNG,
           quality: 100,
-        );
+        ))!;
         print('file is Located at: $filePath');
         return File(filePath);
       }

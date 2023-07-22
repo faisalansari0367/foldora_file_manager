@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import '../../sizeConfig.dart';
 
 class Description extends StatelessWidget {
-  final Color textColor;
-  final String bytes;
-  final DateTime createdTime;
+  final Color? textColor;
+  final String? bytes;
+  final DateTime? createdTime;
 
   const Description({
-    Key key,
+    Key? key,
     this.textColor,
     this.bytes,
     this.createdTime,
@@ -20,8 +20,8 @@ class Description extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasSize = bytes != null;
 
-    final size = hasSize ? '| ${FileUtils.formatBytes(int.parse(bytes), 2)}' : '';
-    var text = '${DateFormatter.formatDate(createdTime)} $size';
+    final size = hasSize ? '| ${FileUtils.formatBytes(int.parse(bytes!), 2)}' : '';
+    var text = '${DateFormatter.formatDate(createdTime!)} $size';
     return Text(
       text,
       style: TextStyle(

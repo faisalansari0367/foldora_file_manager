@@ -10,9 +10,9 @@ import 'options_row.dart';
 
 class OptionsBottomSheet extends StatelessWidget {
   const OptionsBottomSheet({
-    Key key,
-    @required this.name,
-    @required this.file,
+    Key? key,
+    required this.name,
+    required this.file,
   }) : super(key: key);
 
   final String name;

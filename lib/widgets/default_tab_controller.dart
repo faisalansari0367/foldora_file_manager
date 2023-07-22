@@ -1,7 +1,7 @@
 import 'package:files/sizeConfig.dart';
 import 'package:flutter/material.dart';
 
-class MyTabController extends StatefulWidget with PreferredSizeWidget {
+class MyTabController extends StatefulWidget implements PreferredSizeWidget {
   const MyTabController();
 
   @override
@@ -12,7 +12,7 @@ class MyTabController extends StatefulWidget with PreferredSizeWidget {
 }
 
 class _MyTabControllerState extends State<MyTabController> with SingleTickerProviderStateMixin {
-  TabController tabController;
+  TabController? tabController;
   @override
   void initState() {
     tabController = TabController(length: 2, vsync: this);

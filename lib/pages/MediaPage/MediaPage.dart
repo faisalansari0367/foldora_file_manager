@@ -41,8 +41,8 @@ import 'MediaFiles.dart';
 // remove the lags
 
 class MediaPage extends StatefulWidget {
-  final Data storage;
-  final int spaceInfoIndex;
+  final Data? storage;
+  final int? spaceInfoIndex;
 
   const MediaPage({this.storage, this.spaceInfoIndex});
 
@@ -51,11 +51,11 @@ class MediaPage extends StatefulWidget {
 }
 
 class _MediaPageState extends State<MediaPage> {
-  ScrollController _scrollController, _listViewController;
-  OperationsProvider operations;
-  ScrollProvider scrollProvider;
-  MyProvider provider;
-  AnimationController controller;
+  ScrollController? _scrollController, _listViewController;
+  OperationsProvider? operations;
+  late ScrollProvider scrollProvider;
+  late MyProvider provider;
+  AnimationController? controller;
 
   static const decoration = MyDecoration.showMediaStorageBackground;
   @override
@@ -71,7 +71,7 @@ class _MediaPageState extends State<MediaPage> {
   }
 
   void _scrollListener() {
-    final direction = _listViewController.position.userScrollDirection;
+    final direction = _listViewController!.position.userScrollDirection;
     if (direction == ScrollDirection.forward) {
       scrollProvider.scrollListener(6);
     } else if (direction == ScrollDirection.reverse) {
@@ -82,15 +82,15 @@ class _MediaPageState extends State<MediaPage> {
   @override
   void dispose() {
     print('mediapage disposed');
-    _listViewController.removeListener(_scrollListener);
-    _listViewController.dispose();
-    _scrollController.dispose();
+    _listViewController!.removeListener(_scrollListener);
+    _listViewController!.dispose();
+    _scrollController!.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final storage = widget.storage;
+    final storage = widget.storage!;
     final children = <Widget>[
       MediaStorageInfo(
         availableBytes: storage.free,
@@ -138,7 +138,7 @@ class _MediaPageState extends State<MediaPage> {
                       children: [
                         Text(
                           '${value.length} $file selected',
-                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                          style: Theme.of(context).textTheme.subtitle1!.copyWith(
                                 color: MyColors.appbarActionsColor,
                               ),
                         ),
@@ -148,8 +148,8 @@ class _MediaPageState extends State<MediaPage> {
                             '$size',
                             style: Theme.of(context)
                                 .textTheme
-                                .caption
-                                .copyWith(color: MyColors.appbarActionsColor.withOpacity(1.0)),
+                                .caption!
+                                .copyWith(color: MyColors.appbarActionsColor!.withOpacity(1.0)),
                           ),
                       ],
                     );
@@ -208,7 +208,7 @@ class _MediaPageState extends State<MediaPage> {
             child: CreateFolder(
               onChanged: provider.onChangeFolder,
               onPressed: () {
-                final path = provider.data.elementAt(provider.currentPage).currentPath;
+                final path = provider.data.elementAt(provider.currentPage).currentPath!;
                 FileSystem.createDir(path, provider.newFolderName);
                 Navigator.pop(context);
               },
@@ -228,7 +228,7 @@ class _MediaPageState extends State<MediaPage> {
               buttonText: 'Create file',
               onChanged: provider.onChangeFolder,
               onPressed: () {
-                final path = provider.data.elementAt(provider.currentPage).currentPath;
+                final path = provider.data.elementAt(provider.currentPage).currentPath!;
                 FileSystem.createFile(path, provider.newFolderName);
                 Navigator.pop(context);
               },

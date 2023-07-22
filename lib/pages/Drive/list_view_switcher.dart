@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 class ListViewSwitcher extends StatelessWidget {
   final bool isLoading;
-  final Widget child, placeholder;
+  final Widget? child, placeholder;
 
   const ListViewSwitcher({
-    Key key,
+    Key? key,
     this.isLoading = false,
-    @required this.child,
+    required this.child,
     this.placeholder,
   }) : super(key: key);
 
@@ -18,7 +18,7 @@ class ListViewSwitcher extends StatelessWidget {
     return AnimatedSwitcher(
       duration: MyDecoration.duration,
       layoutBuilder: (widget, children) {
-        return widget;
+        return widget!;
       },
       child: isLoading ? placeholder ?? DriveListItemPlaceholder() : child,
     );

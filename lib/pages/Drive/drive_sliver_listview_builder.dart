@@ -9,12 +9,12 @@ import 'package:googleapis/drive/v3.dart' show File;
 import 'package:provider/provider.dart';
 
 class DriveSliverFutureBuilder extends StatefulWidget {
-  final String fileId;
-  final ScrollController controller;
+  final String? fileId;
+  final ScrollController? controller;
   final bool showAllFiles;
 
   const DriveSliverFutureBuilder({
-    Key key,
+    Key? key,
     this.fileId,
     this.controller,
     this.showAllFiles = false,
@@ -26,8 +26,8 @@ class DriveSliverFutureBuilder extends StatefulWidget {
 
 class _DriveSliverFutureBuilderState extends State<DriveSliverFutureBuilder> {
   bool _isLoading = false;
-  var _data = <File>[];
-  DriveStorage storage;
+  List<File>? _data = <File>[];
+  late DriveStorage storage;
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class _DriveSliverFutureBuilderState extends State<DriveSliverFutureBuilder> {
   }
 
   Future<void> saveToCache() async {
-    final json = _data.map((e) => e.toJson()).toList();
+    final json = _data!.map((e) => e.toJson()).toList();
     await storage.saveDriveFiles(widget.fileId ?? '0', json);
   }
 
@@ -62,7 +62,7 @@ class _DriveSliverFutureBuilderState extends State<DriveSliverFutureBuilder> {
       print('some fucking stupid error $e');
       rethrow;
     }
-    if (_data.isNotEmpty) setLoading(false);
+    if (_data!.isNotEmpty) setLoading(false);
     print('getting data from cache took ${sw.elapsedMicroseconds}');
     sw.stop();
   }
@@ -80,7 +80,7 @@ class _DriveSliverFutureBuilderState extends State<DriveSliverFutureBuilder> {
 
   @override
   void dispose() {
-    _data.clear();
+    _data!.clear();
     super.dispose();
   }
 
@@ -110,7 +110,7 @@ class _DriveSliverFutureBuilderState extends State<DriveSliverFutureBuilder> {
       if (isDownloaded) return;
       await driveDownloader.downloadFile(
         file.name,
-        file.id,
+        file.id!,
         file.size,
       );
     }

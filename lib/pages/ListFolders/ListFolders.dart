@@ -5,7 +5,7 @@ import 'package:files/widgets/ListBuilder.dart';
 import 'package:flutter/material.dart';
 
 class ListFolders extends StatelessWidget {
-  final String path;
+  final String? path;
   const ListFolders({this.path});
 
   @override

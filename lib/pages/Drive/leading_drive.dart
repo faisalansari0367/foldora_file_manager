@@ -8,13 +8,13 @@ import 'package:provider/provider.dart';
 import '../../sizeConfig.dart';
 
 class LeadingDrive extends StatelessWidget {
-  final String extension, iconLink, id;
+  final String? extension, iconLink, id;
   final bool isSelected;
-  final void Function() onTap;
+  final void Function()? onTap;
 
   const LeadingDrive({
-    Key key,
-    @required this.extension,
+    Key? key,
+    required this.extension,
     this.iconLink,
     this.id,
     this.onTap,
@@ -39,7 +39,7 @@ class LeadingDrive extends StatelessWidget {
               ),
               child: FittedBox(
                 child: CachedNetworkImage(
-                  imageUrl: iconLink,
+                  imageUrl: iconLink!,
                   imageBuilder: (context, imageProvider) {
                     return Container(
                       margin: EdgeInsets.all(1.image),
@@ -57,7 +57,7 @@ class LeadingDrive extends StatelessWidget {
               ),
             ),
           ),
-          Selector<DriveDownloader, double>(
+          Selector<DriveDownloader, double?>(
             selector: selector,
             builder: (context, value, child) {
               return CircularProgressIndicator(
@@ -72,7 +72,7 @@ class LeadingDrive extends StatelessWidget {
     );
   }
 
-  double selector(_, value) {
+  double? selector(_, value) {
     var map;
     for (var item in value.queue) {
       if (item['id'] == id) {

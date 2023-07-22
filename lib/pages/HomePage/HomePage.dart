@@ -3,11 +3,9 @@ import 'package:files/pages/HomePage/widgets/circleChartAndFilePercent.dart';
 import 'package:files/pages/HomePage/widgets/horizontal_tabs/horizontal_tabs.dart';
 import 'package:files/provider/storage_path_provider.dart';
 import 'package:files/provider/videos_provider.dart';
-import 'package:files/services/gdrive/auth.dart';
 import 'package:files/utilities/MyColors.dart';
 import 'package:files/widgets/FloatingActionButton.dart';
 import 'package:files/widgets/MyAppBar.dart';
-import 'package:files/widgets/show_profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
@@ -68,9 +66,9 @@ class _HomePageState extends State<HomePage> {
           color: MyColors.appbarActionsColor,
         ),
         actions: [
-          ProfilePicture(
-            imageUrl: Auth.getCurrentUser()?.photoURL,
-          ),
+          // ProfilePicture(
+          //   imageUrl: Auth.getCurrentUser()?.photoURL,
+          // ),
           // Icon(
           //   Icons.account_circle_outlined,
           //   size: 7.padding,
@@ -108,7 +106,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget bigText({height, title, iconName, color}) {
+Widget bigText({required height, required title, iconName, color}) {
   return Row(
     children: <Widget>[
       SizedBox(

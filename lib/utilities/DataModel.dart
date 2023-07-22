@@ -2,12 +2,12 @@ import 'package:storage_details/storage_details.dart';
 // import 'package:equatable/equatable.dart';
 
 class Data {
-  String path;
-  String currentPath;
-  int free;
-  int used;
-  int total;
-  List<String> navItems;
+  String? path;
+  String? currentPath;
+  int? free;
+  int? used;
+  int? total;
+  List<String>? navItems;
 
   Data({
     this.path,

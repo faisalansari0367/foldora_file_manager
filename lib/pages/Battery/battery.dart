@@ -7,8 +7,8 @@ import 'helpers.dart';
 import 'line_painter.dart';
 
 class BatteryScreen extends StatefulWidget {
-  BatteryScreen({Key key, this.title}) : super(key: key);
-  final String title;
+  BatteryScreen({Key? key, this.title}) : super(key: key);
+  final String? title;
 
   @override
   _BatteryScreenState createState() => _BatteryScreenState();
@@ -92,7 +92,7 @@ class _BatteryScreenState extends State<BatteryScreen> {
             ],
           ),
           if (data.isNotEmpty) ...[
-            Text('energyCounter: ${data.last.energyCounter * 0.001}'),
+            Text('energyCounter: ${data.last.energyCounter! * 0.001}'),
             Text('chargeCounter: ${data.last.chargeCounter}'),
             Text('currentNow: ${data.last.currentNow}'),
             Text('currentAvg: ${data.last.currentAvg}'),

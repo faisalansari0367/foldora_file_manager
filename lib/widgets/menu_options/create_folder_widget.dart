@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import '../my_elevated_button.dart';
 
 class CreateFolder extends StatelessWidget {
-  final void Function(String) onChanged;
-  final void Function() onPressed;
-  final String buttonText;
-  final String hintText;
-  const CreateFolder({Key key, this.onChanged, this.hintText, this.onPressed, this.buttonText}) : super(key: key);
+  final void Function(String)? onChanged;
+  final void Function()? onPressed;
+  final String? buttonText;
+  final String? hintText;
+  const CreateFolder({Key? key, this.onChanged, this.hintText, this.onPressed, this.buttonText}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class CreateFolder extends StatelessWidget {
             cursorColor: MyColors.appbarActionsColor,
             cursorRadius: MyDecoration.circularRadius,
             onChanged: onChanged,
-            style: Theme.of(context).textTheme.subtitle2.copyWith(
+            style: Theme.of(context).textTheme.subtitle2!.copyWith(
                   color: MyColors.appbarActionsColor,
                   fontSize: 1.8.text,
                 ),

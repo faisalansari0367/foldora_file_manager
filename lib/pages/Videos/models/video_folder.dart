@@ -11,7 +11,7 @@ List<VideoEntity> videoFolderFromJson(String str) {
 
 class VideoFolder implements VideoEntity {
   final List<VideoFile> files;
-  final String folderName;
+  final String? folderName;
 
   VideoFolder({this.files = const [], this.folderName});
 
@@ -39,7 +39,7 @@ class VideoFolder implements VideoEntity {
   @override
   int get size {
     var size = 0;
-    files.forEach((element) => size += element.size);
+    files.forEach((element) => size += element.size!);
     return size;
   }
 }

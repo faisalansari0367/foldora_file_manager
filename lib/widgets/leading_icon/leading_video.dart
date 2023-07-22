@@ -5,8 +5,8 @@ import 'package:files/widgets/leading_icon/leading_image.dart';
 import 'package:flutter/material.dart';
 
 class VideoIcon extends StatefulWidget {
-  final File video;
-  const VideoIcon({Key key, @required this.video}) : super(key: key);
+  final File? video;
+  const VideoIcon({Key? key, required this.video}) : super(key: key);
 
   @override
   State<VideoIcon> createState() => _VideoIconState();
@@ -23,12 +23,12 @@ class _VideoIconState extends State<VideoIcon> {
     );
   }
 
-  Future<File> futureWidget() async {
-    final data = VideoUtil.isVideoThumbnailExist(widget.video.path);
+  Future<File?> futureWidget() async {
+    final data = VideoUtil.isVideoThumbnailExist(widget.video!.path);
     if (data['isFileExist']) {
       return data['thumb'];
     }
-    final thumbnail = await VideoUtil.createThumbnail(widget.video.path);
+    final thumbnail = await VideoUtil.createThumbnail(widget.video!.path);
     return thumbnail;
   }
 

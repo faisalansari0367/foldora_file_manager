@@ -1,6 +1,6 @@
 class DriveNavRailItem {
-  final String name;
-  final String id;
+  final String? name;
+  final String? id;
   DriveNavRailItem({this.name, this.id});
 
   @override

@@ -11,7 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:storage_details/storage_details.dart';
 
 class MyProvider extends ChangeNotifier {
-  Function scrollListener;
+  late Function scrollListener;
 
   int currentPage = 0;
   String newFolderName = '';
@@ -35,7 +35,7 @@ class MyProvider extends ChangeNotifier {
   // getters to get the values
   bool get showHidden => _showHidden;
   void addPath(String path) {
-    navigationAddOrRemove(data[currentPage].navItems, path);
+    navigationAddOrRemove(data[currentPage].navItems!, path);
     notifyListeners();
   }
 
@@ -50,7 +50,7 @@ class MyProvider extends ChangeNotifier {
   String calculatePercent(int bytes, int decimals) {
     if (data.isEmpty) return '0.0';
     final _data = data[currentPage];
-    final percent = bytes / ((_data.total - _data.free)) * 100;
+    final percent = bytes / (_data.total! - _data.free!) * 100;
     final result = percent.isNaN ? '0.0' : percent.toStringAsFixed(decimals);
     return result;
   }
@@ -71,11 +71,11 @@ class MyProvider extends ChangeNotifier {
     }
   }
 
-  StreamSubscription<FileSystemEvent> streamSubscription;
+  late StreamSubscription<FileSystemEvent> streamSubscription;
   Future<List<FileSystemEntity>> dirContents(String path, {isShowHidden = false}) async {
     final args = {'path': path, 'showHidden': isShowHidden};
     try {
-      if (streamSubscription != null) await streamSubscription.cancel();
+ await streamSubscription.cancel();
       final dir = Directory(path).watch();
       dir.listen(streamListener);
       // final result = await FileUtils.worker.doWork(FileUtils.directoryList, args);
@@ -100,10 +100,10 @@ class MyProvider extends ChangeNotifier {
 
   Future<List<FileSystemEntity>> files() async {
     if (data.isEmpty) await diskSpace();
-    return await Directory(data[currentPage].path).list().toList();
+    return await Directory(data[currentPage].path!).list().toList();
   }
 
-  List<String> getListOfNavigation() {
+  List<String>? getListOfNavigation() {
     return data[currentPage]?.navItems;
   }
 
@@ -149,7 +149,7 @@ class MyProvider extends ChangeNotifier {
     if (value.currentPath == value.path) {
       Navigator.pop(context);
     } else {
-      value.currentPath = Directory(value.currentPath).parent.path;
+      value.currentPath = Directory(value.currentPath!).parent.path;
     }
     notifyListeners();
     return false;

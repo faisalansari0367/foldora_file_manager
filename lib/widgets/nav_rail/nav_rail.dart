@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import '../../sizeConfig.dart';
 
 class NavRail extends StatelessWidget {
-  final List<DriveNavRailItem> data;
-  final int selectedIndex;
-  final void Function(DriveNavRailItem) onTap;
-  const NavRail({Key key, this.data, this.selectedIndex, this.onTap}) : super(key: key);
+  final List<DriveNavRailItem>? data;
+  final int? selectedIndex;
+  final void Function(DriveNavRailItem)? onTap;
+  const NavRail({Key? key, this.data, this.selectedIndex, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +18,16 @@ class NavRail extends StatelessWidget {
       color: MyColors.darkGrey,
       height: 6.height,
       child: ListView.builder(
-        itemCount: data.length,
+        itemCount: data!.length,
         padding: EdgeInsets.symmetric(horizontal: 5.padding),
         scrollDirection: Axis.horizontal,
         physics: MyDecoration.physics,
         itemBuilder: (context, index) {
-          final item = data[index];
+          final item = data![index];
           return NavItem(
             isSelected: selectedIndex == index,
             path: item.name,
-            onTap: () => onTap(item),
+            onTap: () => onTap!(item),
             selectedColor: MyColors.teal,
           );
         },

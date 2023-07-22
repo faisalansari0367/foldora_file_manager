@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:device_apps/app_utils.dart';
-import 'package:device_apps/device_apps.dart';
+// import 'package:device_apps/app_utils.dart';
+// import 'package:device_apps/device_apps.dart';
 import 'package:files/models/apps.dart';
 import 'package:files/services/database/sqf_interface.dart';
 import 'package:files/utilities/Utils.dart';
@@ -20,29 +20,29 @@ class LocalAppsService extends SqfDatabase {
 
   @override
   Future<void> insertData() async {
-    final allApps = await FileUtils.getAllLocalApps();
+    final allApps = (await FileUtils.getAllLocalApps())!;
     print('AllApps length: ${allApps.length}');
-    final appsData = await DeviceApps.getAppByApkFile(allApps);
-    final apps = App.fromList(appsData);
-    final where = '${SqfDatabase.apkFilePath} = ?';
-    try {
-      final database = await _db;
-      final batch = database.batch();
+    // final appsData = await DeviceApps.getAppByApkFile(allApps);
+    // final apps = App.fromList(appsData);
+    // final where = '${SqfDatabase.apkFilePath} = ?';
+    // try {
+    //   final database = await _db;
+    //   final batch = database.batch();
 
-      for (final item in apps) {
-        final query = await database.query(_localAppsTable, where: where, whereArgs: [item.apkFilePath]);
-        if (query.isEmpty) {
-          batch.insert(
-            _localAppsTable,
-            Apps.toMap(item),
-            conflictAlgorithm: ConflictAlgorithm.ignore,
-          );
-        }
-      }
-      await batch.commit();
-    } catch (e) {
-      throw Exception(e);
-    }
+    //   for (final item in apps) {
+    //     final query = await database.query(_localAppsTable, where: where, whereArgs: [item.apkFilePath]);
+    //     if (query.isEmpty) {
+    //       batch.insert(
+    //         _localAppsTable,
+    //         Apps.toMap(item),
+    //         conflictAlgorithm: ConflictAlgorithm.ignore,
+    //       );
+    //     }
+    //   }
+    //   await batch.commit();
+    // } catch (e) {
+    //   throw Exception(e);
+    // }
   }
 
   Future<void> insert(Map<String, dynamic> data) async {
@@ -55,10 +55,10 @@ class LocalAppsService extends SqfDatabase {
   }
 
   @override
-  Future<List<Apps>> getApps() async {
+  Future<List<Apps>?> getApps() async {
     final db = await _db;
     final _localAppsData = await db.query(_localAppsTable);
-    final List<Apps> localApps = await FileUtils.worker.doWork(Apps.fromMap, _localAppsData);
+    final List<Apps>? localApps = await (FileUtils.worker.doWork(Apps.fromMap, _localAppsData) as FutureOr<List<Apps>?>);
     return localApps;
   }
 

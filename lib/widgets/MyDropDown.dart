@@ -44,7 +44,7 @@ class MyDropDown extends StatelessWidget {
                             value: value,
                             checkColor: MyColors.dropdownText,
                             fillColor: MaterialStateProperty.all(Colors.transparent),
-                            onChanged: (bool value) => storage.toggleHidden(),
+                            onChanged: (bool? value) => storage.toggleHidden(),
                           );
                         },
                       ),

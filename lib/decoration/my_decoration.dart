@@ -48,7 +48,7 @@ class MyDecoration {
     );
   }
 
-  static Widget bottomSheetTopIndicator({Color color, double heightFactor}) {
+  static Widget bottomSheetTopIndicator({Color? color, double? heightFactor}) {
     return Center(
       heightFactor: heightFactor,
       child: Container(

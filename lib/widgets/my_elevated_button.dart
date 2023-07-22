@@ -3,11 +3,11 @@ import 'package:files/sizeConfig.dart';
 import 'package:flutter/material.dart';
 
 class MyElevatedButton extends StatelessWidget {
-  final void Function() onPressed;
-  final String text;
-  final Widget icon;
+  final void Function()? onPressed;
+  final String? text;
+  final Widget? icon;
   const MyElevatedButton({
-    Key key,
+    Key? key,
     this.onPressed,
     this.text,
     this.icon,
@@ -23,11 +23,11 @@ class MyElevatedButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            text,
+            text!,
             style: TextStyle(fontSize: 1.7.text),
           ),
           if (icon != null) SizedBox(width: 1.5.padding),
-          if (icon != null) icon
+          if (icon != null) icon!
         ],
       ),
     );

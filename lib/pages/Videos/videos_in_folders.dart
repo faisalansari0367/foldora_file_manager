@@ -11,12 +11,12 @@ import '../../sizeConfig.dart';
 import 'video_leading.dart';
 
 class VideosInFolders extends StatelessWidget {
-  final List<VideoFolder> videoFolders;
+  final List<VideoFolder>? videoFolders;
   final void Function(VideoFolder folder) onTap;
-  final void Function(VideoFolder folder) onSelect;
+  final void Function(VideoFolder folder)? onSelect;
   final bool selected;
 
-  const VideosInFolders({Key key, this.videoFolders, @required this.onTap, this.onSelect, this.selected = false})
+  const VideosInFolders({Key? key, this.videoFolders, required this.onTap, this.onSelect, this.selected = false})
       : super(key: key);
 
   @override
@@ -24,10 +24,10 @@ class VideosInFolders extends StatelessWidget {
     final provider = getProvider<VideosProvider>(context);
 
     return ListView.builder(
-      itemCount: videoFolders.length,
+      itemCount: videoFolders!.length,
       physics: MyDecoration.physics,
       itemBuilder: (context, index) {
-        final folder = videoFolders[index];
+        final folder = videoFolders![index];
         return VideoListItem(
           selectedColor: MyColors.darkGrey.withOpacity(0.2),
           currentPath: folder.folderName,
@@ -44,7 +44,7 @@ class VideosInFolders extends StatelessWidget {
           ontap: () => onTap(folder),
           title: folder.folderName,
           leading: GestureDetector(
-            onTap: () => onSelect(folder),
+            onTap: () => onSelect!(folder),
             child: LeadingVIdeo(video: folder.files.first),
           ),
         );

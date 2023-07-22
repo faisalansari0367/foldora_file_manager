@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 
 class LocalAuth extends ChangeNotifier {
-  LocalAuthentication _localAuth;
+  late LocalAuthentication _localAuth;
   List<BiometricType> availableBiometrics = [];
   bool isSupported = false;
   final _isInstantiated = Completer<void>();

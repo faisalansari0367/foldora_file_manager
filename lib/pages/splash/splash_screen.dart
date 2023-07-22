@@ -13,7 +13,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver {
-  PageController pageController;
+  PageController? pageController;
   int _initialPage = 0;
   static const Duration duration = Duration(milliseconds: 100);
 
@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
 
   @override
   void dispose() {
-    pageController.dispose();
+    pageController!.dispose();
     pageController = null;
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
 
   Future<void> _moveToPage(int page) async {
     await Future.delayed(duration, () {
-      pageController.animateToPage(
+      pageController!.animateToPage(
         page,
         duration: Duration(milliseconds: 500),
         curve: Curves.fastOutSlowIn,
@@ -63,12 +63,12 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
   Future<void> setFirstSeen() async => await StorageService().setFirstTimeSeen();
 
   Future<void> _redirectToHome() async {
-    final status = await PermissionService.accessAllFiles();
-    if (status) {
-      final pageView = PageView(children: [HomePage(), HomePage()]);
-      final route = MaterialPageRoute(builder: (context) => pageView);
-      await Navigator.pushReplacement(context, route);
-    }
+    // final status = await PermissionService.accessAllFiles();
+    // if (status) {
+    final pageView = PageView(children: [HomePage(), HomePage()]);
+    final route = MaterialPageRoute(builder: (context) => pageView);
+    await Navigator.pushReplacement(context, route);
+    // }
   }
 
   Future<void> _onpressed() async {
